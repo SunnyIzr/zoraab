@@ -1,0 +1,10 @@
+<h1> Kitter </h1>
+<h2> Create a New Subscription Order </h2>
+
+<%= form_for @order, url: sub_orders_path do |f| %>
+
+  <%= label_tag(:item1, "Item 1") %>
+  <%= text_field_tag(:item1) %>
+  <%= submit_tag("Save") %>
+
+<% end %>
