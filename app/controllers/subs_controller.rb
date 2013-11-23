@@ -15,6 +15,9 @@ class SubsController < ApplicationController
 
   def show
     @sub = Sub.find(params[:id])
+    p "*"*500
+    @chargify_data = Chargify::Subscription.find(@sub.cid)
+    @customer = @chargify_data.attributes["customer"].attributes
   end
 
   private
