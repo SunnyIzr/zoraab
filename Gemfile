@@ -47,4 +47,5 @@ end
 group :test, :development do
   gem 'rspec-rails'
   gem 'shoulda'
+  gem 'dotenv-rails'
 end
