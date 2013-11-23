@@ -31,6 +31,8 @@ gem 'chargify_api_ares'
 
 gem 'awesome_print'
 
+gem 'foundation-rails'
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
 
