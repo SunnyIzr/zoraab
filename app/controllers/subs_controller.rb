@@ -4,10 +4,17 @@ class SubsController < ApplicationController
   end
 
   def create
-    @sub = Sub.create(sub_params)
-    p @sub
-    @sub.save
-    p @sub
+    @sub = Sub.new(sub_params)
+
+    if @sub.save
+      redirect_to sub_path(@sub.id)
+    else
+      render text: "Need Chargify ID"
+    end
+  end
+
+  def show
+    @sub = Sub.find(params[:id])
   end
 
   private
