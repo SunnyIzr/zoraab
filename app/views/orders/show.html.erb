@@ -1,0 +1,16 @@
+<p>
+  Order Date:
+  <%= @order.created_at %>
+<p>
+  Order Number:
+  <%= @order.order_number %>
+</p>
+
+<p>
+  Items
+</p>
+<% @order.products.each do |product| %>
+<p>
+  <%= product.sku %>
+</p>
+<% end%>
