@@ -1,1 +1,27 @@
-<%= @sub.cid %>
+<h2><%= @sub.cid %></h2>
+<table>
+  <tr>
+    <td> First Name </td>
+    <td> <%= @customer['first_name'] %></td>
+  <tr/>
+  <tr>
+    <td> Last Name </td>
+    <td> <%= @customer['last_name'] %></td>
+  </tr>
+  <tr>
+    <td> Customer Data </td>
+    <td> <%= @customer %> </td>
+  </tr>
+  <tr>
+    <td> Product Data </td>
+    <td> <%= @product %> </td>
+  </tr>
+  <tr>
+    <td> Billing Data </td>
+    <td> <%= @billing %> </td>
+  </tr>
+  <tr>
+    <td> Add'l Data </td>
+    <td> <%= @chargify_data %> </td>
+  </tr>  
+</table>
