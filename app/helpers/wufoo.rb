@@ -18,17 +18,15 @@ module Wufoo
 
   def find_quiz_entry(cid)
     all_forms.each do |form_id|
-      entry = wufoo.form(form_id).entries(:sort => 'EntryId DESC', :limit => 100, :system => true, :filters => [['TransactionId','Is_equal_to',cid]] )
+      entry = WUFOO.form(form_id).entries(:sort => 'EntryId DESC', :limit => 100, :system => true, :filters => [['TransactionId','Is_equal_to',cid]] )
       return entry[0] unless entry.empty?
     end
   end
 
   def all_forms
     all_forms=[]
-    wufoo.forms.each { |form| all_forms << form.details["Hash"]}
+    WUFOO.forms.each { |form| all_forms << form.details["Hash"]}
     all_forms
   end
-  def wufoo
-    WuParty.new(ENV['WUF_ACCOUNT'],ENV['WUF_API_KEY'])
-  end
+
 end
