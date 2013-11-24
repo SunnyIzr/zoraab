@@ -1,11 +1,6 @@
 class OrdersController < ApplicationController
   def show
     @order = Order.find(params[:id])
-    @sub = Sub.find(@order.sub_id)
-    @chargify_data = Chargify::Subscription.find(@sub.cid).attributes
-    @customer = @chargify_data["customer"].attributes
-    @product = @chargify_data["product"].attributes
-    @billing = @chargify_data["credit_card"].attributes
   end
 
   def new
@@ -33,6 +28,14 @@ class OrdersController < ApplicationController
     @order.state = @customer['state']
     @order.zip = @customer['zip']
     @order.country = @customer['country']
+    @order.billing_name = @billing['first_name'] + ' ' + @billing['last_name']
+    @order.billing_address = @billing['billing_address']
+    @order.billing_address2 = @billing['billing_address2']
+    @order.billing_city = @billing['billing_city']
+    @order.billing_state = @billing['billing_state']
+    @order.billing_zip = @billing['billing_zip']
+    @order.billing_country = @billing['billing_country']
+    @order.plan = @product['name']
     params[:item].each do |item|
       p item
       @order.products << Product.find_by(sku: item)
