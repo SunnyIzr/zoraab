@@ -1,10 +1,54 @@
-<h1> Kitter </h1>
-<h2> Create a New Subscription Order </h2>
+<div class="row">
+  <div class="large-8 columns">
+    <h4> New Subscription Order - <%=@sub.cid%></h4>
+  </div>
+  <div class="large-2 columns">
+    <div data-alert class="alert-box">Status: <%= @chargify_data['state']%></div>
+  </div>
 
-<%= form_for @order, url: sub_orders_path do |f| %>
+</div>
+<div class="row">
+  <div class="large-4 columns">
+    <div class="panel">
+      <h5> Subscriber Details </h5>
+      <p><%= @customer['first_name'] %> <%= @customer['last_name'] %><br>
+      <%= @customer['email']%><br>
+      <%= @product['name']%> - <%= @product['price_in_cents'] %><br>
+      <%= @customer['email']%></p>
+    </div>
+  </div>
 
-  <%= label_tag(:item1, "Item 1") %>
-  <%= text_field_tag(:item1) %>
-  <%= submit_tag("Save") %>
+  <div class="large-4 columns">
+    <div class="panel">
+      <h5> Shipping Address </h5>
+      <p><%= @customer['first_name'] %> <%= @customer['last_name'] %><br>
+      <%=@customer['address']%> <%=@customer['address2']%><br>
+      <%=@customer['city']%>, <%=@customer['state']%> <%=@customer['zip']%><br>
+      <%=@customer['country']%> <%=@customer['phone']%></p>
+    </div>
+  </div>
 
-<% end %>
+  <div class="large-4 columns">
+    <div class="panel">
+      <h5> Billing Address </h5>
+      <p><%= @billing['first_name'] %> <%= @billing['last_name'] %><br>
+      <%=@billing['billing_address']%> <%=@billing['billing_address2']%><br>
+      <%=@billing['billing_city']%>, <%=@billing['billing_state']%> <%=@billing['billing_zip']%><br>
+      <%=@billing['billing_country']%> <%=@billing['billing_phone']%></p>
+    </div>
+  </div>
+
+</div>
+<div class="row">
+  <div class="large-8 columns">
+    <h4>Items</h4>
+    <%= form_for @order, url: sub_orders_path do |f| %>
+      <%= text_field_tag(:item1) %>
+      <%= text_field_tag(:item2) %>
+      <%= text_field_tag(:item3) %>
+      <%= text_field_tag(:item4) %>
+      <%= text_field_tag(:item5) %>
+      <%= submit_tag("Save", class: 'button') %>
+    <% end %>
+  </div>
+</div>
