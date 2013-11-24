@@ -10,6 +10,8 @@ class Sub < ActiveRecord::Base
   end
 
   def retrieve_wufoo_prefs
-    self.prefs << Wufoo.find_prefs(cid)
+    p "*"*100
+    p WUFOO
+    # self.prefs << Wufoo.find_prefs(cid)
   end
 end
