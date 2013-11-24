@@ -1,13 +1,58 @@
-<h2><%= @sub.cid %></h2>
+
+<div class="row">
+  <div class="large-6 columns">
+    <h4> Subscription - <%=@sub.cid%></h4>
+  </div>
+  <div class="large-4 columns">
+    <h5><i>Member since <%=@chargify_data['created_at'].strftime('%d %b %Y')%></i></h5>
+  </div>
+  <div class="large-2 columns">
+    <div data-alert class="alert-box">Status: <%= @chargify_data['state']%></div>
+  </div>
+</div>
+<div class="row">
+  <div class="large-4 columns">
+    <div class="panel">
+      <h5> Subscriber Details </h5>
+      <p><%= @customer['first_name'] %> <%= @customer['last_name'] %><br>
+      <%= @customer['email']%><br>
+      <%= @product['name']%> $<%= @product['price_in_cents']/100 %><br>
+      <%= @customer['email']%></p>
+    </div>
+  </div>
+
+  <div class="large-4 columns">
+    <div class="panel">
+      <h5> Shipping Address </h5>
+      <p><%= @customer['first_name'] %> <%= @customer['last_name'] %><br>
+      <%=@customer['address']%> <%=@customer['address2']%><br>
+      <%=@customer['city']%>, <%=@customer['state']%> <%=@customer['zip']%><br>
+      <%=@customer['country']%> <%=@customer['phone']%></p>
+    </div>
+  </div>
+
+  <div class="large-4 columns">
+    <div class="panel">
+      <h5> Billing Address </h5>
+      <p><%= @billing['first_name'] %> <%= @billing['last_name'] %><br>
+      <%=@billing['billing_address']%> <%=@billing['billing_address2']%><br>
+      <%=@billing['billing_city']%>, <%=@billing['billing_state']%> <%=@billing['billing_zip']%><br>
+      <%=@billing['billing_country']%> <%=@billing['billing_phone']%></p>
+    </div>
+  </div>
+
+  <%= link_to "Create Order", new_sub_order_path(@sub),class: 'button' %>
+</div>
+
+
+
+<div class="row">
+  <div class="large-12 columns">
+    <h4> Raw Data </h4>
+
+
+
 <table>
-  <tr>
-    <td> First Name </td>
-    <td> <%= @customer['first_name'] %></td>
-  <tr/>
-  <tr>
-    <td> Last Name </td>
-    <td> <%= @customer['last_name'] %></td>
-  </tr>
   <tr>
     <td> Customer Data </td>
     <td> <%= @customer %> </td>
@@ -23,5 +68,5 @@
   <tr>
     <td> Add'l Data </td>
     <td> <%= @chargify_data %> </td>
-  </tr>  
+  </tr>
 </table>
