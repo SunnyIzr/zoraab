@@ -1,12 +1,19 @@
 <div class="row">
-  <div class="large-8 columns">
-    <h4> New Subscription Order - <%=@sub.cid%></h4>
+  <div class="large-4 columns">
+    <h4> Subscription - <%=@sub.cid%></h4>
+  </div>
+  <div class="large-5 columns button-bar">
+    <ul class="button-group radius round">
+      <% @sub.prefs.each do |pref| %>
+      <li class="small button secondary alert success"><%=pref.pref.capitalize%></li>
+      <% end %>
+    </ul>
   </div>
   <div class="large-2 columns">
-    <div data-alert class="alert-box">Status: <%= @response[:status]%></div>
+    <div data-alert class="alert-box">Status: <%=@response[:status]%></div>
   </div>
-
 </div>
+
 <div class="row">
  <div class="large-4 columns">
     <div class="panel">
@@ -43,6 +50,8 @@
       <%=@response[:billing_address][:phone]%></p>
     </div>
   </div>
+</div>
+
 <div class="row">
   <div class="large-8 columns">
     <h4>Items</h4>
