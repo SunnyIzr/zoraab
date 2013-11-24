@@ -4,69 +4,49 @@
     <h4> Subscription - <%=@sub.cid%></h4>
   </div>
   <div class="large-4 columns">
-    <h5><i>Member since <%=@chargify_data['created_at'].strftime('%d %b %Y')%></i></h5>
+    <h5><i>Member since <%=@sub.start_date(@response)%></i></h5>
   </div>
   <div class="large-2 columns">
-    <div data-alert class="alert-box">Status: <%= @chargify_data['state']%></div>
+    <div data-alert class="alert-box">Status: <%=@sub.status(@response)%></div>
   </div>
 </div>
 <div class="row">
   <div class="large-4 columns">
     <div class="panel">
       <h5> Subscriber Details </h5>
-      <p><%= @customer['first_name'] %> <%= @customer['last_name'] %><br>
-      <%= @customer['email']%><br>
-      <%= @product['name']%> $<%= @product['price_in_cents']/100 %><br>
-      <%= @customer['email']%></p>
+      <p><%=@sub.name(@response)%><br>
+      <%=@sub.email(@response)%><br>
+      <%= @sub.plan(@response)%><br>
+      <%= @sub.email(@response)%></p>
     </div>
   </div>
 
   <div class="large-4 columns">
     <div class="panel">
       <h5> Shipping Address </h5>
-      <p><%= @customer['first_name'] %> <%= @customer['last_name'] %><br>
-      <%=@customer['address']%> <%=@customer['address2']%><br>
-      <%=@customer['city']%>, <%=@customer['state']%> <%=@customer['zip']%><br>
-      <%=@customer['country']%> <%=@customer['phone']%></p>
+      <p><%= @sub.shipping_address(@response)[:name] %><br>
+      <%=@sub.shipping_address(@response)[:address] %> <%=@sub.shipping_address(@response)[:address2] %><br>
+      <%=@sub.shipping_address(@response)[:city] %>,
+      <%=@sub.shipping_address(@response)[:state] %>
+      <%=@sub.shipping_address(@response)[:zip] %><br>
+      <%=@sub.shipping_address(@response)[:country] %>
+      <%=@sub.shipping_address(@response)[:phone]%></p>
     </div>
   </div>
 
   <div class="large-4 columns">
     <div class="panel">
       <h5> Billing Address </h5>
-      <p><%= @billing['first_name'] %> <%= @billing['last_name'] %><br>
-      <%=@billing['billing_address']%> <%=@billing['billing_address2']%><br>
-      <%=@billing['billing_city']%>, <%=@billing['billing_state']%> <%=@billing['billing_zip']%><br>
-      <%=@billing['billing_country']%> <%=@billing['billing_phone']%></p>
+      <p><%= @sub.billing_address(@response)[:name] %><br>
+      <%=@sub.billing_address(@response)[:address] %> <%=@sub.billing_address(@response)[:address2] %><br>
+      <%=@sub.billing_address(@response)[:city] %>,
+      <%=@sub.billing_address(@response)[:state] %>
+      <%=@sub.billing_address(@response)[:zip] %><br>
+      <%=@sub.billing_address(@response)[:country] %>
+      <%=@sub.billing_address(@response)[:phone]%></p>
     </div>
   </div>
 
   <%= link_to "Create Order", new_sub_order_path(@sub),class: 'button' %>
 </div>
 
-
-
-<div class="row">
-  <div class="large-12 columns">
-    <h4> Raw Data </h4>
-
-
-
-<table>
-  <tr>
-    <td> Customer Data </td>
-    <td> <%= @customer %> </td>
-  </tr>
-  <tr>
-    <td> Product Data </td>
-    <td> <%= @product %> </td>
-  </tr>
-  <tr>
-    <td> Billing Data </td>
-    <td> <%= @billing %> </td>
-  </tr>
-  <tr>
-    <td> Add'l Data </td>
-    <td> <%= @chargify_data %> </td>
-  </tr>
-</table>
