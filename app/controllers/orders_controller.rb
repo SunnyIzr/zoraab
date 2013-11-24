@@ -6,6 +6,10 @@ class OrdersController < ApplicationController
   def new
     @order = Order.new
     @sub = Sub.find(params[:sub_id])
+    @chargify_data = Chargify::Subscription.find(@sub.cid).attributes
+    @customer = @chargify_data["customer"].attributes
+    @product = @chargify_data["product"].attributes
+    @billing = @chargify_data["credit_card"].attributes
   end
 
   def create
