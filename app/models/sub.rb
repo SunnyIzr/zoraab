@@ -16,7 +16,7 @@ class Sub < ActiveRecord::Base
     WUFOO.forms.each { |form| all_forms << form.details["Hash"]}
     all_forms.each do |form_id|
       entry = WUFOO.form(form_id).entries(:sort => 'EntryId DESC', :limit => 100, :system => true, :filters => [['TransactionId','Is_equal_to',cid]] )
-      return entry[0] unless entry.empty?
+      p entry[0] unless entry.empty?
     end
     # self.prefs << Wufoo.find_prefs(cid)
   end
