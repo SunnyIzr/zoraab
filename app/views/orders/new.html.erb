@@ -13,7 +13,7 @@
       <h5> Subscriber Details </h5>
       <p><%= @customer['first_name'] %> <%= @customer['last_name'] %><br>
       <%= @customer['email']%><br>
-      <%= @product['name']%> - <%= @product['price_in_cents'] %><br>
+      <%= @product['name']%> $<%= @product['price_in_cents']/100 %><br>
       <%= @customer['email']%></p>
     </div>
   </div>
