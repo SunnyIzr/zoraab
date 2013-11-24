@@ -1,0 +1,1 @@
+WUFOO = WuParty.new(ENV['WUF_ACCOUNT'],ENV['WUF_API_KEY'])

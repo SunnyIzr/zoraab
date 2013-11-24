@@ -8,4 +8,8 @@ FactoryGirl.define do
     sub_id {1}
   end
 
+  factory :pref do
+    pref {'dress'}
+  end
+
 end
