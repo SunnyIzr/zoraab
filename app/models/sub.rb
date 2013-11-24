@@ -12,6 +12,7 @@ class Sub < ActiveRecord::Base
   def retrieve_wufoo_prefs
     p "*"*100
     p WUFOO
+    p WUFOO.forms
     # self.prefs << Wufoo.find_prefs(cid)
   end
 end
