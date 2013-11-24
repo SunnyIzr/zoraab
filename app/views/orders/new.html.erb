@@ -3,8 +3,6 @@
 
 <%= form_for @order, url: sub_orders_path do |f| %>
 
-  <%= label_tag(:order_number, "Order Number") %>
-  <%= text_field_tag(:order_number) %>
   <%= label_tag(:item1, "Item 1") %>
   <%= text_field_tag(:item1) %>
   <%= submit_tag("Save") %>
