@@ -9,7 +9,7 @@ class SubsController < ApplicationController
     if @sub.save
       redirect_to sub_path(@sub.id)
     else
-      render text: "Need Chargify ID"
+      render text: "There was an error with your request. Either you did not input a Chargify ID or the subscriber already exists in Coz with that Chargify ID. Please Try Again."
     end
   end
 
