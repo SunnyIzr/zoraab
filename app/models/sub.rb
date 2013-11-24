@@ -1,7 +1,7 @@
 class Sub < ActiveRecord::Base
   validates_presence_of :cid
   validates_uniqueness_of :cid
-  # before_save :retrieve_wufoo_prefs
+  before_save :retrieve_wufoo_prefs
   has_and_belongs_to_many :prefs
   has_many :orders
 
@@ -10,6 +10,7 @@ class Sub < ActiveRecord::Base
   end
 
   def retrieve_wufoo_prefs
-    self.prefs << Wufoo.find_prefs(cid)
+    p "hello world"
+    # self.prefs << Wufoo.find_prefs(cid)
   end
 end
