@@ -56,6 +56,11 @@ ActiveRecord::Schema.define(version: 20131124041230) do
     t.datetime "updated_at"
   end
 
+  create_table "products_subs", force: true do |t|
+    t.integer "product_id"
+    t.integer "sub_id"
+  end
+
   create_table "subs", force: true do |t|
     t.integer  "cid"
     t.datetime "created_at"
