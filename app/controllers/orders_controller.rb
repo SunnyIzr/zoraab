@@ -10,11 +10,19 @@ class OrdersController < ApplicationController
     @customer = @chargify_data["customer"].attributes
     @product = @chargify_data["product"].attributes
     @billing = @chargify_data["credit_card"].attributes
+    @number_of_socks = @product['handle'][0].to_i
   end
 
   def create
+    p "*"*500
+    p params
     @order = Order.new(order_params)
-    @order.products << Product.find_by(sku:'test')
+    p items_params
+    p items_params.class
+    params[:item].each do |item|
+      p item
+      @order.products << Product.find_by(sku: item)
+    end
     if @order.save
       redirect_to order_path(@order.id)
     else
@@ -28,7 +36,7 @@ class OrdersController < ApplicationController
   end
 
   def items_params
-    params.permit(:item1)
+    params.permit(:item)
   end
 
 

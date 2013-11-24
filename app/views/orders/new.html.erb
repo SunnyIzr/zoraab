@@ -43,11 +43,9 @@
   <div class="large-8 columns">
     <h4>Items</h4>
     <%= form_for @order, url: sub_orders_path do |f| %>
-      <%= text_field_tag(:item1) %>
-      <%= text_field_tag(:item2) %>
-      <%= text_field_tag(:item3) %>
-      <%= text_field_tag(:item4) %>
-      <%= text_field_tag(:item5) %>
+      <% @number_of_socks.times do |item| %>
+        <%= text_field_tag('item[]') %>
+      <%end%>
       <%= submit_tag("Save", class: 'button') %>
     <% end %>
   </div>
