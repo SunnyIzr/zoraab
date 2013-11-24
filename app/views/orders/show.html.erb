@@ -11,30 +11,30 @@
   <div class="large-4 columns">
     <div class="panel">
       <h5> Subscriber Details </h5>
-      <p><%= @customer['first_name'] %> <%= @customer['last_name'] %><br>
-      <%= @customer['email']%><br>
-      <%= @product['name']%> - <%= @product['price_in_cents'] %><br>
-      <%= @customer['email']%></p>
+      <p><%= @order.name %><br>
+      <%= @order.email %><br>
+      <%= @order.plan%><br>
+      <%= @order.email %></p>
     </div>
   </div>
 
   <div class="large-4 columns">
     <div class="panel">
       <h5> Shipping Address </h5>
-      <p><%= @customer['first_name'] %> <%= @customer['last_name'] %><br>
-      <%=@customer['address']%> <%=@customer['address2']%><br>
-      <%=@customer['city']%>, <%=@customer['state']%> <%=@customer['zip']%><br>
-      <%=@customer['country']%> <%=@customer['phone']%></p>
+      <p><%= @order.name %><br>
+      <%= @order.address %> <%= @order.address2%><br>
+      <%=@order.city%>, <%=@order.state%> <%=@order.zip%><br>
+      <%=@order.country%></p>
     </div>
   </div>
 
   <div class="large-4 columns">
     <div class="panel">
       <h5> Billing Address </h5>
-      <p><%= @billing['first_name'] %> <%= @billing['last_name'] %><br>
-      <%=@billing['billing_address']%> <%=@billing['billing_address2']%><br>
-      <%=@billing['billing_city']%>, <%=@billing['billing_state']%> <%=@billing['billing_zip']%><br>
-      <%=@billing['billing_country']%> <%=@billing['billing_phone']%></p>
+      <p><%=@order.billing_name%><br>
+      <%=@order.billing_address%> <%=@order.billing_address2%><br>
+      <%=@order.billing_city%>, <%=@order.billing_state%> <%=@order.billing_zip%><br>
+      <%=@order.billing_country%></p>
     </div>
   </div>
 
