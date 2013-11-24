@@ -3,47 +3,51 @@
     <h4> New Subscription Order - <%=@sub.cid%></h4>
   </div>
   <div class="large-2 columns">
-    <div data-alert class="alert-box">Status: <%= @chargify_data['state']%></div>
+    <div data-alert class="alert-box">Status: <%= @response[:status]%></div>
   </div>
 
 </div>
 <div class="row">
-  <div class="large-4 columns">
+ <div class="large-4 columns">
     <div class="panel">
       <h5> Subscriber Details </h5>
-      <p><%= @customer['first_name'] %> <%= @customer['last_name'] %><br>
-      <%= @customer['email']%><br>
-      <%= @product['name']%> $<%= @product['price_in_cents']/100 %><br>
-      <%= @customer['email']%></p>
+      <p><%=@response[:name]%><br>
+      <%=@response[:email]%><br>
+      <%= @response[:plan]%><br>
+      $<%= @response[:price]%></p>
     </div>
   </div>
 
   <div class="large-4 columns">
     <div class="panel">
       <h5> Shipping Address </h5>
-      <p><%= @customer['first_name'] %> <%= @customer['last_name'] %><br>
-      <%=@customer['address']%> <%=@customer['address2']%><br>
-      <%=@customer['city']%>, <%=@customer['state']%> <%=@customer['zip']%><br>
-      <%=@customer['country']%> <%=@customer['phone']%></p>
+      <p><%= @response[:shipping_address][:name] %><br>
+      <%=@response[:shipping_address][:address] %> <%=@response[:shipping_address][:address2] %><br>
+      <%=@response[:shipping_address][:city] %>,
+      <%=@response[:shipping_address][:state] %>
+      <%=@response[:shipping_address][:zip] %><br>
+      <%=@response[:shipping_address][:country] %>
+      <%=@response[:shipping_address][:phone]%></p>
     </div>
   </div>
 
   <div class="large-4 columns">
     <div class="panel">
       <h5> Billing Address </h5>
-      <p><%= @billing['first_name'] %> <%= @billing['last_name'] %><br>
-      <%=@billing['billing_address']%> <%=@billing['billing_address2']%><br>
-      <%=@billing['billing_city']%>, <%=@billing['billing_state']%> <%=@billing['billing_zip']%><br>
-      <%=@billing['billing_country']%> <%=@billing['billing_phone']%></p>
+      <p><%= @response[:billing_address][:name] %><br>
+      <%=@response[:billing_address][:address] %> <%=@response[:billing_address][:address2] %><br>
+      <%=@response[:billing_address][:city] %>,
+      <%=@response[:billing_address][:state] %>
+      <%=@response[:billing_address][:zip] %><br>
+      <%=@response[:billing_address][:country] %>
+      <%=@response[:billing_address][:phone]%></p>
     </div>
   </div>
-
-</div>
 <div class="row">
   <div class="large-8 columns">
     <h4>Items</h4>
     <%= form_for @order, url: sub_orders_path do |f| %>
-      <% @number_of_socks.times do |item| %>
+      <% @response[:items].times do |item| %>
         <%= text_field_tag('item[]') %>
       <%end%>
       <%= submit_tag("Save", class: 'button') %>
