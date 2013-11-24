@@ -12,7 +12,7 @@ module Wufoo
     prefs << "fashion" if !entry["Field530"].empty?
     prefs << "casual" if !entry["Field531"].empty?
 
-    prefs.map { |pref| Pref.find_by(pref: pref) }
+    prefs.map! { |pref| Pref.find_by(pref: pref) }
     prefs
   end
 
