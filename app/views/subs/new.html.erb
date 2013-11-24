@@ -1,10 +1,13 @@
-<h1> Kitter </h1>
-<h2> Add a New Subscription </h2>
+<div class="row">
+  <h2> Add a New Subscription </h2>
+</div>
 
-<%= form_for @sub do |f| %>
-
-  <%= label_tag(:cid, "Chargify ID") %>
-  <%= text_field_tag(:cid) %>
-  <%= submit_tag("Submit") %>
-
-<% end %>
+<div class="row">
+  <div class="large-4 columns">
+    <%= form_for @sub do |f| %>
+      <%= label_tag(:cid, "Chargify ID") %>
+      <%= text_field_tag(:cid) %>
+      <%= submit_tag("Submit", class: 'button') %>
+    <% end %>
+  </div>
+</div>
