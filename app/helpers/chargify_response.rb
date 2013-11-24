@@ -7,6 +7,8 @@ module ChargifyResponse
       name: name(response),
       email: email(response),
       plan: plan(response),
+      price: price(response),
+      items: items(response),
       status: status(response),
       start_date: start_date(response),
       shipping_address: shipping_address(response),
@@ -24,6 +26,14 @@ module ChargifyResponse
 
   def plan(response)
     product(response)['name']
+  end
+
+  def price(response)
+    product(response)['price_in_cents']/100
+  end
+
+  def items(response)
+    product(response)['handle'][0].to_i
   end
 
   def status(response)
