@@ -1,6 +1,11 @@
 class OrdersController < ApplicationController
   def show
     @order = Order.find(params[:id])
+    @sub = Sub.find(@order.sub_id)
+    @chargify_data = Chargify::Subscription.find(@sub.cid).attributes
+    @customer = @chargify_data["customer"].attributes
+    @product = @chargify_data["product"].attributes
+    @billing = @chargify_data["credit_card"].attributes
   end
 
   def new

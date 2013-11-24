@@ -1,16 +1,63 @@
-<p>
-  Order Date:
-  <%= @order.created_at %>
-<p>
-  Order Number:
-  <%= @order.order_number %>
-</p>
+<div class="row">
+  <div class="large-8 columns">
+    <h4> Your New Subscription Order - <%=@order.order_number%></h4>
+  </div>
+  <div class="large-3 columns">
+    <h6><strong>Order Date:</strong> <%=@order.created_at.strftime('%a %d %b %Y')%></h6>
+  </div>
 
-<p>
-  Items
-</p>
-<% @order.products.each do |product| %>
-<p>
-  <%= product.sku %>
-</p>
-<% end%>
+</div>
+<div class="row">
+  <div class="large-4 columns">
+    <div class="panel">
+      <h5> Subscriber Details </h5>
+      <p><%= @customer['first_name'] %> <%= @customer['last_name'] %><br>
+      <%= @customer['email']%><br>
+      <%= @product['name']%> - <%= @product['price_in_cents'] %><br>
+      <%= @customer['email']%></p>
+    </div>
+  </div>
+
+  <div class="large-4 columns">
+    <div class="panel">
+      <h5> Shipping Address </h5>
+      <p><%= @customer['first_name'] %> <%= @customer['last_name'] %><br>
+      <%=@customer['address']%> <%=@customer['address2']%><br>
+      <%=@customer['city']%>, <%=@customer['state']%> <%=@customer['zip']%><br>
+      <%=@customer['country']%> <%=@customer['phone']%></p>
+    </div>
+  </div>
+
+  <div class="large-4 columns">
+    <div class="panel">
+      <h5> Billing Address </h5>
+      <p><%= @billing['first_name'] %> <%= @billing['last_name'] %><br>
+      <%=@billing['billing_address']%> <%=@billing['billing_address2']%><br>
+      <%=@billing['billing_city']%>, <%=@billing['billing_state']%> <%=@billing['billing_zip']%><br>
+      <%=@billing['billing_country']%> <%=@billing['billing_phone']%></p>
+    </div>
+  </div>
+
+</div>
+
+<div class="row">
+  <div class="large-8 columns">
+    <h4>Items</h4>
+    <table>
+      <thead>
+        <tr>
+          <th width="500"> SKU </th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @order.products.each do |product| %>
+          <tr> <td> <%= product.sku %></td></tr>
+        <% end%>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="large-4 columns">
+    <a href="#" class="button [radius round]">Export</a>
+  </div>
+</div>
