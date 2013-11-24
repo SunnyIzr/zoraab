@@ -6,36 +6,14 @@ class OrdersController < ApplicationController
   def new
     @order = Order.new
     @sub = Sub.find(params[:sub_id])
-    @chargify_data = Chargify::Subscription.find(@sub.cid).attributes
-    @customer = @chargify_data["customer"].attributes
-    @product = @chargify_data["product"].attributes
-    @billing = @chargify_data["credit_card"].attributes
-    @number_of_socks = @product['handle'][0].to_i
+    @response = ChargifyResponse.parse(@sub.chargify)
   end
 
   def create
     @order = Order.new(order_params)
     @sub = Sub.find(params[:sub_id])
-    @chargify_data = Chargify::Subscription.find(@sub.cid).attributes
-    @customer = @chargify_data["customer"].attributes
-    @product = @chargify_data["product"].attributes
-    @billing = @chargify_data["credit_card"].attributes
-    @order.name = @customer['first_name'] + ' ' + @customer['last_name']
-    @order.email = @customer['email']
-    @order.address = @customer['address']
-    @order.address2 = @customer['address2']
-    @order.city = @customer['city']
-    @order.state = @customer['state']
-    @order.zip = @customer['zip']
-    @order.country = @customer['country']
-    @order.billing_name = @billing['first_name'] + ' ' + @billing['last_name']
-    @order.billing_address = @billing['billing_address']
-    @order.billing_address2 = @billing['billing_address2']
-    @order.billing_city = @billing['billing_city']
-    @order.billing_state = @billing['billing_state']
-    @order.billing_zip = @billing['billing_zip']
-    @order.billing_country = @billing['billing_country']
-    @order.plan = @product['name']
+    response = ChargifyResponse.parse(@sub.chargify)
+    @order.set_order_details(response)
     params[:item].each do |item|
       p item
       @order.products << Product.find_by(sku: item)
