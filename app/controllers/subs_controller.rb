@@ -15,7 +15,7 @@ class SubsController < ApplicationController
 
   def show
     @sub = Sub.find(params[:id])
-    @response = @sub.chargify
+    @response = ChargifyResponse.parse(@sub.chargify)
   end
 
   private

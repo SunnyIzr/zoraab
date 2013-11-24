@@ -4,46 +4,46 @@
     <h4> Subscription - <%=@sub.cid%></h4>
   </div>
   <div class="large-4 columns">
-    <h5><i>Member since <%=@sub.start_date(@response)%></i></h5>
+    <h5><i>Member since <%=@response[:start_date]%></i></h5>
   </div>
   <div class="large-2 columns">
-    <div data-alert class="alert-box">Status: <%=@sub.status(@response)%></div>
+    <div data-alert class="alert-box">Status: <%=@response[:status]%></div>
   </div>
 </div>
 <div class="row">
   <div class="large-4 columns">
     <div class="panel">
       <h5> Subscriber Details </h5>
-      <p><%=@sub.name(@response)%><br>
-      <%=@sub.email(@response)%><br>
-      <%= @sub.plan(@response)%><br>
-      <%= @sub.email(@response)%></p>
+      <p><%=@response[:name]%><br>
+      <%=@response[:email]%><br>
+      <%= @response[:plan]%><br>
+      $<%= @response[:price]%></p>
     </div>
   </div>
 
   <div class="large-4 columns">
     <div class="panel">
       <h5> Shipping Address </h5>
-      <p><%= @sub.shipping_address(@response)[:name] %><br>
-      <%=@sub.shipping_address(@response)[:address] %> <%=@sub.shipping_address(@response)[:address2] %><br>
-      <%=@sub.shipping_address(@response)[:city] %>,
-      <%=@sub.shipping_address(@response)[:state] %>
-      <%=@sub.shipping_address(@response)[:zip] %><br>
-      <%=@sub.shipping_address(@response)[:country] %>
-      <%=@sub.shipping_address(@response)[:phone]%></p>
+      <p><%= @response[:shipping_address][:name] %><br>
+      <%=@response[:shipping_address][:address] %> <%=@response[:shipping_address][:address2] %><br>
+      <%=@response[:shipping_address][:city] %>,
+      <%=@response[:shipping_address][:state] %>
+      <%=@response[:shipping_address][:zip] %><br>
+      <%=@response[:shipping_address][:country] %>
+      <%=@response[:shipping_address][:phone]%></p>
     </div>
   </div>
 
   <div class="large-4 columns">
     <div class="panel">
       <h5> Billing Address </h5>
-      <p><%= @sub.billing_address(@response)[:name] %><br>
-      <%=@sub.billing_address(@response)[:address] %> <%=@sub.billing_address(@response)[:address2] %><br>
-      <%=@sub.billing_address(@response)[:city] %>,
-      <%=@sub.billing_address(@response)[:state] %>
-      <%=@sub.billing_address(@response)[:zip] %><br>
-      <%=@sub.billing_address(@response)[:country] %>
-      <%=@sub.billing_address(@response)[:phone]%></p>
+      <p><%= @response[:billing_address][:name] %><br>
+      <%=@response[:billing_address][:address] %> <%=@response[:billing_address][:address2] %><br>
+      <%=@response[:billing_address][:city] %>,
+      <%=@response[:billing_address][:state] %>
+      <%=@response[:billing_address][:zip] %><br>
+      <%=@response[:billing_address][:country] %>
+      <%=@response[:billing_address][:phone]%></p>
     </div>
   </div>
 
