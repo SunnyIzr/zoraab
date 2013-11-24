@@ -23,6 +23,14 @@ class SubsController < ApplicationController
     @responses = @subs.map { |sub| ChargifyResponse.parse(sub.chargify) }
   end
 
+  def search
+  end
+
+  def show_by_cid
+    @sub = Sub.find_by(cid: params['cid'])
+    redirect_to sub_path(@sub)
+  end
+
   private
   def sub_params
     params.permit(:cid)
