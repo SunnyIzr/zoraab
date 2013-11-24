@@ -28,7 +28,11 @@ class SubsController < ApplicationController
 
   def show_by_cid
     @sub = Sub.find_by(cid: params['cid'])
-    redirect_to sub_path(@sub)
+    if @sub
+      redirect_to sub_path(@sub)
+    else
+      render text: "Does Not Exist!"
+    end
   end
 
   private
