@@ -18,6 +18,11 @@ class SubsController < ApplicationController
     @response = ChargifyResponse.parse(@sub.chargify)
   end
 
+  def index
+    @subs = Sub.all
+    @responses = @subs.map { |sub| ChargifyResponse.parse(sub.chargify) }
+  end
+
   private
   def sub_params
     params.permit(:cid)

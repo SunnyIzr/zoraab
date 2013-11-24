@@ -1,7 +1,7 @@
 Zoraab::Application.routes.draw do
   root 'welcome#index'
 
-  resources :subs, only: [:new, :create, :show] do
+  resources :subs, only: [:new, :create, :show, :index] do
     resources :orders, only:[:new, :create]
   end
   resources :orders, only: [:show]
