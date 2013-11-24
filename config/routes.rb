@@ -1,10 +1,14 @@
 Zoraab::Application.routes.draw do
   root 'welcome#index'
 
-  resources :subs, only: [:new, :create, :show] do
+  resources :subs, only: [:new, :create, :show, :index] do
     resources :orders, only:[:new, :create]
   end
   resources :orders, only: [:show]
+
+  get '/search' => 'subs#search'
+  post '/search/' => 'subs#show_by_cid'
+  get '/search/:cid' => 'subs#show_by_cid'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

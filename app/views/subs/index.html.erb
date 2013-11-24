@@ -1,0 +1,29 @@
+<div class="row">
+  <div class="large-12 columns">
+    <h4>All Subscribers</h4>
+  </div>
+</div>
+<div class="row">
+  <div class="large-12 columns">
+    <table>
+      <thead>
+        <tr>
+          <th>Sub ID</th>
+          <th>Name</th>
+          <th>Plan</th>
+          <th>Details</th>
+        </tr>
+      </thead>
+      <tbody>
+        <%@subs.each_with_index do |sub, index|%>
+        <tr>
+          <td><%=sub.cid%></td>
+          <td><%=@responses[index][:name]%></td>
+          <td><%=@responses[index][:plan]%></td>
+          <td><a href="/subs/<%=sub.id%>">More Details</a></td>
+        </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

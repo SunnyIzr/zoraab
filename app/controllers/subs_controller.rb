@@ -9,13 +9,30 @@ class SubsController < ApplicationController
     if @sub.save
       redirect_to sub_path(@sub.id)
     else
-      render text: "Need Chargify ID"
+      render text: "There was an error with your request. Either you did not input a Chargify ID or the subscriber already exists in Coz with that Chargify ID. Please Try Again."
     end
   end
 
   def show
     @sub = Sub.find(params[:id])
     @response = ChargifyResponse.parse(@sub.chargify)
+  end
+
+  def index
+    @subs = Sub.all
+    @responses = @subs.map { |sub| ChargifyResponse.parse(sub.chargify) }
+  end
+
+  def search
+  end
+
+  def show_by_cid
+    @sub = Sub.find_by(cid: params['cid'])
+    if @sub
+      redirect_to sub_path(@sub)
+    else
+      render text: "Does Not Exist!"
+    end
   end
 
   private
