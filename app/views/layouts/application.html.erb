@@ -13,6 +13,29 @@
 
   <body>
 
+    <nav class="top-bar" data-topbar>
+      <ul class="title-area">
+        <li class="name">
+          <h1><a href="/"><%= image_tag 'logo-socks.png'%> Zoraab</a></h1>
+        </li>
+      </ul>
+
+      <section class="top-bar-section">
+        <!-- Right Nav Section -->
+        <ul class="right">
+          <li class = <%= 'active' if (params[:controller]+'#'+params[:action]) == 'subs#new'%>>
+            <a href="/subs/new">Add New Subscriber</a>
+          </li>
+          <li class= <%= 'active' if (params[:controller]+'#'+params[:action]) == 'subs#search'%>>
+            <a href="/search">Pull Up Existing Subscriber</a>
+          </li>
+          <li class= <%= 'active' if (params[:controller]+'#'+params[:action]) == 'subs#index'%>>
+            <a href="/subs/">All Subscribers</a>
+          </li>
+        </ul>
+      </section>
+    </nav>
+
     <%= yield %>
     <%= javascript_include_tag "application" %>
   </body>
