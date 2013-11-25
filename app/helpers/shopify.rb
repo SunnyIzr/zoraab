@@ -12,6 +12,7 @@ module Shopify
       vendor: res['vendor'],
       tags: res['tags'],
       pic: res['image'].attributes['src'],
+      small_pic: res['image'].attributes['src'].gsub(/(.jpeg)/,'_small.jpeg'),
       publish_date: res['published_at']
     }
 

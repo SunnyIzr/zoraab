@@ -2,7 +2,7 @@
   <div class="large-8 columns">
     <h4> Your New Subscription Order - <%=@order.order_number%></h4>
   </div>
-  <div class="large-3 columns">
+  <div class="large-4 columns">
     <h6><strong>Order Date:</strong> <%=@order.created_at.strftime('%a %d %b %Y')%></h6>
   </div>
 
@@ -50,13 +50,20 @@
         </tr>
       </thead>
       <tbody>
-        <% @order.products.each do |product| %>
-          <tr> <td> <%= product.sku %></td></tr>
+        <% @prods.each do |product| %>
+          <tr>
+            <td>
+            <a href="<%=ENV['SITE']%>products/<%=product[:sku]%>" target="_blank">
+              <%= product[:sku] %><img src="<%= product[:small_pic] %>">
+            <a>
+            </td>
+          </tr>
         <% end%>
       </tbody>
     </table>
   </div>
-
+</div>
+<div class="row">
   <div class="large-4 columns">
     <a href="#" class="button [radius round]">Export</a>
   </div>
