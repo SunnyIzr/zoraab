@@ -66,9 +66,13 @@ module Shopify
   def prefs(prod)
     prefs = []
     prod.attributes['tags'].split(', ').each do |tag|
-      prefs << tag if ['Fashion Socks', 'Dress Socks', 'Fun Socks', 'Casual Socks'].include?tag
+      prefs << parse_pref(tag) if ['Fashion Socks', 'Dress Socks', 'Fun Socks', 'Casual Socks'].include?tag
     end
     prefs
+  end
+
+  def parse_pref(shopify_pref)
+    shopify_pref.split(' ').first.downcase
   end
 
 end
