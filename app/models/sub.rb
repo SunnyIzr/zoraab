@@ -10,16 +10,6 @@ class Sub < ActiveRecord::Base
   end
 
   def retrieve_wufoo_prefs
-    p ">"*100
-    p WUFOO
-    all_forms=[]
-    WUFOO.forms.each { |form| all_forms << form.details["Hash"]}
-
-    p Wufoo.find_quiz_entry(cid)
-    # all_forms.each do |form_id|
-    #   entry = WUFOO.form(form_id).entries(:sort => 'EntryId DESC', :limit => 100, :system => true, :filters => [['TransactionId','Is_equal_to',cid]] )
-    #   p entry[0] unless entry.empty?
-    # end
-    # self.prefs << Wufoo.find_prefs(cid)
+    self.prefs << Wufoo.find_prefs(cid)
   end
 end
