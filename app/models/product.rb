@@ -37,4 +37,12 @@ class Product < ActiveRecord::Base
     !total_prefs.include?(pref)
   end
 
+  def self.filter(pref)
+    filtered_list = []
+    all.each do |product|
+      filtered_list << product if product.prefs.map { |pref| pref.pref }.include?(pref)
+    end
+    filtered_list
+  end
+
 end
