@@ -17,3 +17,23 @@
 //= require_tree .
 
 $(function(){ $(document).foundation(); });
+
+$(document).ready(previewProduct())
+
+function previewProduct() {
+  $(document).click(alertMe)
+}
+
+function alertMe() {
+  link = findLink()
+  appendImage(link)
+}
+
+function findLink() {
+  return 'http://cdn.shopify.com/s/files/1/0127/4312/products/' + $('input#item_').val() + '_small.jpeg'
+}
+
+function appendImage(link) {
+  $('td.preview-image').html('<img src="'+ link + '">')
+}
+
