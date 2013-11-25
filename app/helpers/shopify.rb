@@ -44,8 +44,7 @@ module Shopify
         end
       end
     end
-    p products
-    p products.count
+    products
   end
 
 
