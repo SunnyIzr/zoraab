@@ -28,7 +28,7 @@ describe ChargifyResponse do
   end
 
   it "should display start_date" do
-    expect(ChargifyResponse.start_date(response)).to eq('09 Oct 2012')
+    expect(ChargifyResponse.start_date(response)).to eq('25 Nov 2013')
   end
 
 
@@ -36,12 +36,12 @@ describe ChargifyResponse do
     expect(ChargifyResponse.shipping_address(response)).to eq({
         :name => 'SunnyShip IsraniShip',
         :address => '123 Shipping Street',
-        :address2 => 'Shipping Apt Number',
+        :address2 => nil,
         :city => 'Ship City',
         :state => 'ON',
         :zip => '12345',
         :country => 'CA',
-        :phone => '2012749118'
+        :phone => nil
       })
   end
 
@@ -67,16 +67,16 @@ describe ChargifyResponse do
         price: 22,
         items: 2,
         status: 'canceled',
-        start_date: '09 Oct 2012',
+        start_date: '25 Nov 2013',
         shipping_address: {
           :name => 'SunnyShip IsraniShip',
           :address => '123 Shipping Street',
-          :address2 => 'Shipping Apt Number',
+          :address2 => nil,
           :city => 'Ship City',
           :state => 'ON',
           :zip => '12345',
           :country => 'CA',
-          :phone => '2012749118'
+          :phone => nil
         },
         billing_address: {
           :name => 'Sunny Israni',
