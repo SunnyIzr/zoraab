@@ -25,8 +25,7 @@ class OrdersController < ApplicationController
     response = ChargifyResponse.parse(@sub.chargify)
     @order.set_order_details(response)
     params[:item].each do |item|
-      p item
-      @order.products << Product.find_by(sku: item)
+      @order.products << Product.find_or_create_by(sku: item)
     end
     if @order.save
       redirect_to order_path(@order.id)
