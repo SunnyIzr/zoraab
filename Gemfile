@@ -37,6 +37,8 @@ gem 'wuparty'
 
 gem 'thin'
 
+gem 'shopify_api'
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
 
