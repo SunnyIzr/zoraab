@@ -2,6 +2,10 @@ class OrdersController < ApplicationController
   def show
     @order = Order.find(params[:id])
     @prods = @order.products.map { |product| Shopify.data(product.sku)}
+    respond_to do |format|
+      format.html
+      format.csv { send_data @order.to_csv(@prods) }
+    end
   end
 
   def new

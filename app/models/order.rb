@@ -33,5 +33,14 @@ class Order < ActiveRecord::Base
     self.billing_country = response[:billing_address][:country]
   end
 
+  def to_csv(prods)
+    CSV.generate() do |csv|
+      csv << ['Order #','Order Date','Plan','customer_name','customer_email','shipping_address','shipping_address_2','shipping_city','shipping_state','shipping_zip','shipping_country','SKU']
+      prods.each do |prod|
+        csv << [self.order_number,self.created_at.strftime('%m/%d/%y'),self.plan,self.name,self.email,self.address,self.address2,self.city,self.state,self.zip,self.country,prod[:sku]]
+      end
+    end
+  end
+
 
 end
