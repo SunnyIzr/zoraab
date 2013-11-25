@@ -56,5 +56,35 @@
 <div class="row">
   <div class="large-12 columns">
   <%= link_to "Create Order", new_sub_order_path(@sub),class: 'button' %>
+  </div>
+</div>
+
+<div class="row">
+  <div class="large-12 columns">
+    <h4>Order History</h4>
+    <table>
+      <thead>
+        <tr>
+          <th width="100">Order #</th>
+          <th width="100">Date</th>
+          <th>Items</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @sub.orders.each do |order| %>
+        <tr>
+          <td><a href="/orders/<%=order.id%>"><%=order.order_number%></a></td>
+          <td><%=order.created_at.strftime('%m/%d/%y')%></td>
+          <td>
+            <ul class="inline-list">
+              <% order.products.each do |product| %>
+              <li><img src="<%=Shopify.data(product.sku)[:small_pic]%>"></li>
+              <%end%>
+            </ul>
+        </tr>
+        <%end%>
+      </tbody>
+    </table>
+  </div>
 </div>
 
