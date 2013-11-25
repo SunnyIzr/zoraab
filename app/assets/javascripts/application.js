@@ -18,7 +18,9 @@
 
 $(function(){ $(document).foundation(); });
 
-$(document).ready(showAllPreviews)
+$(document).ready(function() {
+  $(document).click(showAllPreviews)
+  })
 
 function showAllPreviews() {
   ary = $('tr')
@@ -28,9 +30,7 @@ function showAllPreviews() {
 }
 
 function previewProduct(element, index) {
-  $(document).click(function() {
     showPreviewImage(element.val(),index)
-  })
 }
 
 function showPreviewImage(sku,index) {
