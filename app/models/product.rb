@@ -4,8 +4,7 @@ class Product < ActiveRecord::Base
   has_and_belongs_to_many :prefs
 
   def self.update_prods
-    sample = [{sku: 'rp_wlk05', q: 100, prefs: ['fun','dress']}]
-    sample.each do |shopify_product|
+    Shopify.retrieve_shopify_products.each do |shopify_product|
       prod = Product.find_or_create_by(sku: shopify_product[:sku])
       prod.q = shopify_product[:q]
       update_prefs(shopify_product,prod)
