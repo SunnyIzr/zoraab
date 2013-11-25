@@ -40,13 +40,12 @@ module Shopify
       ven_prods = ShopifyAPI::Product.find(:all, :params => {"vendor"=>brand, :limit =>200})
       ven_prods.each do |prod|
         if published?(prod) && not_sale?(prod)
-          products << { sku: handle_sku(prod) , q: q(prod)}
+          products << { sku: handle_sku(prod) , q: q(prod), prefs: prefs(prod)}
         end
       end
     end
     products
   end
-
 
   def published?(prod)
     !!prod.attributes['published_at']
@@ -63,4 +62,13 @@ module Shopify
   def q(prod)
     prod.attributes['variants'].first.attributes['inventory_quantity']
   end
+
+  def prefs(prod)
+    prefs = []
+    prod.attributes['tags'].split(', ').each do |tag|
+      prefs << tag if ['Fashion Socks', 'Dress Socks', 'Fun Socks', 'Casual Socks'].include?tag
+    end
+    prefs
+  end
+
 end
