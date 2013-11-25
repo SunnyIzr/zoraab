@@ -42,7 +42,7 @@ class Product < ActiveRecord::Base
     all.each do |product|
       filtered_list << product if product.prefs.map { |pref| pref.pref }.include?(pref)
     end
-    filtered_list
+    filtered_list.sort_by! { |prod| prod.q }.reverse!
   end
 
 end
