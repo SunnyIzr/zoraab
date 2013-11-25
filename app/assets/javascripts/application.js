@@ -20,7 +20,7 @@ $(function(){ $(document).foundation(); });
 
 $(document).ready(function() {
   $('input').keyup(function() {
-    showAllPreviews();
+    previewProduct($(this).val(),this.id)
     })
   })
 
@@ -35,11 +35,14 @@ function previewProduct(sku,index) {
   ajaxLink = '/products/' + sku
   $.getJSON(ajaxLink, function(response) {
     appendImage(response['small_pic'],index)
-  })
+  }, removeImage(index))
 }
 
 function appendImage(link,index) {
   $('td.preview-image-'+index).html('<img src="'+ link + '">')
 }
 
+function removeImage(index) {
+  $('td.preview-image-'+index).html('')
+}
 
