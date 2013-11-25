@@ -64,8 +64,8 @@
       <tbody>
         <% @response[:items].times do |item| %>
         <tr>
-          <td><%= text_field_tag('item[]') %></td>
-          <td class="preview-image"></td>
+          <td><%= text_field_tag('item['+item.to_s+']') %></td>
+          <td class="preview-image-<%=item%>"></td>
         </tr>
         <%end%>
       <tbody>

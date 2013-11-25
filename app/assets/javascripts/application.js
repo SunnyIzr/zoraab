@@ -18,23 +18,30 @@
 
 $(function(){ $(document).foundation(); });
 
-$(document).ready(previewProduct())
+$(document).ready(showAllPreviews)
 
-function previewProduct() {
-  $(document).click(function() {
-    showPreviewImage($('input#item_').val())
+function showAllPreviews() {
+  ary = $('tr')
+  $.each(ary,function(key,value){
+    previewProduct($(value).find('input'),key-1)
   })
 }
 
-function showPreviewImage(sku) {
+function previewProduct(element, index) {
+  $(document).click(function() {
+    showPreviewImage(element.val(),index)
+  })
+}
+
+function showPreviewImage(sku,index) {
   ajaxLink = '/products/' + sku
   $.getJSON(ajaxLink, function(response) {
-    appendImage(response['small_pic'])
+    appendImage(response['small_pic'],index)
   })
 }
 
-function appendImage(link) {
-  $('td.preview-image').html('<img src="'+ link + '">')
+function appendImage(link,index) {
+  $('td.preview-image-'+index).html('<img src="'+ link + '">')
 }
 
 
