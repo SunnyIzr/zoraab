@@ -1,6 +1,7 @@
 class OrdersController < ApplicationController
   def show
     @order = Order.find(params[:id])
+    @prods = @order.products.map { |product| Shopify.data(product.sku)}
   end
 
   def new
