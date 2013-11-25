@@ -19,21 +19,19 @@
 $(function(){ $(document).foundation(); });
 
 $(document).ready(function() {
-  $(document).click(showAllPreviews)
+  $('input').keyup(function() {
+    showAllPreviews();
+    })
   })
 
 function showAllPreviews() {
   ary = $('tr')
   $.each(ary,function(key,value){
-    previewProduct($(value).find('input'),key-1)
+    previewProduct($(value).find('input').val(),key-1)
   })
 }
 
-function previewProduct(element, index) {
-    showPreviewImage(element.val(),index)
-}
-
-function showPreviewImage(sku,index) {
+function previewProduct(sku,index) {
   ajaxLink = '/products/' + sku
   $.getJSON(ajaxLink, function(response) {
     appendImage(response['small_pic'],index)
