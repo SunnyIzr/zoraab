@@ -21,19 +21,20 @@ $(function(){ $(document).foundation(); });
 $(document).ready(previewProduct())
 
 function previewProduct() {
-  $(document).click(alertMe)
+  $(document).click(function() {
+    showPreviewImage($('input#item_').val())
+  })
 }
 
-function alertMe() {
-  link = findLink()
-  appendImage(link)
-}
-
-function findLink() {
-  return 'http://cdn.shopify.com/s/files/1/0127/4312/products/' + $('input#item_').val() + '_small.jpeg'
+function showPreviewImage(sku) {
+  ajaxLink = '/products/' + sku
+  $.getJSON(ajaxLink, function(response) {
+    appendImage(response['small_pic'])
+  })
 }
 
 function appendImage(link) {
   $('td.preview-image').html('<img src="'+ link + '">')
 }
+
 

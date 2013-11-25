@@ -56,9 +56,20 @@
   <div class="large-8 columns">
     <h4>Items</h4>
     <%= form_for @order, url: sub_orders_path do |f| %>
-      <% @response[:items].times do |item| %>
-        <%= text_field_tag('item[]') %>
-      <%end%>
+    <table>
+      <thead>
+        <th width="200">SKU</th>
+        <th>Preview</th>
+      </thead>
+      <tbody>
+        <% @response[:items].times do |item| %>
+        <tr>
+          <td><%= text_field_tag('item[]') %></td>
+          <td class="preview-image"></td>
+        </tr>
+        <%end%>
+      <tbody>
+    </table>
       <%= submit_tag("Save", class: 'button') %>
       <%= submit_tag("Save and Update Shopify", class: 'button') %>
     <% end %>
