@@ -1,4 +1,15 @@
 module Shopify
+  BRANDS = [  "Foot Traffic",
+              "Hot Sox",
+              "Happy Socks",
+              "Pact",
+              "Perry Ellis",
+              "Richer Poorer",
+              "Sock it to Me",
+              "Solmate",
+              "Unsimply Stitched"]
+  PRICE_MAX = 12
+
   extend self
 
   def data(sku)
@@ -21,5 +32,36 @@ module Shopify
     res = ShopifyAPI::Product.find(:all, :params => {'handle' => sku}).first
     res.attributes['variants'][0].attributes['inventory_quantity'] -= 1
     res.save
+  end
+
+  def retrieve_shopify_products
+    products = []
+    BRANDS.each do |brand|
+      ven_prods = ShopifyAPI::Product.find(:all, :params => {"vendor"=>brand, :limit =>200})
+      ven_prods.each do |prod|
+        if published?(prod) && not_sale?(prod)
+          products << { sku: handle_sku(prod) , q: q(prod)}
+        end
+      end
+    end
+    p products
+    p products.count
+  end
+
+
+  def published?(prod)
+    !!prod.attributes['published_at']
+  end
+
+  def not_sale?(prod)
+    !prod.attributes['tags'].include?('Sale')
+  end
+
+  def handle_sku(prod)
+    prod.attributes['handle']
+  end
+
+  def q(prod)
+    prod.attributes['variants'].first.attributes['inventory_quantity']
   end
 end
