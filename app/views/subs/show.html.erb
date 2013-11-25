@@ -58,3 +58,26 @@
   <%= link_to "Create Order", new_sub_order_path(@sub),class: 'button' %>
 </div>
 
+<div class="row">
+  <div class="large-8 columns">
+    <table>
+      <thead>
+        <tr>
+          <th width="100">Order #</th>
+          <th width="100">Date</th>
+          <th>Items</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @sub.orders.each do |order| %>
+        <tr>
+          <td><a href="/orders/<%=order.id%>"><%=order.order_number%></a></td>
+          <td><%=order.created_at.strftime('%m/%d/%y')%></td>
+          <td><%=order.products.map {|product| product.sku}%></td>
+        </tr>
+        <%end%>
+      </tbody>
+    </table>
+  </div>
+</div>
+
