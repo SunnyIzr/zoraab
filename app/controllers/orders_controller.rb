@@ -15,6 +15,11 @@ class OrdersController < ApplicationController
   end
 
   def create
+    if params[:commit] == "Save and Update Shopify"
+      params[:item].each do |sku|
+        Shopify.reduce_shopify_inv(sku)
+      end
+    end
     @order = Order.new(order_params)
     @sub = Sub.find(params[:sub_id])
     response = ChargifyResponse.parse(@sub.chargify)
