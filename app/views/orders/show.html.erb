@@ -42,11 +42,12 @@
 
 <div class="row">
   <div class="large-8 columns">
-    <h4>Items</h4>
+    <h4>Order Summary</h4>
     <table>
       <thead>
         <tr>
-          <th width="500"> SKU </th>
+          <th width="200"> SKU </th>
+          <th> Preview </th>
         </tr>
       </thead>
       <tbody>
@@ -54,8 +55,9 @@
           <tr>
             <td>
             <a href="<%=ENV['SITE']%>products/<%=product[:sku]%>" target="_blank">
-              <%= product[:sku] %><img src="<%= product[:small_pic] %>">
-            <a>
+              <%= product[:sku] %></a>
+            </td>
+            <td><img src="<%= product[:small_pic] %>"></td>
             </td>
           </tr>
         <% end%>
