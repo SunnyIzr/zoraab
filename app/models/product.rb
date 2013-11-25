@@ -4,11 +4,25 @@ class Product < ActiveRecord::Base
   has_and_belongs_to_many :prefs
 
   def self.update_prods
-    Shopify.retrieve_shopify_products.each do |shopify_product|
+    shopify_products = Shopify.retrieve_shopify_products
+    update_active(shopify_products)
+    shopify_products.each do |shopify_product|
       prod = Product.find_or_create_by(sku: shopify_product[:sku])
       prod.q = shopify_product[:q]
       update_prefs(shopify_product,prod)
       prod.save
+    end
+  end
+
+  def self.update_active(shopify_products)
+    skus = shopify_products.map { |product| product[:sku] }
+    all.each do |coz_product|
+      if !skus.include?(coz_product.sku)
+        coz_product.active = false
+      else
+        coz_product.active = true
+      end
+      coz_product.save
     end
   end
 
@@ -22,4 +36,5 @@ class Product < ActiveRecord::Base
     total_prefs = product.prefs.map { |pref| pref.pref }
     !total_prefs.include?(pref)
   end
+
 end
