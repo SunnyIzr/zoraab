@@ -67,7 +67,7 @@ ActiveRecord::Schema.define(version: 20131125182230) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "q"
-    t.boolean  "active"
+    t.boolean  "active",     default: true
   end
 
   create_table "subs", force: true do |t|
