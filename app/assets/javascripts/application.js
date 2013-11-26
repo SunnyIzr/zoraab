@@ -24,6 +24,7 @@ $(document).ready(function() {
     });
     fillKitter();
     nextLink();
+    shopifySync();
   });
 
 var nextProduct = {
@@ -82,5 +83,15 @@ function nextLink() {
     index = $(this).attr('data')
     fillWithNextProd($('input.selection')[index],index,nextProduct.pos);
     nextProduct.countUp();
+  })
+}
+
+function shopifySync() {
+  $('a#shopify_sync').click(function(event) {
+    event.preventDefault();
+    $('.overlay').show();
+    $('#loader').show();
+    window.location.href = '/sync'
+
   })
 }
