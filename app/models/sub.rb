@@ -23,4 +23,13 @@ class Sub < ActiveRecord::Base
     prod_skus
   end
 
+  def self.pull_subs_due(days)
+    ary = []
+    all.each do |sub|
+      data = ChargifyResponse.parse(sub.chargify)
+      ary << sub if data[:days_till_due]<= days && data[:status] == 'active'
+    end
+    ary
+  end
+
 end
