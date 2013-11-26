@@ -51,10 +51,13 @@
     </div>
   </div>
 </div>
-
 <div class="row">
-  <div class="large-8 columns">
+  <div class="large-12 columns">
     <h4>Items</h4>
+  </div>
+</div>
+<div class="row">
+  <div class="large-5 columns">
     <%= form_for @order, url: sub_orders_path do |f| %>
     <table>
       <thead>
@@ -72,9 +75,12 @@
         <%end%>
       <tbody>
     </table>
+  </div>
+  <div class="large-7 columns left">
+      <a id ='generate-button' href="#" class="button ungen">Generate<a>
       <%= submit_tag("Save", class: 'button') %>
       <%= submit_tag("Save and Update Shopify", class: 'button') %>
-      <a id ='generate-button' href="#" class="button ungen">Generate<a>
     <% end %>
+  </div>
   </div>
 </div>
