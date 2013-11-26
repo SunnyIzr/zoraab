@@ -51,16 +51,36 @@
     </div>
   </div>
 </div>
-
 <div class="row">
-  <div class="large-8 columns">
+  <div class="large-12 columns">
     <h4>Items</h4>
+  </div>
+</div>
+<div class="row">
+  <div class="large-5 columns">
     <%= form_for @order, url: sub_orders_path do |f| %>
-      <% @response[:items].times do |item| %>
-        <%= text_field_tag('item[]') %>
-      <%end%>
+    <table>
+      <thead>
+        <th width="200">SKU</th>
+        <th>Preview</th>
+        <th></th>
+      </thead>
+      <tbody>
+        <% @response[:items].times do |item| %>
+        <tr>
+          <td><%= text_field_tag 'item[]', nil , class: 'selection', data: item.to_s %></td>
+          <td class="preview-image-<%=item%>"></td>
+          <td><span style="font-size:30px"><a href="#" data=<%=item.to_s%> class="next-link hide">&raquo;</a></span></td>
+        </tr>
+        <%end%>
+      <tbody>
+    </table>
+  </div>
+  <div class="large-7 columns left">
+      <a id ='generate-button' href="#" class="button ungen">Generate<a>
       <%= submit_tag("Save", class: 'button') %>
       <%= submit_tag("Save and Update Shopify", class: 'button') %>
     <% end %>
+  </div>
   </div>
 </div>

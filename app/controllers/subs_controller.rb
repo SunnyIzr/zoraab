@@ -35,6 +35,11 @@ class SubsController < ApplicationController
     end
   end
 
+  def kitter
+    @kitter_suggestions = Kitter.generate_kitter_suggestions(params['sub_id'])
+    render json: @kitter_suggestions
+  end
+
   private
   def sub_params
     params.permit(:cid)

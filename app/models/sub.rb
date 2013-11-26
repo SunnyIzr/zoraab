@@ -12,4 +12,15 @@ class Sub < ActiveRecord::Base
   def retrieve_wufoo_prefs
     self.prefs << Wufoo.find_prefs(cid)
   end
+
+  def order_history
+    prod_skus = []
+    self.orders.each do |order|
+      order.products.each do |prod|
+        prod_skus << prod.sku
+      end
+    end
+    prod_skus
+  end
+
 end
