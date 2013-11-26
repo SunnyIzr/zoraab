@@ -10,7 +10,7 @@ Zoraab::Application.routes.draw do
   post '/search/' => 'subs#show_by_cid'
   get '/search/:cid' => 'subs#show_by_cid'
   get '/products/:sku' => 'products#info'
-  get '/kitter/:sub_id' => 'subs#generate_kitter_suggestions'
+  get '/kitter/:sub_id' => 'subs#kitter'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

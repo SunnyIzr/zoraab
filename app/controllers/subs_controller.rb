@@ -35,13 +35,8 @@ class SubsController < ApplicationController
     end
   end
 
-  def generate_kitter_suggestions
-    prefs = Sub.find(params['sub_id']).prefs.map {|pref| pref.pref}
-    prod_lists = []
-    prefs.each do |pref|
-      prod_lists << Product.filter(pref)
-    end
-    @kitter_suggestions = Kitter.alt_between_lists(prod_lists)
+  def kitter
+    @kitter_suggestions = Kitter.generate_kitter_suggestions(params['sub_id'])
     render json: @kitter_suggestions
   end
 

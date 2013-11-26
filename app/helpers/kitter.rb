@@ -5,6 +5,17 @@
 
 module Kitter
   extend self
+
+  def generate_kitter_suggestions(sub_id)
+    prefs = Sub.find(sub_id).prefs.map {|pref| pref.pref}
+    prod_lists = []
+    prefs.each do |pref|
+      prod_lists << Product.filter(pref)
+    end
+    alt_between_lists(prod_lists)
+  end
+
+
   def alt_between_lists(ary_of_lists)
     case ary_of_lists.count
     when 1
