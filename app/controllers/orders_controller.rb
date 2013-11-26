@@ -9,7 +9,6 @@ class OrdersController < ApplicationController
   end
 
   def new
-    Product.sync_to_shopify
     @order = Order.new
     @sub = Sub.find(params[:sub_id])
     @response = ChargifyResponse.parse(@sub.chargify)

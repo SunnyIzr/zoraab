@@ -11,6 +11,7 @@ Zoraab::Application.routes.draw do
   get '/search/:cid' => 'subs#show_by_cid'
   get '/products/:sku' => 'products#info'
   get '/kitter/:sub_id' => 'subs#kitter'
+  get '/sync' => 'products#shopify_sync'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
