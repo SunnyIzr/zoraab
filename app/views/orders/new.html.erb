@@ -60,19 +60,21 @@
       <thead>
         <th width="200">SKU</th>
         <th>Preview</th>
+        <th></th>
       </thead>
       <tbody>
         <% @response[:items].times do |item| %>
         <tr>
           <td><%= text_field_tag item.to_s, nil , class: 'selection' %></td>
           <td class="preview-image-<%=item%>"></td>
+          <td><span style="font-size:30px"><a href="#" data=<%=item.to_s%> class="next-link hide">&raquo;</a></span></td>
         </tr>
         <%end%>
       <tbody>
     </table>
       <%= submit_tag("Save", class: 'button') %>
       <%= submit_tag("Save and Update Shopify", class: 'button') %>
-      <a id ='generate-button' href="#" class="button">Generate<a>
+      <a id ='generate-button' href="#" class="button ungen">Generate<a>
     <% end %>
   </div>
 </div>
