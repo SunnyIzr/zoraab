@@ -20,7 +20,7 @@ $(function(){ $(document).foundation(); });
 
 $(document).ready(function() {
   $('input').keyup(function() {
-    previewProduct($(this).val(),this.id)
+    previewProduct($(this).val(),this.attr('data'))
     });
     fillKitter();
     nextLink();

@@ -68,7 +68,7 @@
       <tbody>
         <% @response[:items].times do |item| %>
         <tr>
-          <td><%= text_field_tag item.to_s, nil , class: 'selection' %></td>
+          <td><%= text_field_tag 'item[]', nil , class: 'selection', data: item.to_s %></td>
           <td class="preview-image-<%=item%>"></td>
           <td><span style="font-size:30px"><a href="#" data=<%=item.to_s%> class="next-link hide">&raquo;</a></span></td>
         </tr>
