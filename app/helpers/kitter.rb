@@ -10,7 +10,8 @@ module Kitter
     prefs = Sub.find(sub_id).prefs.map {|pref| pref.pref}
     prod_lists = []
     prefs.each do |pref|
-      prod_lists << Product.filter(pref)
+      non_dupe_list = remove_dupes(pref, sub_id)
+      prod_lists << non_dupe_list
     end
     alt_between_lists(prod_lists)
   end
@@ -30,4 +31,11 @@ module Kitter
 
   end
 
+  def remove_dupes(pref,sub_id)
+    list = []
+    Product.filter(pref).each do |prod|
+      list << prod if !Sub.find(sub_id).order_history.include?(prod.sku)
+    end
+    list
+  end
 end
