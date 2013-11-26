@@ -64,7 +64,7 @@
       <tbody>
         <% @response[:items].times do |item| %>
         <tr>
-          <td><%= text_field_tag(item.to_s) %></td>
+          <td><%= text_field_tag item.to_s, nil , class: 'selection' %></td>
           <td class="preview-image-<%=item%>"></td>
         </tr>
         <%end%>
@@ -72,6 +72,7 @@
     </table>
       <%= submit_tag("Save", class: 'button') %>
       <%= submit_tag("Save and Update Shopify", class: 'button') %>
+      <a id ='generate-button' href="#" class="button">Generate<a>
     <% end %>
   </div>
 </div>

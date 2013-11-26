@@ -21,8 +21,16 @@ $(function(){ $(document).foundation(); });
 $(document).ready(function() {
   $('input').keyup(function() {
     previewProduct($(this).val(),this.id)
-    })
+    });
+  fillKitter();
   })
+
+var nextProduct = {
+  pos: 0,
+  countUp: function() {
+    return this.pos += 1
+  }
+}
 
 function showAllPreviews() {
   ary = $('tr')
@@ -46,3 +54,22 @@ function removeImage(index) {
   $('td.preview-image-'+index).html('')
 }
 
+
+function fillKitter() {
+  $('a#generate-button').click(function(event) {
+    event.preventDefault();
+    ary = $('input.selection')
+    $.each(ary,function(key,value) {
+      fillWithNextProd(value,key,nextProduct.pos);
+      nextProduct.countUp();
+    })
+  })
+}
+
+function fillWithNextProd(inputTag,index,pos) {
+  subId = window.location.href.split('/')[4]
+  $.getJSON('/kitter/'+subId, function(response) {
+    $(inputTag).val(response[pos]['sku']);
+    previewProduct(response[pos]['sku'],index)
+  })
+}
