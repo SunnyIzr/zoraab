@@ -49,11 +49,11 @@ function previewProduct(sku,index) {
 }
 
 function appendImage(link,index) {
-  $('td.preview-image-'+index).html('<img src="'+ link + '">')
+  $('.preview-image-'+index).html('<img src="'+ link + '">')
 }
 
 function removeImage(index) {
-  $('td.preview-image-'+index).html('')
+  $('.preview-image-'+index).html('')
 }
 
 function fillKitter() {
