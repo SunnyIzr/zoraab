@@ -20,6 +20,7 @@ $(function(){ $(document).foundation(); });
 
 $(document).ready(function() {
     shopifySync();
+    NewOrdersController.init()
   });
 
 
@@ -31,6 +32,21 @@ function shopifySync() {
     window.location.href = '/sync'
 
   })
+}
+
+var NewOrdersController = {
+  init: function() {
+    $.each(this.orderSubNumbers(),function(key,value) {
+      new Order (value)
+    })
+  },
+  orderSubNumbers: function() {
+    subNumbers = []
+    $.each ($('[data-sub]'), function(key,value) {
+      subNumbers.push($(value).attr('data-sub'))
+    })
+    return subNumbers
+  }
 }
 
 var EventsController = {
