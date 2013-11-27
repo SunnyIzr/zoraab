@@ -20,7 +20,7 @@ $(function(){ $(document).foundation(); });
 
 $(document).ready(function() {
   $('input').keyup(function() {
-    previewProduct($(this).val(),this.attr('data'))
+    previewProduct($(this).val(),$(this).attr('data-item'))
     });
     fillKitter();
     nextLink();
@@ -70,8 +70,8 @@ function fillKitter() {
 }
 
 function fillWithNextProd(inputTag,index,pos) {
-  subId = window.location.href.split('/')[4]
-  $.getJSON('/kitter/'+subId, function(response) {
+  subId = $(inputTag).attr('data-subid')
+  $.getJSON('/kitter/' + subId, function(response) {
     $(inputTag).val(response[pos]['sku']);
     previewProduct(response[pos]['sku'],index)
   })
@@ -80,7 +80,7 @@ function fillWithNextProd(inputTag,index,pos) {
 function nextLink() {
   $('.next-link').click(function(event) {
     event.preventDefault();
-    index = $(this).attr('data')
+    index = $(this).attr('data-item')
     fillWithNextProd($('input.selection')[index],index,nextProduct.pos);
     nextProduct.countUp();
   })
