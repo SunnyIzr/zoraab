@@ -60,19 +60,9 @@
   <div class="large-12 columns">
 
     <%= form_for @order, url: sub_orders_path do |f| %>
-    <table>
-      <tbody>
-        <tr>
-        <% @response[:items].times do |item| %>
-          <td>
-            <div class="preview-image-<%=item%> text-center"></div>
-            <div class="text-center"><a class="next-link hide" data="<%=item%>" href="#">&raquo;</a></div>
-            <div><%= text_field_tag 'item[]', nil , class: 'selection', data: item.to_s %></div>
-          </td>
-        <%end%>
-        </tr>
-      <tbody>
-    </table>
+
+    <%= render partial: "order_input", locals: {items: @response[:items]} %>
+
       <a id ='generate-button' href="#" class="button ungen">Generate<a>
       <%= submit_tag("Save", class: 'button') %>
       <%= submit_tag("Save and Update Shopify", class: 'button') %>
