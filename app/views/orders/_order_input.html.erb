@@ -1,13 +1,8 @@
-<table>
-  <tbody>
-    <tr>
-    <% items.times do |item| %>
-      <td>
-        <div class="preview-image-<%=item%> text-center"></div>
-        <div class="text-center"><a class="next-link hide" data="<%=item%>" href="#">&raquo;</a></div>
-        <div><%= text_field_tag 'item[]', nil , class: 'selection', data: item.to_s %></div>
-      </td>
-    <%end%>
-    </tr>
-  <tbody>
-</table>
+<% items.times do |item| %>
+<div class="left" style="padding: 0 10px">
+    <div class="preview-image-<%=item%> text-center"></div>
+    <div class="text-center"><a class="next-link hide" data-item="<%=item%>" data-subid= <%=sub_id%> href="#">&raquo;</a></div>
+    <div><%= text_field_tag 'item[]', nil , class: 'selection', data: { item: item.to_s, subid: sub_id }  %></div>
+  </div>
+<%end%>
+
