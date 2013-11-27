@@ -65,12 +65,6 @@ var itemPrototype = {
   removeImage: function() {
     $(this.imageTag()).html("")
   }
-  // addEventListener: function() {
-  //   itemObject = this
-  //   $(itemObject.inputTag()).keyup(function() {
-  //     itemObject.previewImage()
-  //   })
-  // }
 }
 
 var orderPrototype = {
