@@ -60,9 +60,16 @@
   <div class="large-12 columns">
 
     <%= form_for @order, url: sub_orders_path do |f| %>
+      <table>
+        <tbody>
+          <tr>
+            <td>
 
-    <%= render partial: "order_input", locals: {items: @response[:items]} %>
-
+    <%= render partial: "order_input", locals: {items: @response[:items], sub_id: @sub.id.to_s} %>
+            </td>
+          </tr>
+        <tbody>
+      </table>
       <a id ='generate-button' href="#" class="button ungen">Generate<a>
       <%= submit_tag("Save", class: 'button') %>
       <%= submit_tag("Save and Update Shopify", class: 'button') %>
