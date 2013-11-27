@@ -4,6 +4,7 @@ module ChargifyResponse
 
   def parse(response)
     {
+      id: response['id'],
       name: name(response),
       email: email(response),
       plan: plan(response),
