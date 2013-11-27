@@ -19,72 +19,9 @@
 $(function(){ $(document).foundation(); });
 
 $(document).ready(function() {
-  $('input').keyup(function() {
-    previewProduct($(this).val(),$(this).attr('data-item'))
-    });
-    fillKitter();
-    nextLink();
     shopifySync();
   });
 
-var nextProduct = {
-  pos: 0,
-  countUp: function() {
-    return this.pos += 1
-  }
-}
-
-function showAllPreviews() {
-  ary = $('tr')
-  $.each(ary,function(key,value){
-    previewProduct($(value).find('input').val(),key-1)
-  })
-}
-
-function previewProduct(sku,index) {
-  ajaxLink = '/products/' + sku
-  $.getJSON(ajaxLink, function(response) {
-    appendImage(response['small_pic'],index)
-  }, removeImage(index))
-}
-
-function appendImage(link,index) {
-  $('.preview-image-'+index).html('<img src="'+ link + '">')
-}
-
-function removeImage(index) {
-  $('.preview-image-'+index).html('')
-}
-
-function fillKitter() {
-  $('.ungen').click(function(event) {
-    event.preventDefault();
-    $('.ungen').html('Next');
-    $('.next-link').show();
-    ary = $('input.selection')
-    $.each(ary,function(key,value) {
-      fillWithNextProd(value,key,nextProduct.pos);
-      nextProduct.countUp();
-    })
-  })
-}
-
-function fillWithNextProd(inputTag,index,pos) {
-  subId = $(inputTag).attr('data-subid')
-  $.getJSON('/kitter/' + subId, function(response) {
-    $(inputTag).val(response[pos]['sku']);
-    previewProduct(response[pos]['sku'],index)
-  })
-}
-
-function nextLink() {
-  $('.next-link').click(function(event) {
-    event.preventDefault();
-    index = $(this).attr('data-item')
-    fillWithNextProd($('input.selection')[index],index,nextProduct.pos);
-    nextProduct.countUp();
-  })
-}
 
 function shopifySync() {
   $('a#shopify_sync').click(function(event) {
@@ -95,3 +32,78 @@ function shopifySync() {
 
   })
 }
+
+var EventsController = {
+  keyUpListener: function(itemObj){
+    $(itemObj.inputTag()).keyup(function() {
+      itemObj.previewImage()
+    })
+  }
+}
+
+var itemPrototype = {
+  indexItem: null,
+  itemTag: null,
+  imageTag: function() {
+    return $(this.itemTag).find('.preview-image')
+  },
+  inputTag: function() {
+    return $(this.itemTag).find('input')
+  },
+  subId: null,
+  inputSku: function() {
+     return $( $(this.itemTag).find('input')).val()
+  },
+  previewImage: function() {
+    ajaxLink = '/products/' + this.inputSku()
+    itemObject = this
+    imageTag = $(this.imageTag())
+    $.getJSON(ajaxLink,function(response) {
+      imageTag.html('<img src='+response['small_pic']+'>')
+    },itemObject.removeImage())
+  },
+  removeImage: function() {
+    $(this.imageTag()).html("")
+  }
+  // addEventListener: function() {
+  //   itemObject = this
+  //   $(itemObject.inputTag()).keyup(function() {
+  //     itemObject.previewImage()
+  //   })
+  // }
+}
+
+var orderPrototype = {
+  init: function() {
+    this.itemListInputs();
+  },
+  subId: null,
+  orderElement: function() {
+    return $('[data-sub='+this.subId+']')
+  },
+  itemListInputs: function() {
+    var inputs = [];
+    $.each (this.orderElement().find('[data-item]'), function(key,value) {
+      newObj = new Item (key,value,this.subId)
+      EventsController.keyUpListener(newObj)
+      inputs.push(newObj)
+    })
+    return inputs
+  }
+}
+
+function Item (indexItem,itemTag,subId) {
+  this.indexItem = indexItem
+  this.itemTag = itemTag
+  this.subId = subId
+}
+
+function Order (subId) {
+  this.subId = subId
+  this.init()
+
+}
+
+Item.prototype = itemPrototype
+
+Order.prototype = orderPrototype;
