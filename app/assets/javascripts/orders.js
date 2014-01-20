@@ -1,6 +1,7 @@
 var OrdersController = {
   init: function() {
     this.genButton()
+    this.inputKeyUp()
   },
   genButton: function() {
     $('#generate-button').click(function(event){
@@ -10,6 +11,13 @@ var OrdersController = {
       OrdersModel.addFirstRecsToPos(subId)
       OrdersView.inputFirstRecs(subId)
       $('.next-arrow').show();
+    })
+  },
+  inputKeyUp: function() {
+    $('input').keyup(function() {
+      subId = $(this).parent().parent().parent().data('sub')
+      pos = $(this).parent().parent().data('item')
+      OrdersView.prevImg(subId,pos)
     })
   }
 }
@@ -50,6 +58,10 @@ var OrdersView = {
     $.getJSON(ajaxLink,function(response) {
       imgTag = $($('div[data-sub="'+subId+'"] > div > .preview-image')[pos])
       imgTag.html('<img src='+response['small_pic']+'>')
-    })
+    },OrdersView.removeImg(subId,pos))
+  },
+  removeImg: function(subId,pos) {
+    imgTag = $($('div[data-sub="'+subId+'"] > div > .preview-image')[pos])
+    imgTag.html('')
   }
 }
