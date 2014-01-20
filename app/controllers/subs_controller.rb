@@ -37,7 +37,19 @@ class SubsController < ApplicationController
 
   def kitter
     @kitter_suggestions = Kitter.generate_kitter_suggestions(params['sub_id'])
+    @kitter_suggestions.map! do |product|
+      product.id
+    end
+    ksesh = KitterSession.find_or_create_by(sub_id: params['sub_id'])
+    ksesh.product_ids = @kitter_suggestions
+    ksesh.save!
     render json: @kitter_suggestions
+  end
+
+  def next_kitter
+    @session = KitterSession.find_by(sub_id: params['sub_id'])
+    @product = Product.find(@session.product_ids[params['pos'].to_i])
+    render json: @product
   end
 
   private
