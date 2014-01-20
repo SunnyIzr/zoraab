@@ -2,7 +2,6 @@ var OrdersController = {
   init: function() {
     this.genButton()
   },
-
   genButton: function() {
     $('#generate-button').click(function(event){
       event.preventDefault();
@@ -11,35 +10,28 @@ var OrdersController = {
       OrdersModel.addFirstRecsToPos(subId)
       OrdersView.inputFirstRecs(subId)
       $('.next-arrow').show();
-
     })
   }
-
 }
 
+
 var OrdersModel = {
-
-  displayedPos: {}
-  //this holds what is currently being shown in hash form ex: {subId, [ary of Pos Ids]}
-  ,
-
+  displayedPos: {},
+  //displayedPos holds what is currently being shown in hash form ex: {subId, [ary of Pos Ids]}
   addFirstRecsToPos: function(subId) {
     inputSize = $('div[data-sub="'+subId+'"] > div > div > input').size()
-    nextPos = -1
-
     this.displayedPos[subId] = []
-
     for (var i = 0; i < inputSize; i++) {
       this.displayedPos[subId].push(i)
     }
   },
-
   generateKitterRecs: function(subId) {
     path = '/kitter/'+ subId
     $.getJSON(path,function(response) {
     })
   }
 }
+
 
 var OrdersView = {
   inputFirstRecs: function(subId) {
@@ -52,11 +44,9 @@ var OrdersView = {
       });
     })
   },
-
   prevImg: function(subId,pos) {
     sku = $($('div[data-sub="'+subId+'"] > div > div > input')[pos]).val()
     ajaxLink = '/products/' + sku
-
     $.getJSON(ajaxLink,function(response) {
       imgTag = $($('div[data-sub="'+subId+'"] > div > .preview-image')[pos])
       imgTag.html('<img src='+response['small_pic']+'>')
