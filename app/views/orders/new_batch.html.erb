@@ -19,35 +19,46 @@
         <%@subs.each_with_index do |sub,index|%>
           <tr data-subid="<%= Sub.find_by(cid: sub[:id]).id %>">
             <td class="text-center">
-              <span data-tooltip class="has-tip" title="<%=sub[:name]%>"><a href="/subs/<%=Sub.find_by(cid: sub[:id]).id %>" target="_blank"><%=sub[:id]%></a></span>
+              <span data-tooltip class="has-tip" title="<%=sub[:name]%>">
+                <a href="/subs/<%=Sub.find_by(cid: sub[:id]).id %>" target="_blank">
+                  <%=sub[:id]%>
+                </a>
+              </span>
             </td>
-            <td class="text-center"><%=sub[:next_pmt_date].strftime('%m/%d/%y')%></td>
             <td class="text-center">
-              <%= form_for @orders[index], url: sub_orders_path(@orders[index]) do |f| %>
+              <%=sub[:next_pmt_date].strftime('%m/%d/%y')%>
+            </td>
+            <td class="text-center">
+              <div data-subid="<%= Sub.find_by(cid: sub[:id]).id %>" class="order-complete hide">
+                <h5> Order Saved!</h5>
+              </div>
+              <%= form_for @orders[index], remote: true, data: { subid: @orders[index].sub_id }, url: sub_orders_path(@orders[index].sub_id) do |f| %>
               <%= render partial: "order_input", locals: {items: sub[:items], sub_id: Sub.find_by(cid: sub[:id]).id.to_s} %>
             </td>
             <td>
+              <div data-subid="<%= Sub.find_by(cid: sub[:id]).id %>" class="order-complete hide"></div>
               <div class="editable" data-subid="<%= Sub.find_by(cid: sub[:id]).id %>">
-                <a href="#" data-subid="<%= Sub.find_by(cid: sub[:id]).id %>"class="generate-button button tiny editable"><i class="fa fa-refresh"></i><a>
-                <% end %>
+                <a href="#" data-subid="<%= Sub.find_by(cid: sub[:id]).id %>"class="generate-button button tiny editable"><i class="fa fa-refresh"></i></a>
+
                 <a href="#" data-subid="<%= Sub.find_by(cid: sub[:id]).id %>" class="button tiny confirm-order">
                   <i class="fa fa-check"></i>
-                <a>
+                </a>
                 <a href="#" data-subid="<%= Sub.find_by(cid: sub[:id]).id %>" class="button tiny delete-order editable">
                   <i class="fa fa-trash-o"></i>
-                <a>
+                </a>
               </div>
               <div class="uneditable hide" data-subid="<%= Sub.find_by(cid: sub[:id]).id %>">
                 <a href="#" data-subid="<%= Sub.find_by(cid: sub[:id]).id %>" class="button tiny unconfirm-order">
                   <i class="fa fa-minus-circle"></i>
-                <a>
-                <a href="#" data-subid="<%= Sub.find_by(cid: sub[:id]).id %>" class="save-order button tiny">
-                  <i class="fa fa-floppy-o"></i>
-                <a>
+                </a>
+                <%= button_tag(type: "submit", class: "save-order button tiny") do %>
+                  <i class='fa fa-floppy-o'></i>
+                <% end %>
                 <a href="#" data-subid="<%= Sub.find_by(cid: sub[:id]).id %>" class="save-order-and-update button tiny">
                   <i class="fa fa-cloud-upload"></i>
-                <a>
+                </a>
               </div>
+              <% end %>
             </td>
           </tr>
         <%end%>

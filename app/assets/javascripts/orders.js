@@ -66,9 +66,15 @@ var OrdersController = {
       OrdersController.confirmOrderButton()
       OrdersView.unConfirmOrderFromBatch(subId)
     })
-  },
+  }
+  ,
   saveOrderButton: function() {
-
+    $(".new_order").on("ajax:success", function(e, data, status, xhr) {
+      subId = $(this).data('subid')
+      OrdersView.saveSingleOrder(subId)
+    }).bind("ajax:error", function(e, xhr, status, error) {
+      alert('error')
+    })
   }
 }
 
@@ -139,5 +145,9 @@ var OrdersView = {
     $('.editable[data-subid='+subId+']').show()
     $('.uneditable[data-subid='+subId+']').hide()
     $('div[data-sub="'+subId+'"] > div > div > input').show()
+  },
+  saveSingleOrder: function(subId) {
+    $('div[data-subid='+subId+'].order-complete').show().addClass('success-overlay')
+
   }
 }
