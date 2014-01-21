@@ -147,6 +147,7 @@ var OrdersView = {
     $('div[data-sub="'+subId+'"] > div > div > input').show()
   },
   saveSingleOrder: function(subId) {
+    $('div[data-subid='+subId+'].vert-button-tray').hide()
     $('div[data-subid='+subId+'].order-complete').show().addClass('success-overlay')
 
   }
