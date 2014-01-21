@@ -4,6 +4,7 @@ module ChargifyResponse
 
   def parse(response)
     {
+      id: response['id'],
       name: name(response),
       email: email(response),
       plan: plan(response),
@@ -12,7 +13,9 @@ module ChargifyResponse
       status: status(response),
       start_date: start_date(response),
       shipping_address: shipping_address(response),
-      billing_address: billing_address(response)
+      billing_address: billing_address(response),
+      next_pmt_date: next_pmt_date(response),
+      days_till_due: days_till_due(response)
     }
   end
 
@@ -42,6 +45,14 @@ module ChargifyResponse
 
   def start_date(response)
     response['created_at'].strftime('%d %b %Y')
+  end
+
+  def next_pmt_date(response)
+    response['next_assessment_at']
+  end
+
+  def days_till_due(response)
+    ((next_pmt_date(response) - Time.new)/1.day).round
   end
 
   def shipping_address(response)

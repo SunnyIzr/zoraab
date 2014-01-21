@@ -34,6 +34,15 @@ class OrdersController < ApplicationController
     end
   end
 
+  def new_batch
+    @subs = []
+    @orders = []
+    Sub.pull_subs_due(params['days'].to_i).each do |sub|
+      @subs << ChargifyResponse.parse(sub.chargify)
+      @orders << sub.orders.new
+    end
+  end
+
   private
   def order_params
     params.permit(:sub_id, :order_number)

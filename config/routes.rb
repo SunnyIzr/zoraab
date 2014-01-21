@@ -6,11 +6,13 @@ Zoraab::Application.routes.draw do
   end
   resources :orders, only: [:show]
 
+  post '/batch' => 'orders#new_batch'
   get '/search' => 'subs#search'
   post '/search/' => 'subs#show_by_cid'
   get '/search/:cid' => 'subs#show_by_cid'
   get '/products/:sku' => 'products#info'
   get '/kitter/:sub_id' => 'subs#kitter'
+  get '/next-kitter/:sub_id/:pos' => 'subs#next_kitter'
   get '/sync' => 'products#shopify_sync'
 
   # The priority is based upon order of creation: first created -> highest priority.

@@ -9,7 +9,8 @@
       <p><%= link_to "Add a New Subscriber", new_sub_path %></p>
       <p><a href="/search"> Search Subscribers </a></p>
       <p><a href="/subs/"> All Subscribers </a></p>
-      <p><a id ="shopify_sync" class="button" data-reveal-id="myModal"href="#">Sync Coz Inventory to Shopoify Inventory </a></p>
+      <p><a id ="shopify_sync" class="button" href="#">Sync Coz Inventory to Shopoify Inventory </a></p>
+      <p><a href="#" data-reveal-id="myModal" class="button">Fulfill Recurring Subscribers</a></p>
     </div>
   </div>
 
@@ -18,9 +19,24 @@
 <div class="overlay">
 
 </div>
-<div id="loader">
+<div id="loader" class="hide">
   <div id="ballWrapper">
     <div id="ball"></div>
     <div id="ballShadow"></div>
   </div>
+</div>
+
+<div id="myModal" class="reveal-modal" data-reveal>
+  <h2>How many days of subscriptions would you like to fill?</h2>
+      <%= form_tag("/batch", method: "post") do %>
+        <div class="row collapse">
+          <div class="small-10 columns">
+            <%= text_field_tag 'days'%>
+          </div>
+          <div class="small-2 columns">
+            <%= submit_tag("Go", class: 'button postfix retrieve-recurring-subs') %>
+          </div>
+        </div>
+      <% end %>
+  <a class="close-reveal-modal">&#215;</a>
 </div>
