@@ -28,7 +28,7 @@
 
 <div id="myModal" class="reveal-modal" data-reveal>
   <h2>How many days of subscriptions would you like to fill?</h2>
-      <%= form_tag("/batch", method: "post") do %>
+      <%= form_tag("/batches/new", method: "get") do %>
         <div class="row collapse">
           <div class="small-10 columns">
             <%= text_field_tag 'days'%>
