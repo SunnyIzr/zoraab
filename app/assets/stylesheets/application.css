@@ -33,6 +33,14 @@
   display:none;
 }
 
+.arrows{
+  font-size: 25px;
+}
+.arrow-tray{
+  margin-left:auto;
+  margin-right:auto;
+  width:50px;
+}
 
 /* 3D Bouncing ball */
 

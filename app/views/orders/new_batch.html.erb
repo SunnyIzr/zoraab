@@ -4,7 +4,6 @@
   </div>
 </div>
 
-<div class="row">
   <div class="large-12 columns">
 
     <table>
@@ -12,20 +11,22 @@
         <tr>
           <th class="text-center">ID</th>
           <th class="text-center">Date</th>
-          <th class="text-center">Name</th>
-          <th width="500" class="text-center">Selections</th>
+          <th class="text-center">Selections</th>
+          <th class="text-center"></th>
         </tr>
       </thead>
       <tbody>
         <%@subs.each_with_index do |sub,index|%>
           <tr>
-            <td class="text-center"><%=sub[:id]%></td>
+            <td class="text-center">
+              <span data-tooltip class="has-tip" title="<%=sub[:name]%>"><a href="/subs/<%=Sub.find_by(cid: sub[:id]).id %>" target="_blank"><%=sub[:id]%></a></span>
+            </td>
             <td class="text-center"><%=sub[:next_pmt_date].strftime('%m/%d/%y')%></td>
-            <td class="text-center"><%=sub[:name]%></td>
             <td class="text-center">
               <%= form_for @orders[index], url: sub_orders_path(@orders[index]) do |f| %>
-
               <%= render partial: "order_input", locals: {items: sub[:items], sub_id: Sub.find_by(cid: sub[:id]).id.to_s} %>
+            </td>
+            <td>
               <a href="#" data-sub-id="<%= Sub.find_by(cid: sub[:id]).id %>"class="generate-button button ungen">Gen<a>
               <% end %>
             </td>
@@ -35,5 +36,4 @@
     </table>
 
   </div>
-</div>
 
