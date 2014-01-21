@@ -6,7 +6,10 @@ Zoraab::Application.routes.draw do
   end
   resources :orders, only: [:show]
 
-  post '/batch' => 'orders#new_batch'
+  resources :batches, only: [:new, :create, :show, :index]
+
+
+  # post '/batch' => 'orders#new_batch'
   get '/search' => 'subs#search'
   post '/search/' => 'subs#show_by_cid'
   get '/search/:cid' => 'subs#show_by_cid'
