@@ -20,6 +20,7 @@ $(function(){ $(document).foundation(); });
 
 $(document).ready(function() {
     shopifySync();
+    fulfillRecurSubs();
     OrdersController.init()
 
   });
@@ -33,4 +34,12 @@ function shopifySync() {
     window.location.href = '/sync'
 
   })
+}
+
+function fulfillRecurSubs () {
+  $('.retrieve-recurring-subs').click(function() {
+    $('.overlay').show();
+    $('#loader').show();
+  })
+
 }
