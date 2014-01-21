@@ -19,7 +19,7 @@
 <div class="overlay">
 
 </div>
-<div id="loader">
+<div id="loader" class="hide">
   <div id="ballWrapper">
     <div id="ball"></div>
     <div id="ballShadow"></div>
@@ -34,7 +34,7 @@
             <%= text_field_tag 'days'%>
           </div>
           <div class="small-2 columns">
-            <%= submit_tag("Go", class: 'button postfix') %>
+            <%= submit_tag("Go", class: 'button postfix retrieve-recurring-subs') %>
           </div>
         </div>
       <% end %>
