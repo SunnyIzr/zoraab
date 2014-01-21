@@ -4,6 +4,7 @@ var OrdersController = {
     this.inputKeyUp()
     this.nextProductButton()
     this.prevProductButton()
+    this.deleteOrderButton()
   },
   genButton: function() {
     $('.generate-button').click(function(event){
@@ -39,6 +40,13 @@ var OrdersController = {
       pos = $(this).data('item')
       OrdersModel.prevRec(subId,pos)
       OrdersView.updateInputTag(subId,pos)
+    })
+  },
+  deleteOrderButton: function() {
+    $('.delete-order').click(function(event){
+      event.preventDefault();
+      subId = $(this).data('sub-id')
+      OrdersView.removeOrderFromBatch(subId)
     })
   }
 }
@@ -98,5 +106,8 @@ var OrdersView = {
   removeImg: function(subId,pos) {
     imgTag = $($('div[data-sub="'+subId+'"] > div > .preview-image')[pos])
     imgTag.html("<img src='/assets/no-prev.jpg'>")
+  },
+  removeOrderFromBatch: function(subId) {
+    $('tr[data-sub-id='+subId+']').remove()
   }
 }

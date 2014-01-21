@@ -17,7 +17,7 @@
       </thead>
       <tbody>
         <%@subs.each_with_index do |sub,index|%>
-          <tr>
+          <tr data-sub-id="<%= Sub.find_by(cid: sub[:id]).id %>">
             <td class="text-center">
               <span data-tooltip class="has-tip" title="<%=sub[:name]%>"><a href="/subs/<%=Sub.find_by(cid: sub[:id]).id %>" target="_blank"><%=sub[:id]%></a></span>
             </td>
@@ -29,9 +29,12 @@
             <td>
               <a href="#" data-sub-id="<%= Sub.find_by(cid: sub[:id]).id %>"class="generate-button button tiny"><i class="fa fa-refresh"></i><a>
               <% end %>
-              <a href="#" class="button tiny"><i class="fa fa-check"></i><a>
-              <a href="#" class="button tiny delete-order"><i class="fa fa-trash-o"></i><a>
-
+              <a href="#" data-sub-id="<%= Sub.find_by(cid: sub[:id]).id %>" class="button tiny">
+                <i class="fa fa-check"></i>
+              <a>
+              <a href="#" data-sub-id="<%= Sub.find_by(cid: sub[:id]).id %>" class="button tiny delete-order">
+                <i class="fa fa-trash-o"></i>
+              <a>
             </td>
           </tr>
         <%end%>
