@@ -3,7 +3,7 @@ class Order < ActiveRecord::Base
   has_and_belongs_to_many :products
   belongs_to :sub
   validates_presence_of :sub_id
-  belongs_to :batch_upload
+  belongs_to :batch
 
 
   def set_order_number
