@@ -1,9 +1,9 @@
 <div data-sub="<%=sub_id%>">
   <% items.times do |item| %>
     <div class="left" data-item="<%=item%>" style="padding: 0 10px">
-      <div class="preview-image text-center"></div>
-      <div class="text-center hide next-arrow"><a class="next-link" data-item="<%=item%>" data-subid= <%=sub_id%> href="#"><i class="fa fa-arrow-circle-o-right"></i>
-</a></div>
+      <div class="text-center hide arrows"><a class="prev-link" data-item="<%=item%>" data-subid= <%=sub_id%> href="#"><i class="fa fa-arrow-circle-o-left"></i></a></div>
+      <div class="preview-image text-center hide"><%= image_tag 'no-prev.jpg'%></div>
+      <div class="text-center hide arrows"><a class="next-link" data-item="<%=item%>" data-subid= <%=sub_id%> href="#"><i class="fa fa-arrow-circle-o-right"></i></a></div>
       <div><%= text_field_tag 'item[]', nil , class: 'selection' %></div>
     </div>
   <%end%>
