@@ -27,14 +27,27 @@
               <%= render partial: "order_input", locals: {items: sub[:items], sub_id: Sub.find_by(cid: sub[:id]).id.to_s} %>
             </td>
             <td>
-              <a href="#" data-subid="<%= Sub.find_by(cid: sub[:id]).id %>"class="generate-button button tiny editable"><i class="fa fa-refresh"></i><a>
-              <% end %>
-              <a href="#" data-subid="<%= Sub.find_by(cid: sub[:id]).id %>" class="button tiny confirm-order">
-                <i class="fa fa-check"></i>
-              <a>
-              <a href="#" data-subid="<%= Sub.find_by(cid: sub[:id]).id %>" class="button tiny delete-order editable">
-                <i class="fa fa-trash-o"></i>
-              <a>
+              <div class="editable" data-subid="<%= Sub.find_by(cid: sub[:id]).id %>">
+                <a href="#" data-subid="<%= Sub.find_by(cid: sub[:id]).id %>"class="generate-button button tiny editable"><i class="fa fa-refresh"></i><a>
+                <% end %>
+                <a href="#" data-subid="<%= Sub.find_by(cid: sub[:id]).id %>" class="button tiny confirm-order">
+                  <i class="fa fa-check"></i>
+                <a>
+                <a href="#" data-subid="<%= Sub.find_by(cid: sub[:id]).id %>" class="button tiny delete-order editable">
+                  <i class="fa fa-trash-o"></i>
+                <a>
+              </div>
+              <div class="uneditable hide" data-subid="<%= Sub.find_by(cid: sub[:id]).id %>">
+                <a href="#" data-subid="<%= Sub.find_by(cid: sub[:id]).id %>" class="button tiny unconfirm-order">
+                  <i class="fa fa-minus-circle"></i>
+                <a>
+                <a href="#" data-subid="<%= Sub.find_by(cid: sub[:id]).id %>" class="save-order button tiny">
+                  <i class="fa fa-floppy-o"></i>
+                <a>
+                <a href="#" data-subid="<%= Sub.find_by(cid: sub[:id]).id %>" class="save-order-and-update button tiny">
+                  <i class="fa fa-cloud-upload"></i>
+                <a>
+              </div>
             </td>
           </tr>
         <%end%>
