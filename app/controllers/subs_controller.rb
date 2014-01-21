@@ -46,6 +46,12 @@ class SubsController < ApplicationController
     render json: @kitter_suggestions
   end
 
+  def last_order
+    @sub = Sub.find(params[:id])
+    @order = @sub.orders.last
+    redirect_to order_path(@order.id)
+  end
+
   def next_kitter
     @session = KitterSession.find_by(sub_id: params['sub_id'])
     @product = Product.find(@session.product_ids[params['pos'].to_i])

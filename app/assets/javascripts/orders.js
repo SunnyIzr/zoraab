@@ -6,6 +6,7 @@ var OrdersController = {
     this.prevProductButton()
     this.deleteOrderButton()
     this.confirmOrderButton()
+    this.saveOrderButton()
   },
   genButton: function() {
     $('.generate-button').click(function(event){
@@ -53,9 +54,6 @@ var OrdersController = {
   confirmOrderButton: function(){
     $('.confirm-order').click(function(event){
       event.preventDefault();
-      $(this).html('<i class="fa fa-minus-circle"></i>')
-      $(this).addClass('unconfirm-order')
-      $(this).removeClass('confirm-order')
       subId = $(this).data('subid')
       OrdersController.unConfirmOrderButton()
       OrdersView.confirmOrderFromBatch(subId)
@@ -64,12 +62,18 @@ var OrdersController = {
   unConfirmOrderButton: function(){
     $('.unconfirm-order').click(function(event){
       event.preventDefault();
-      $(this).html('<i class="fa fa-check"></i>')
-      $(this).addClass('confirm-order')
-      $(this).removeClass('unconfirm-order')
       subId = $(this).data('subid')
       OrdersController.confirmOrderButton()
       OrdersView.unConfirmOrderFromBatch(subId)
+    })
+  }
+  ,
+  saveOrderButton: function() {
+    $(".new_order").on("ajax:success", function(e, data, status, xhr) {
+      subId = $(this).data('subid')
+      OrdersView.saveSingleOrder(subId)
+    }).bind("ajax:error", function(e, xhr, status, error) {
+      alert('error')
     })
   }
 }
@@ -134,10 +138,17 @@ var OrdersView = {
   },
   confirmOrderFromBatch: function(subId) {
     $('.editable[data-subid='+subId+']').hide()
+    $('.uneditable[data-subid='+subId+']').show()
     $('div[data-sub="'+subId+'"] > div > div > input').hide()
   },
   unConfirmOrderFromBatch: function(subId) {
     $('.editable[data-subid='+subId+']').show()
+    $('.uneditable[data-subid='+subId+']').hide()
     $('div[data-sub="'+subId+'"] > div > div > input').show()
+  },
+  saveSingleOrder: function(subId) {
+    $('div[data-subid='+subId+'].vert-button-tray').hide()
+    $('div[data-subid='+subId+'].order-complete').show().addClass('success-overlay')
+
   }
 }

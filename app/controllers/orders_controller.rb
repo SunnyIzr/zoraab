@@ -45,7 +45,7 @@ class OrdersController < ApplicationController
 
   private
   def order_params
-    params.permit(:sub_id, :order_number)
+    params.permit(:sub_id, :order_number,:created_at)
   end
 
   def items_params

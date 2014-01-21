@@ -1,7 +1,9 @@
 <div data-sub="<%=sub_id%>">
   <% items.times do |item| %>
     <div class="left" data-item="<%=item%>" style="padding: 0 10px">
-      <div class="preview-image text-center hide"><%= image_tag 'no-prev.jpg'%></div>
+      <div class="preview-image text-center hide">
+        <%= image_tag 'no-prev.jpg'%>
+      </div>
       <div data-subid= <%=sub_id%> class="arrow-tray editable">
         <div class="text-center hide arrows left">
           <a class="prev-link" data-item="<%=item%>" data-subid= <%=sub_id%> href="#">
