@@ -1,39 +1,38 @@
-<table>
-      <thead>
+<div class="large-12 columns">
+  <table>
+    <thead>
+      <tr>
+        <th class="text-center">Order</th>
+        <th class="text-center">Name</th>
+        <th class="text-center">Date</th>
+        <th class="text-center">Selections</th>
+      </tr>
+    </thead>
+    <tbody>
+      <%@batch.orders.each_with_index do |order,index|%>
         <tr>
-          <th class="text-center">Order</th>
-          <th class="text-center">Name</th>
-          <th class="text-center">Date</th>
-          <th class="text-center">Selections</th>
-        </tr>
-      </thead>
-      <tbody>
-        <%@batch.orders.each_with_index do |order,index|%>
-          <tr>
-            <td class="text-center">
-              <a href="/orders/<%=order.id %>" target="_blank">
-                <%=order.order_number%>
-              </a>
-            </td>
-            <td><%=order.name%></td>
-            <td><%=order.created_at.strftime('%m/%d/%y')%></td>
-            <td>
-              <% order.products.each_with_index do|product, index| %>
-              <div class="left">
-                <div class="preview-image text-center">
-                  <a href="<%=ENV['SITE']%>products/<%=product.sku%>" target="_blank">
-                    <div><img src="<%=@product_data[product.sku][:small_pic]%>"></div>
-                    <div><%=product.sku%></div>
-                  </a>
-                </div>
+          <td class="text-center">
+            <a href="/orders/<%=order.id %>" target="_blank">
+              <%=order.order_number%>
+            </a>
+          </td>
+          <td><%=order.name%></td>
+          <td><%=order.created_at.strftime('%m/%d/%y')%></td>
+          <td>
+            <% order.products.each_with_index do|product, index| %>
+            <div class="left">
+              <div class="preview-image text-center">
+                <a href="<%=ENV['SITE']%>products/<%=product.sku%>" target="_blank">
+                  <div><img src="<%=@product_data[product.sku][:small_pic]%>"></div>
+                  <div><%=product.sku%></div>
+                </a>
               </div>
-              <% end %>
-            </td>
-          </tr>
-        <%end%>
-      </tbody>
-    </table>
-
-  </div>
-
+            </div>
+            <% end %>
+          </td>
+        </tr>
+      <%end%>
+    </tbody>
+  </table>
+</div>
 
