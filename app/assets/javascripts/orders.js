@@ -2,6 +2,8 @@ var OrdersController = {
   init: function() {
     this.genButton()
     this.inputKeyUp()
+    this.nextProductButton()
+    this.prevProductButton()
   },
   genButton: function() {
     $('#generate-button').click(function(event){
@@ -10,7 +12,8 @@ var OrdersController = {
       OrdersModel.generateKitterRecs(subId)
       OrdersModel.addFirstRecsToPos(subId)
       OrdersView.inputFirstRecs(subId)
-      $('.next-arrow').show();
+      $('.arrows').show();
+      $('.preview-image').show();
     })
   },
   inputKeyUp: function() {
@@ -18,6 +21,24 @@ var OrdersController = {
       subId = $(this).parent().parent().parent().data('sub')
       pos = $(this).parent().parent().data('item')
       OrdersView.prevImg(subId,pos)
+    })
+  },
+  nextProductButton: function() {
+    $('.next-link').click(function(event) {
+      event.preventDefault();
+      subId = $(this).data('subid')
+      pos = $(this).data('item')
+      OrdersModel.nextRec(subId,pos)
+      OrdersView.updateInputTag(subId,pos)
+    })
+  },
+  prevProductButton: function() {
+    $('.prev-link').click(function(event) {
+      event.preventDefault();
+      subId = $(this).data('subid')
+      pos = $(this).data('item')
+      OrdersModel.prevRec(subId,pos)
+      OrdersView.updateInputTag(subId,pos)
     })
   }
 }
@@ -37,6 +58,12 @@ var OrdersModel = {
     path = '/kitter/'+ subId
     $.getJSON(path,function(response) {
     })
+  },
+  nextRec: function(subId,pos) {
+    this.displayedPos[subId][pos] += 1
+  },
+  prevRec: function(subId,pos) {
+    this.displayedPos[subId][pos] -= 1
   }
 }
 
@@ -52,6 +79,14 @@ var OrdersView = {
       });
     })
   },
+  updateInputTag: function(subId,pos) {
+    inputTag = $('div[data-sub="'+subId+'"] > div > div > input')[pos]
+    path = '/next-kitter/' + subId + '/' + OrdersModel.displayedPos[subId][pos]
+    $.getJSON(path, function(response) {
+      $(inputTag).val(response.sku)
+        OrdersView.prevImg(subId,pos)
+      });
+  },
   prevImg: function(subId,pos) {
     sku = $($('div[data-sub="'+subId+'"] > div > div > input')[pos]).val()
     ajaxLink = '/products/' + sku
@@ -62,6 +97,6 @@ var OrdersView = {
   },
   removeImg: function(subId,pos) {
     imgTag = $($('div[data-sub="'+subId+'"] > div > .preview-image')[pos])
-    imgTag.html('')
+    imgTag.html("<img src='/assets/no-prev.jpg'>")
   }
 }
