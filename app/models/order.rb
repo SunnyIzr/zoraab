@@ -4,6 +4,7 @@ class Order < ActiveRecord::Base
   belongs_to :sub
   validates_presence_of :sub_id
 
+
   def set_order_number
     unless self.order_number
       digits = 4 - self.id.to_s.length
