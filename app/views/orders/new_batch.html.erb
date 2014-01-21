@@ -12,7 +12,7 @@
           <th class="text-center">ID</th>
           <th class="text-center">Date</th>
           <th class="text-center">Selections</th>
-          <th class="text-center"></th>
+          <th width="50" class="text-center"></th>
         </tr>
       </thead>
       <tbody>
@@ -27,8 +27,11 @@
               <%= render partial: "order_input", locals: {items: sub[:items], sub_id: Sub.find_by(cid: sub[:id]).id.to_s} %>
             </td>
             <td>
-              <a href="#" data-sub-id="<%= Sub.find_by(cid: sub[:id]).id %>"class="generate-button button ungen">Gen<a>
+              <a href="#" data-sub-id="<%= Sub.find_by(cid: sub[:id]).id %>"class="generate-button button tiny"><i class="fa fa-refresh"></i><a>
               <% end %>
+              <a href="#" class="button tiny"><i class="fa fa-check"></i><a>
+              <a href="#" class="button tiny delete-order"><i class="fa fa-trash-o"></i><a>
+
             </td>
           </tr>
         <%end%>
