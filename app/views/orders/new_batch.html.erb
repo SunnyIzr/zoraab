@@ -26,7 +26,7 @@
               <%= form_for @orders[index], url: sub_orders_path(@orders[index]) do |f| %>
 
               <%= render partial: "order_input", locals: {items: sub[:items], sub_id: Sub.find_by(cid: sub[:id]).id.to_s} %>
-              <a id ='generate-button' href="#" class="button ungen">Generate<a>
+              <a href="#" data-sub-id="<%= Sub.find_by(cid: sub[:id]).id %>"class="generate-button button ungen">Gen<a>
               <% end %>
             </td>
           </tr>

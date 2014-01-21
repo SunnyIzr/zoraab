@@ -6,7 +6,7 @@ var OrdersController = {
     this.prevProductButton()
   },
   genButton: function() {
-    $('#generate-button').click(function(event){
+    $('.generate-button').click(function(event){
       event.preventDefault();
       subId = $(this).attr('data-sub-id')
       OrdersModel.generateKitterRecs(subId)
