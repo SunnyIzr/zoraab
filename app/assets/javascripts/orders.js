@@ -5,11 +5,12 @@ var OrdersController = {
     this.nextProductButton()
     this.prevProductButton()
     this.deleteOrderButton()
+    this.confirmOrderButton()
   },
   genButton: function() {
     $('.generate-button').click(function(event){
       event.preventDefault();
-      subId = $(this).attr('data-sub-id')
+      subId = $(this).attr('data-subid')
       OrdersModel.generateKitterRecs(subId)
       OrdersModel.addFirstRecsToPos(subId)
       OrdersView.inputFirstRecs(subId)
@@ -45,8 +46,30 @@ var OrdersController = {
   deleteOrderButton: function() {
     $('.delete-order').click(function(event){
       event.preventDefault();
-      subId = $(this).data('sub-id')
+      subId = $(this).data('subid')
       OrdersView.removeOrderFromBatch(subId)
+    })
+  },
+  confirmOrderButton: function(){
+    $('.confirm-order').click(function(event){
+      event.preventDefault();
+      $(this).html('<i class="fa fa-minus-circle"></i>')
+      $(this).addClass('unconfirm-order')
+      $(this).removeClass('confirm-order')
+      subId = $(this).data('subid')
+      OrdersController.unConfirmOrderButton()
+      OrdersView.confirmOrderFromBatch(subId)
+    })
+  },
+  unConfirmOrderButton: function(){
+    $('.unconfirm-order').click(function(event){
+      event.preventDefault();
+      $(this).html('<i class="fa fa-check"></i>')
+      $(this).addClass('confirm-order')
+      $(this).removeClass('unconfirm-order')
+      subId = $(this).data('subid')
+      OrdersController.confirmOrderButton()
+      OrdersView.unConfirmOrderFromBatch(subId)
     })
   }
 }
@@ -54,7 +77,6 @@ var OrdersController = {
 
 var OrdersModel = {
   displayedPos: {},
-  //displayedPos holds what is currently being shown in hash form ex: {subId, [ary of Pos Ids]}
   addFirstRecsToPos: function(subId) {
     inputSize = $('div[data-sub="'+subId+'"] > div > div > input').size()
     this.displayedPos[subId] = []
@@ -108,6 +130,14 @@ var OrdersView = {
     imgTag.html("<img src='/assets/no-prev.jpg'>")
   },
   removeOrderFromBatch: function(subId) {
-    $('tr[data-sub-id='+subId+']').remove()
+    $('tr[data-subid='+subId+']').remove()
+  },
+  confirmOrderFromBatch: function(subId) {
+    $('.editable[data-subid='+subId+']').hide()
+    $('div[data-sub="'+subId+'"] > div > div > input').hide()
+  },
+  unConfirmOrderFromBatch: function(subId) {
+    $('.editable[data-subid='+subId+']').show()
+    $('div[data-sub="'+subId+'"] > div > div > input').show()
   }
 }
