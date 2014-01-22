@@ -10,6 +10,11 @@ class BatchesController < ApplicationController
     @prods.each do |product|
       @product_data[product.sku] = Shopify.data(product.sku)
     end
+    respond_to do |format|
+      format.html
+      format.csv { send_data @batch.to_csv }
+    end
+
   end
 
   def new
@@ -21,8 +26,6 @@ class BatchesController < ApplicationController
       @subs << ChargifyResponse.parse(sub.chargify)
       @orders << sub.orders.new
     end
-    p "~"*1000
-    p @batch
   end
 
   def create
