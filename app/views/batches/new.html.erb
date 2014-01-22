@@ -1,8 +1,28 @@
-<div class="row">
-  <div class="large-12 columns">
-    <h4> Fulfill Subscriptions </h4>
+
+<div class="large-12 columns">
+
+  <div class="left generate-batch">
+    <button class "button" >
+      Generate All
+    </button>
+  </div>
+  <div class="confirm-batch  left">
+    <button class "button" >
+      Confirm Batch
+    </button>
+  </div>
+  <div class="hide left save-batch">
+    <button class "button" >
+      Save Batch
+    </button>
+  </div>
+  <div class="hide left view-batch">
+    <button class "button" onclick="location.href='/batches/<%=@batch.id%>'">
+      View Batch
+    </button>
   </div>
 </div>
+
 
 <div class="large-12 columns">
 
@@ -29,6 +49,7 @@
           <td class="text-center">
             <%=sub[:next_pmt_date].strftime('%m/%d/%y')%>
             <%= hidden_field_tag 'created_at', sub[:next_pmt_date] , class: '' %>
+            <%= hidden_field_tag 'batch_id', @batch.id , class: '' %>
           </td>
           <td class="text-center">
             <div data-subid="<%= Sub.find_by(cid: sub[:id]).id %>" class="order-complete hide">

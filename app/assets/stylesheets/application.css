@@ -55,6 +55,9 @@
 td {
   position:relative;
 }
+.save-batch{
+  display:none;
+}
 
 /* 3D Bouncing ball */
 

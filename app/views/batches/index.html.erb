@@ -1,0 +1,31 @@
+<div class="row">
+  <div class="large-12 columns">
+    <h4>All Subscribers</h4>
+  </div>
+</div>
+<div class="row">
+  <div class="large-12 columns">
+    <table>
+      <thead>
+        <tr>
+          <th>Batch ID</th>
+          <th>Date</th>
+          <th>Orders</th>
+        </tr>
+      </thead>
+      <tbody>
+        <%@batches.each_with_index do |batch, index|%>
+        <tr>
+          <td>
+            <a href="/batches/<%=batch.id%>">
+              <%=batch.id%>
+            </a>
+          </td>
+          <td><%=batch.created_at.strftime('%m/%d/%y')%></td>
+          <td><%=batch.orders.count%></td>
+        </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
