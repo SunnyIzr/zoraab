@@ -14,7 +14,10 @@ class BatchesController < ApplicationController
       format.html
       format.csv { send_data @batch.to_csv }
     end
+  end
 
+  def index
+    @batches = Batch.all
   end
 
   def new
