@@ -13,14 +13,16 @@ class BatchesController < ApplicationController
   end
 
   def new
-    @batch = Batch.new
+    Batch.destroy_empty_batches
+    @batch = Batch.create
     @subs = []
     @orders = []
     Sub.pull_subs_due(params['days'].to_i).each do |sub|
       @subs << ChargifyResponse.parse(sub.chargify)
       @orders << sub.orders.new
     end
-    p @subs
+    p "~"*1000
+    p @batch
   end
 
   def create

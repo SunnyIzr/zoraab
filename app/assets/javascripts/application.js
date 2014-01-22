@@ -22,6 +22,7 @@ $(document).ready(function() {
     shopifySync();
     fulfillRecurSubs();
     OrdersController.init()
+    BatchController.init()
 
   });
 
