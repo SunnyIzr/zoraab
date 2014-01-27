@@ -8,8 +8,6 @@ Zoraab::Application.routes.draw do
 
   resources :batches, only: [:new, :create, :show, :index]
 
-
-  # post '/batch' => 'orders#new_batch'
   get '/search' => 'subs#search'
   post '/search/' => 'subs#show_by_cid'
   get '/search/:cid' => 'subs#show_by_cid'
@@ -19,9 +17,6 @@ Zoraab::Application.routes.draw do
   get '/sync' => 'products#shopify_sync'
   get '/subs/:id/last-order/' => 'subs#last_order'
 
-  namespace 'chargify' do
-   match '/hooks' => "hooks#dispatch_handler", :via => "post"
- end
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
