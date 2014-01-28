@@ -20,7 +20,7 @@
         <% @os_signups.each do |signup| %>
           <tr>
             <td><%=signup.created_at.strftime('%m/%d')%></td>
-            <td><%=signup.cid%></td>
+            <td><a href="https://zoraab.chargify.com/subscriptions/<%=signup.cid%>" target="_blank"><%=signup.cid%></a></td>
             <td><%=signup.name%></td>
             <td><%=signup.amount%></td>
           </tr>
