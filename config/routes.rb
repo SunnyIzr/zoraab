@@ -16,6 +16,7 @@ Zoraab::Application.routes.draw do
   get '/next-kitter/:sub_id/:pos' => 'subs#next_kitter'
   get '/sync' => 'products#shopify_sync'
   get '/subs/:id/last-order/' => 'subs#last_order'
+  post '/new-trans/' => 'chargify_hooks#new_trans'
 
 
   # The priority is based upon order of creation: first created -> highest priority.

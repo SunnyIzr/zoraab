@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140127192834) do
+ActiveRecord::Schema.define(version: 20140128024305) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -50,6 +50,7 @@ ActiveRecord::Schema.define(version: 20140127192834) do
     t.string   "billing_zip"
     t.string   "billing_country"
     t.integer  "batch_id"
+    t.integer  "trans_id"
   end
 
   add_index "orders", ["batch_id"], name: "index_orders_on_batch_id", using: :btree
@@ -58,6 +59,26 @@ ActiveRecord::Schema.define(version: 20140127192834) do
   create_table "orders_products", force: true do |t|
     t.integer "order_id"
     t.integer "product_id"
+  end
+
+  create_table "outstanding_renewals", force: true do |t|
+    t.integer  "trans_id"
+    t.integer  "cid"
+    t.string   "name"
+    t.string   "plan"
+    t.float    "amount"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "outstanding_signups", force: true do |t|
+    t.integer  "trans_id"
+    t.integer  "cid"
+    t.string   "name"
+    t.string   "plan"
+    t.float    "amount"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "prefs", force: true do |t|

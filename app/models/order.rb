@@ -44,5 +44,13 @@ class Order < ActiveRecord::Base
     end
   end
 
+  def self.pending
+    pending_orders = []
+    all.each do |order|
+      pending_orders << order unless order.trans_id
+    end
+    pending_orders
+  end
+
 
 end
