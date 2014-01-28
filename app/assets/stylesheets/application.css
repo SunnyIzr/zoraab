@@ -58,6 +58,10 @@ td {
 .save-batch{
   display:none;
 }
+.preview-image img{
+  height:100px;
+  width:100px;
+}
 
 /* 3D Bouncing ball */
 
