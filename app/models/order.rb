@@ -49,7 +49,7 @@ class Order < ActiveRecord::Base
     all.each do |order|
       pending_orders << order unless order.trans_id
     end
-    pending_orders
+    pending_orders.sort_by! { |order| order.created_at }
   end
 
 
