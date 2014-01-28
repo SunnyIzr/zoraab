@@ -62,6 +62,12 @@ td {
   height:100px;
   width:100px;
 }
+.past_due {
+  background-color: #ff8585 !important;
+}
+.past-due td,a{
+  color: black !important;
+}
 
 /* 3D Bouncing ball */
 
