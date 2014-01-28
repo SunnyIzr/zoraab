@@ -9,7 +9,7 @@ class OrdersController < ApplicationController
   end
 
   def new
-    @order = Order.new
+    @order = Order.new(trans_id: params['trans_id'])
     @sub = Sub.find(params[:sub_id])
     @response = ChargifyResponse.parse(@sub.chargify)
   end
@@ -28,6 +28,8 @@ class OrdersController < ApplicationController
       @order.products << Product.find_or_create_by(sku: item)
     end
     if @order.save
+      OutstandingSignup.refresh_outstanding_signups
+      OutstandingRenewal.refresh_outstanding_renewals
       redirect_to order_path(@order.id)
     else
       render text: "FAIL!"
@@ -45,7 +47,7 @@ class OrdersController < ApplicationController
 
   private
   def order_params
-    params.permit(:sub_id, :order_number,:created_at,:batch_id)
+    params.permit(:sub_id, :order_number,:created_at,:batch_id,:trans_id)
   end
 
   def items_params

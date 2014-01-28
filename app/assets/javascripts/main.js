@@ -6,6 +6,7 @@ $(document).ready(function() {
     fulfillRecurSubs();
     OrdersController.init()
     BatchController.init()
+    DashboardController.init()
 
   });
 
