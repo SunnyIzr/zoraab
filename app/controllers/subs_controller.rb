@@ -35,6 +35,17 @@ class SubsController < ApplicationController
     end
   end
 
+  def new_order_by_cid
+    p '~'*1000
+    p params
+    @sub = Sub.find_by(cid: params['cid'])
+    if @sub
+      redirect_to new_sub_order_path(@sub)
+    else
+      render text: "Does Not Exist!"
+    end
+  end
+
   def kitter
     @kitter_suggestions = Kitter.generate_kitter_suggestions(params['sub_id'])
     @kitter_suggestions.map! do |product|
