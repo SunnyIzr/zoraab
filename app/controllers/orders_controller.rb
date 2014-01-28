@@ -29,6 +29,7 @@ class OrdersController < ApplicationController
     end
     if @order.save
       OutstandingSignup.refresh_outstanding_signups
+      OutstandingRenewal.refresh_outstanding_renewals
       redirect_to order_path(@order.id)
     else
       render text: "FAIL!"
