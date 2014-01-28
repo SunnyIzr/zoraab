@@ -12,19 +12,19 @@
         <tr>
           <th>Date</th>
           <th>Id</th>
-          <th>Name</th>
-          <th>Plan</th>
-          <th>Amount</th>
+          <th width='500'>Name</th>
+          <th>Amt</th>
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-        </tr>
+        <% @os_signups.each do |signup| %>
+          <tr>
+            <td><%=signup.created_at.strftime('%m/%d')%></td>
+            <td><%=signup.cid%></td>
+            <td><%=signup.name%></td>
+            <td><%=signup.amount%></td>
+          </tr>
+        <% end %>
       </tbody>
     </table>
   </div>
@@ -36,13 +36,11 @@
           <th>Date</th>
           <th>Id</th>
           <th>Name</th>
-          <th>Plan</th>
           <th>Amount</th>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <td></td>
           <td></td>
           <td></td>
           <td></td>
@@ -59,13 +57,11 @@
           <th>Date</th>
           <th>Order</th>
           <th>Name</th>
-          <th>Plan</th>
           <th>Amount</th>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <td></td>
           <td></td>
           <td></td>
           <td></td>
