@@ -21,22 +21,3 @@ class ChargifyHooksController < ApplicationController
     params.permit(:payload)
   end
 end
-
-
-
-{payload:
-  {transaction: {
-    id: 12345,
-    amount_in_cents: 4500
-    },
-    subscription: {
-      id: 1234567,
-      customer: {
-        last_name: 'John Doe'
-      },
-      plan: {
-        name: 'SOCK Dabble'
-      }
-      }
-    }
-  }

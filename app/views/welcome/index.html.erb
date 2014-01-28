@@ -63,12 +63,14 @@
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-        </tr>
+        <% @pending_orders.each do |order| %>
+          <tr>
+            <td><%=order.created_at.strftime('%m/%d')%></td>
+            <td><a href="/orders/<%=order.id%>" target="_blank"><%=order.order_number%></a></td>
+            <td><a href="/subs/<%=order.sub.id%>" target="_blank"><%=order.name%></a></td>
+            <td><a href="/batches/<%=order.batch_id%>" target="_blank"> <%=order.batch_id%></td>
+          </tr>
+        <%end%>
       </tbody>
     </table>
   </div>
