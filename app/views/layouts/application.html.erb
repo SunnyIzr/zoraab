@@ -9,34 +9,70 @@
     <%= stylesheet_link_tag    "application" %>
     <%= javascript_include_tag "vendor/modernizr" %>
     <%= csrf_meta_tags %>
+    <%= javascript_include_tag "application" %>
   </head>
 
   <body>
 
-    <nav class="top-bar" data-topbar>
-      <ul class="title-area">
-        <li class="name">
-          <h1><a href="/"><%= image_tag 'logo-socks.png'%> Zoraab</a></h1>
-        </li>
-      </ul>
+  <div class="off-canvas-wrap">
+    <div class="inner-wrap">
+      <nav class="tab-bar">
+        <section class="left-small">
+          <a class="left-off-canvas-toggle menu-icon" ><span></span></a>
+        </section>
 
-      <section class="top-bar-section">
-        <!-- Right Nav Section -->
-        <ul class="right">
-          <li class = <%= 'active' if (params[:controller]+'#'+params[:action]) == 'subs#new'%>>
-            <a href="/subs/new">Add New Subscriber</a>
-          </li>
-          <li class= <%= 'active' if (params[:controller]+'#'+params[:action]) == 'subs#search'%>>
-            <a href="/search">Pull Up Existing Subscriber</a>
-          </li>
-          <li class= <%= 'active' if (params[:controller]+'#'+params[:action]) == 'subs#index'%>>
-            <a href="/subs/">All Subscribers</a>
-          </li>
+        <section class="middle tab-bar-section">
+          <h1><a href="/"><%= image_tag 'logo-socks.png'%></a></h1>
+        </section>
+
+      </nav>
+
+      <aside class="left-off-canvas-menu">
+        <ul class="off-canvas-list">
+          <li><label>ZORAAB</label></li>
+          <li><a id ="shopify_sync" href="#">Sync Inventory</a></li>
+          <li><a href="#" data-reveal-id="myModal">Fulfill Future Subs</a></li>
+          <li><a href="/subs/">All Subscribers</a></li>
+          <li><a href="/batches">All Batches</a></li>
+          <li><a href="/search">Search Subscribers</a></li>
+          <li><%= link_to "Add a New Subscriber", new_sub_path %></li>
         </ul>
-      </section>
-    </nav>
+      </aside>
+      <section class="main-section">
 
-    <%= yield %>
-    <%= javascript_include_tag "application" %>
+<%= yield %>
+
+      </section>
+
+      <a class="exit-off-canvas"></a>
+
+      </div>
+    </div>
+
+    <div class="overlay">
+
+    </div>
+    <div id="loader" class="hide">
+      <div id="ballWrapper">
+        <div id="ball"></div>
+        <div id="ballShadow"></div>
+      </div>
+    </div>
+
+    <div id="myModal" class= "reveal-modal" data-reveal>
+      <h2>How many days of subscriptions would you like to fill?</h2>
+          <%= form_tag("/batches/new", method: "get") do %>
+            <div class="row collapse">
+              <div class="small-10 columns">
+                <%= text_field_tag 'days'%>
+              </div>
+              <div class="small-2 columns">
+                <%= submit_tag("Go", class: 'button postfix retrieve-recurring-subs') %>
+              </div>
+            </div>
+          <% end %>
+      <a class="close-reveal-modal">&#215;</a>
+    </div>
+
   </body>
 </html>
