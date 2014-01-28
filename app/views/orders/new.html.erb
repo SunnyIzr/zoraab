@@ -1,6 +1,8 @@
 <div class="row">
   <div class="large-4 columns">
     <h4> Subscription - <%=@sub.cid%></h4>
+    <h6> <%= @order.trans_id ? 'Trans Id - ' + @order.trans_id.to_s : 'Payment Not Received'  %><h6>
+
   </div>
   <div class="large-5 columns button-bar">
     <ul class="button-group radius round">
@@ -64,6 +66,7 @@
         <tbody>
           <tr>
             <td>
+              <%= hidden_field_tag 'trans_id', @order.trans_id %>
 
     <%= render partial: "order_input", locals: {items: @response[:items], sub_id: @sub.id.to_s} %>
             </td>

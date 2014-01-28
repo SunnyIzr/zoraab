@@ -21,9 +21,7 @@
           <tr>
             <form name="new-signup" action="/subs-with-trans/" method="post">
               <td>
-                <a href="#" class="new-sub-signup" data-cid='<%=signup.cid%>'>
-                  <%=signup.created_at.strftime('%m/%d')%>
-                </a>
+                <%=signup.created_at.strftime('%m/%d')%>
               </td>
               <td>
                 <a href="https://zoraab.chargify.com/subscriptions/<%=signup.cid%>" target="_blank">
@@ -33,7 +31,7 @@
               </td>
               <td><%=signup.name%></td>
                   <input type="hidden" name="trans_id" value="<%=signup.trans_id%>">
-              <td><%=signup.amount%><input type="submit" value="submit"></td>
+              <td><%=signup.amount%><input type="submit" value="Create" class="button tiny"></td>
             </form>
           </tr>
         <% end %>

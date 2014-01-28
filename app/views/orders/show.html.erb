@@ -1,6 +1,8 @@
 <div class="row">
   <div class="large-8 columns">
     <h4> Your New Subscription Order - <%=@order.order_number%></h4>
+    <h6> <%= @order.trans_id ? 'Trans Id - ' + @order.trans_id.to_s : 'Payment Not Received'  %><h6>
+
   </div>
   <div class="large-4 columns">
     <h6><strong>Order Date:</strong> <%=@order.created_at.strftime('%a %d %b %Y')%></h6>

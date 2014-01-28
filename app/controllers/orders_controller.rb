@@ -10,7 +10,6 @@ class OrdersController < ApplicationController
 
   def new
     @order = Order.new(trans_id: params['trans_id'])
-    p @order
     @sub = Sub.find(params[:sub_id])
     @response = ChargifyResponse.parse(@sub.chargify)
   end
