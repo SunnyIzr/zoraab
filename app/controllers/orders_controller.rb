@@ -9,7 +9,8 @@ class OrdersController < ApplicationController
   end
 
   def new
-    @order = Order.new
+    @order = Order.new(trans_id: params['trans_id'])
+    p @order
     @sub = Sub.find(params[:sub_id])
     @response = ChargifyResponse.parse(@sub.chargify)
   end
@@ -45,7 +46,7 @@ class OrdersController < ApplicationController
 
   private
   def order_params
-    params.permit(:sub_id, :order_number,:created_at,:batch_id)
+    params.permit(:sub_id, :order_number,:created_at,:batch_id,:trans_id)
   end
 
   def items_params

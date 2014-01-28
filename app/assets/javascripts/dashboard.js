@@ -13,8 +13,9 @@ var DashboardController = {
 
 var DashboardModel = {
   createNewSub: function(cId){
-    $.post( '/subs', {cid: cId}).done(function(data) {
-      window.location='/new-sub-order/'+cId
+    $.post( '/subs-with-trans', {cid: cId}).done(function(data) {
+      myData = data
+      console.log(data)
     })
   }
 }

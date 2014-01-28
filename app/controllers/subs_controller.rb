@@ -13,6 +13,16 @@ class SubsController < ApplicationController
     end
   end
 
+  def create_with_trans
+    @sub = Sub.new(cid: params['cid'])
+    if @sub.save
+      redirect_to new_sub_order_path(@sub) + '?trans_id=' + params['trans_id']
+    else
+      render text: "There was an error with your request. Either you did not input a Chargify ID or the subscriber already exists in Coz with that Chargify ID. Please Try Again."
+    end
+
+  end
+
   def show
     @sub = Sub.find(params[:id])
     @response = ChargifyResponse.parse(@sub.chargify)
@@ -30,17 +40,6 @@ class SubsController < ApplicationController
     @sub = Sub.find_by(cid: params['cid'])
     if @sub
       redirect_to sub_path(@sub)
-    else
-      render text: "Does Not Exist!"
-    end
-  end
-
-  def new_order_by_cid
-    p '~'*1000
-    p params
-    @sub = Sub.find_by(cid: params['cid'])
-    if @sub
-      redirect_to new_sub_order_path(@sub)
     else
       render text: "Does Not Exist!"
     end
@@ -71,6 +70,6 @@ class SubsController < ApplicationController
 
   private
   def sub_params
-    params.permit(:cid)
+    params.permit(:cid,:trans_id)
   end
 end

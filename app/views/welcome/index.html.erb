@@ -17,12 +17,24 @@
         </tr>
       </thead>
       <tbody>
-        <% @os_signups.each do |signup| %>
+        <% @os_signups.each_with_index do |signup,index| %>
           <tr>
-            <td><a href="#" class="new-sub-signup" data-cid='<%=signup.cid%>'><%=signup.created_at.strftime('%m/%d')%></a></td>
-            <td><a href="https://zoraab.chargify.com/subscriptions/<%=signup.cid%>" target="_blank"><%=signup.cid%></a></td>
-            <td><%=signup.name%></td>
-            <td><%=signup.amount%></td>
+            <form name="new-signup" action="/subs-with-trans/" method="post">
+              <td>
+                <a href="#" class="new-sub-signup" data-cid='<%=signup.cid%>'>
+                  <%=signup.created_at.strftime('%m/%d')%>
+                </a>
+              </td>
+              <td>
+                <a href="https://zoraab.chargify.com/subscriptions/<%=signup.cid%>" target="_blank">
+                  <input type="hidden" name="cid" value="<%=signup.cid%>">
+                  <%=signup.cid%>
+                </a>
+              </td>
+              <td><%=signup.name%></td>
+                  <input type="hidden" name="trans_id" value="<%=signup.trans_id%>">
+              <td><%=signup.amount%><input type="submit" value="submit"></td>
+            </form>
           </tr>
         <% end %>
       </tbody>
