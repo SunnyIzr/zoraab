@@ -35,17 +35,19 @@
         <tr>
           <th>Date</th>
           <th>Id</th>
-          <th>Name</th>
-          <th>Amount</th>
+          <th width='500'>Name</th>
+          <th>Amt</th>
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-        </tr>
+        <% @os_rens.each do |renewal| %>
+          <tr>
+            <td><%=renewal.created_at.strftime('%m/%d')%></td>
+            <td><a href="https://zoraab.chargify.com/subscriptions/<%=renewal.cid%>" target="_blank"><%=renewal.cid%></a></td>
+            <td><%=renewal.name%></td>
+            <td><%=renewal.amount%></td>
+          </tr>
+        <% end %>
       </tbody>
     </table>
   </div>
