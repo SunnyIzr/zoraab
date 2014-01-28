@@ -22,15 +22,20 @@
         </section>
 
         <section class="middle tab-bar-section">
-          <h1><a href="/"><%= image_tag 'logo-socks.png'%> Zoraab</a></h1>
+          <h1><a href="/"><%= image_tag 'logo-socks.png'%></a></h1>
         </section>
 
       </nav>
 
       <aside class="left-off-canvas-menu">
         <ul class="off-canvas-list">
-          <li><label>Foundation</label></li>
-          <li><a href="#">The Psychohistorians</a></li>
+          <li><label>ZORAAB</label></li>
+          <li><a id ="shopify_sync" href="#">Sync Inventory</a></li>
+          <li><a href="#" data-reveal-id="myModal">Fulfill Future Subs</a></li>
+          <li><a href="/subs/">All Subscribers</a></li>
+          <li><a href="/batches">All Batches</a></li>
+          <li><a href="/search">Search Subscribers</a></li>
+          <li><%= link_to "Add a New Subscriber", new_sub_path %></li>
         </ul>
       </aside>
       <section class="main-section">
@@ -43,5 +48,31 @@
 
       </div>
     </div>
+
+    <div class="overlay">
+
+    </div>
+    <div id="loader" class="hide">
+      <div id="ballWrapper">
+        <div id="ball"></div>
+        <div id="ballShadow"></div>
+      </div>
+    </div>
+
+    <div id="myModal" class= "reveal-modal" data-reveal>
+      <h2>How many days of subscriptions would you like to fill?</h2>
+          <%= form_tag("/batches/new", method: "get") do %>
+            <div class="row collapse">
+              <div class="small-10 columns">
+                <%= text_field_tag 'days'%>
+              </div>
+              <div class="small-2 columns">
+                <%= submit_tag("Go", class: 'button postfix retrieve-recurring-subs') %>
+              </div>
+            </div>
+          <% end %>
+      <a class="close-reveal-modal">&#215;</a>
+    </div>
+
   </body>
 </html>
