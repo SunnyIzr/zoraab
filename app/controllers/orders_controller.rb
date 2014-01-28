@@ -28,6 +28,7 @@ class OrdersController < ApplicationController
       @order.products << Product.find_or_create_by(sku: item)
     end
     if @order.save
+      OutstandingSignup.refresh_outstanding_signups
       redirect_to order_path(@order.id)
     else
       render text: "FAIL!"
