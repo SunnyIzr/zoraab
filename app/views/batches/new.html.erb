@@ -1,5 +1,10 @@
 
 <div class="large-12 columns">
+<% if @subs.empty? %>
+<div class="large-12 columns text-center">
+  <h4> There are no outstanding subscriptions </h4>
+</div>
+<%else%>
 
   <div class="left generate-batch">
     <button class "button" >
@@ -87,6 +92,8 @@
       <%end%>
     </tbody>
   </table>
+
+<%end%>
 
 </div>
 
