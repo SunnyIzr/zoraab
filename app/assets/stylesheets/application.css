@@ -58,6 +58,14 @@ td {
 .save-batch{
   display:none;
 }
+.preview-image img{
+  height:100px;
+  width:100px;
+}
+.past_due {
+  background-color: #ff8585 !important;
+}
+
 
 /* 3D Bouncing ball */
 

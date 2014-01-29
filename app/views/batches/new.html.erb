@@ -21,6 +21,11 @@
       Save Batch
     </button>
   </div>
+  <div class="hide left save-batch-and-update">
+    <button class "button" >
+      Save Batch
+    </button>
+  </div>
   <div class="hide left view-batch">
     <button class "button" onclick="location.href='/batches/<%=@batch.id%>'">
       View Batch
@@ -81,9 +86,7 @@
                 <%= button_tag(type: "submit", class: "save-order button tiny") do %>
                   <i class='fa fa-floppy-o'></i>
                 <% end %>
-                <a href="#" data-subid="<%= Sub.find_by(cid: sub[:id]).id %>" class="save-order-and-update button tiny">
-                  <i class="fa fa-cloud-upload"></i>
-                </a>
+                <i class="fa fa-cloud-upload"></i><%= check_box_tag(:update_shopify) %>
               </div>
             </div>
             <% end %>

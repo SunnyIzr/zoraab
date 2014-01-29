@@ -15,11 +15,7 @@ class OrdersController < ApplicationController
   end
 
   def create
-    if params[:commit] == "Save and Update Shopify"
-      params[:item].each do |sku|
-        Shopify.reduce_shopify_inv(sku)
-      end
-    end
+    update_shopify if params[:commit] == "Save and Update Shopify" || params[:update_shopify] == '1'
     @order = Order.new(order_params)
     @sub = Sub.find(params[:sub_id])
     response = ChargifyResponse.parse(@sub.chargify)
@@ -33,6 +29,12 @@ class OrdersController < ApplicationController
       redirect_to order_path(@order.id)
     else
       render text: "FAIL!"
+    end
+  end
+
+  def update_shopify
+    params[:item].each do |sku|
+      Shopify.reduce_shopify_inv(sku)
     end
   end
 
