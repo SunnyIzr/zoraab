@@ -15,8 +15,6 @@ class OrdersController < ApplicationController
   end
 
   def create
-    p "?"*5000
-    p params
     update_shopify if params[:commit] == "Save and Update Shopify" || params[:update_shopify] == '1'
     @order = Order.new(order_params)
     @sub = Sub.find(params[:sub_id])
@@ -35,8 +33,6 @@ class OrdersController < ApplicationController
   end
 
   def update_shopify
-    p '~'*1000
-    p params
     params[:item].each do |sku|
       Shopify.reduce_shopify_inv(sku)
     end
