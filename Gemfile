@@ -38,6 +38,8 @@ gem 'wuparty'
 
 gem 'thin'
 
+gem 'unicorn'
+
 gem 'shopify_api'
 
 gem "font-awesome-rails"
