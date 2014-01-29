@@ -49,11 +49,9 @@
       <%@subs.each_with_index do |sub,index|%>
         <tr data-subid="<%= Sub.find_by(cid: sub[:id]).id %>">
           <td class="text-center">
-            <span data-tooltip class="has-tip" title="<%=sub[:name]%>">
               <a href="/subs/<%=Sub.find_by(cid: sub[:id]).id %>" target="_blank">
                 <%=sub[:id]%>
               </a>
-            </span>
           </td>
           <%= form_for @orders[index], remote: true, data: { subid: @orders[index].sub_id }, url: sub_orders_path(@orders[index].sub_id) do |f| %>
           <td class="text-center">
