@@ -7,6 +7,7 @@ var OrdersController = {
     this.deleteOrderButton()
     this.confirmOrderButton()
     this.saveOrderButton()
+    this.sendToShipstationButton();
   },
   genButton: function() {
     $('.generate-button').click(function(event){
@@ -75,6 +76,17 @@ var OrdersController = {
     }).bind("ajax:error", function(e, xhr, status, error) {
       alert('error')
     })
+  },
+  sendToShipstationButton: function() {
+    $('.send-to-shipstation').click(function(event){
+      event.preventDefault();
+      orderId = $(this).data('orderid')
+      $('.overlay').addClass('overlay-show')
+      $('.overlay').addClass('overlay-impt')
+      $('.loader').addClass('loader-show')
+      $('.loader').addClass('loader-impt')
+      OrdersModel.sendToShipstation(orderId)
+    })
   }
 }
 
@@ -98,6 +110,18 @@ var OrdersModel = {
   },
   prevRec: function(subId,pos) {
     this.displayedPos[subId][pos] -= 1
+  },
+  sendToShipstation: function(orderId) {
+    path = '/send-to-shipstation'
+    $.post(path,{order_id: orderId}).done(function(data) {
+
+      $('.loader').removeClass('loader-show')
+      OrdersView.displaySysMsg('Sent to Shipstation!')
+    }).fail(function(data) {
+      $('.loader').removeClass('loader-show')
+      OrdersView.displaySysMsg('Unable to Send!')
+    })
+
   }
 }
 
@@ -150,5 +174,20 @@ var OrdersView = {
     $('div[data-subid='+subId+'].vert-button-tray').hide()
     $('div[data-subid='+subId+'].order-complete').show().addClass('success-overlay')
 
+  },
+  displaySysMsg: function(msg) {
+    $('.sys-msg').empty()
+    $('.sys-msg').append('<h2>' + msg + '</h2>')
+    $('.sys-msg').addClass('sys-msg-show')
+    setTimeout(function() {
+      OrdersView.removeSysMsg()
+    },2000)
+  },
+  removeSysMsg: function() {
+    $('.sys-msg').removeClass('sys-msg-show')
+    $('.overlay').removeClass('overlay-show')
+    setTimeout(function() {
+      $('.overlay').removeClass('overlay-impt')
+    },1000)
   }
 }

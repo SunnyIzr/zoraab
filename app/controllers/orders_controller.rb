@@ -40,7 +40,13 @@ class OrdersController < ApplicationController
 
   def send_to_shipstation
     order = Order.find(params[:order_id])
-    Shipstation.send_order(order)
+    ss_order = Shipstation.send_order(order)
+    if ss_order.OrderID != nil
+      respond_to do |format|
+        msg = { :status => "ok", :message => "Success!" }
+        format.json  { render :json => msg }
+      end
+    end
   end
 
   def new_batch

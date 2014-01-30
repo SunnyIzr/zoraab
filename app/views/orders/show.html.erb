@@ -70,6 +70,6 @@
 <div class="row">
   <div class="large-5 columns left">
     <%= link_to'Export',order_path(format: 'csv'), class: 'button' %>
-    <a class="button" href="#"> Send to ShipStation </a>
+    <a class="send-to-shipstation button" href="#" data-orderid='<%=@order.id%>'' > Send to ShipStation </a>
   </div>
 </div>
