@@ -12,6 +12,7 @@
         <th class="text-center">Name</th>
         <th class="text-center">Date</th>
         <th class="text-center">Selections</th>
+        <th> </th>
       </tr>
     </thead>
     <tbody>
@@ -34,8 +35,9 @@
                 </a>
               </div>
             </div>
-            <% end %>
+          <% end %>
           </td>
+          <td><a href="#" class="send-to-shipstation button tiny" data-orderid='<%=order.id%>' >Send to <br>ShipStation</a></td>
         </tr>
       <%end%>
     </tbody>

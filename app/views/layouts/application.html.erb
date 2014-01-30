@@ -30,9 +30,9 @@
       <aside class="left-off-canvas-menu">
         <ul class="off-canvas-list">
           <li><label>ZORAAB</label></li>
-          <li><a id ="shopify_sync" href="#">Sync Inventory</a></li>
+          <li><a id ="shopify_sync" class='long-load' href="#">Sync Inventory</a></li>
           <li><a href="#" data-reveal-id="myModal">Fulfill Future Subs</a></li>
-          <li><a href="/subs/">All Subscribers</a></li>
+          <li><a href="/subs/" class="long-load">All Subscribers</a></li>
           <li><a href="/batches">All Batches</a></li>
           <li><a href="/search">Search Subscribers</a></li>
           <li><%= link_to "Add a New Subscriber", new_sub_path %></li>
@@ -50,9 +50,12 @@
     </div>
 
     <div class="overlay">
+    </div>
+
+    <div class='sys-msg'>
 
     </div>
-    <div id="loader" class="hide">
+    <div class="loader">
       <div id="ballWrapper">
         <div id="ball"></div>
         <div id="ballShadow"></div>
@@ -67,7 +70,7 @@
                 <%= text_field_tag 'days'%>
               </div>
               <div class="small-2 columns">
-                <%= submit_tag("Go", class: 'button postfix retrieve-recurring-subs') %>
+                <%= submit_tag("Go", class: 'button postfix long-load') %>
               </div>
             </div>
           <% end %>

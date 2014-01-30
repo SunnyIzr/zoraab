@@ -3,7 +3,7 @@ $(function(){ $(document).foundation(); });
 
 $(document).ready(function() {
     shopifySync();
-    fulfillRecurSubs();
+    longLoad();
     OrdersController.init()
     BatchController.init()
     DashboardController.init()
@@ -14,17 +14,22 @@ $(document).ready(function() {
 function shopifySync() {
   $('a#shopify_sync').click(function(event) {
     event.preventDefault();
-    $('.overlay').show();
-    $('#loader').show();
     window.location.href = '/sync'
 
   })
 }
 
-function fulfillRecurSubs () {
-  $('.retrieve-recurring-subs').click(function() {
-    $('.overlay').show();
-    $('#loader').show();
+function longLoad() {
+  $('.long-load').click(function(event) {
+    revealLoader()
+
   })
+}
+
+function revealLoader() {
+  $('.overlay').addClass('overlay-show')
+  $('.overlay').addClass('overlay-impt')
+  $('.loader').addClass('loader-show')
 
 }
+
