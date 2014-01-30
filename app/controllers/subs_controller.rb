@@ -5,6 +5,7 @@ class SubsController < ApplicationController
 
   def create
     @sub = Sub.new(sub_params)
+    @sub.retrieve_wufoo_prefs
 
     if @sub.save
       redirect_to sub_path(@sub.id)
@@ -17,6 +18,7 @@ class SubsController < ApplicationController
     @sub = Sub.find_by(cid: params['cid'])
     if @sub == nil
       @sub = Sub.new(cid: params['cid'])
+      @sub.retrieve_wufoo_prefs
       if @sub.save
         redirect_to new_sub_order_path(@sub) + '?trans_id=' + params['trans_id']
       else

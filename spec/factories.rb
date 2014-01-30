@@ -12,4 +12,8 @@ FactoryGirl.define do
     pref {'dress'}
   end
 
+  factory :product do
+    sku {'sku'}
+  end
+
 end

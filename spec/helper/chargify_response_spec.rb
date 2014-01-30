@@ -17,7 +17,7 @@ describe ChargifyResponse do
   end
 
   it "should display price" do
-    expect(ChargifyResponse.price(response)).to eq(22)
+    expect(ChargifyResponse.price(response)).to eq(20)
   end
   it "should display number of items in each subscription" do
     expect(ChargifyResponse.items(response)).to eq(2)
@@ -61,10 +61,11 @@ describe ChargifyResponse do
 
   it "should display all parsed data in a hash" do
     expect(ChargifyResponse.parse(response)).to eq ({
+        id: 4258861,
         name: 'SunnyShip IsraniShip',
         email: 'sunny@zoraab.com',
         plan: 'Sock Dabbler (2 Pairs/Mo)',
-        price: 22,
+        price: 20,
         items: 2,
         status: 'canceled',
         start_date: '25 Nov 2013',
@@ -87,7 +88,9 @@ describe ChargifyResponse do
           :zip => '07035',
           :country => 'US',
           :phone => nil
-        }
+        },
+      :next_pmt_date => Time.new,
+      :days_till_due=>0
       })
   end
 
