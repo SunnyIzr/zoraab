@@ -6,7 +6,7 @@ module Shipstation
     SHIPSTATION.AddToOrders(ss_order)
     created_order = SHIPSTATION.save_changes
     order.products.each do |product|
-      order_item = create_order_item(order,product,create_order)
+      order_item = create_order_item(order,product,created_order[0])
       SHIPSTATION.AddToOrderItems(order_item)
       SHIPSTATION.save_changes
     end
