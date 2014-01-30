@@ -38,6 +38,11 @@ class OrdersController < ApplicationController
     end
   end
 
+  def send_to_shipstation
+    order = Order.find(params[:order_id])
+    Shipstation.send_order(order)
+  end
+
   def new_batch
     @subs = []
     @orders = []
@@ -49,7 +54,7 @@ class OrdersController < ApplicationController
 
   private
   def order_params
-    params.permit(:sub_id, :order_number,:created_at,:batch_id,:trans_id)
+    params.permit(:sub_id, :order_id, :order_number,:created_at,:batch_id,:trans_id)
   end
 
   def items_params

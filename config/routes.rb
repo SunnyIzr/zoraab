@@ -19,6 +19,7 @@ Zoraab::Application.routes.draw do
   post '/new-trans/' => 'chargify_hooks#new_trans'
   post '/subs-with-trans/' => 'subs#create_with_trans'
   post '/update-shopify/' => 'orders#update_shopify'
+  post '/send-to-shipstation'=> 'orders#send_to_shipstation'
 
 
   # The priority is based upon order of creation: first created -> highest priority.
