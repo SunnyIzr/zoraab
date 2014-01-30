@@ -2,8 +2,8 @@ class Order < ActiveRecord::Base
   after_save :set_order_number
   has_and_belongs_to_many :products
   belongs_to :sub
-  validates_presence_of :sub_id
   belongs_to :batch
+  validates_presence_of :sub_id
 
 
   def set_order_number
@@ -35,7 +35,7 @@ class Order < ActiveRecord::Base
     self.billing_country = response[:billing_address][:country]
   end
 
-  def to_csv(prods)
+  def to_csv(prods) #untested
     CSV.generate() do |csv|
       csv << ['Order #','Order Date','Plan','customer_name','customer_email','shipping_address','shipping_address_2','shipping_city','shipping_state','shipping_zip','shipping_country','SKU']
       prods.each do |prod|

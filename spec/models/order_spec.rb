@@ -1,10 +1,8 @@
 require 'spec_helper'
 
 describe Order do
-  it {should validate_presence_of (:sub_id)}
-  it {should have_and_belong_to_many (:products)}
-  it {should belong_to (:sub)}
   let (:order1) {FactoryGirl.create(:order)}
+  let (:order2) {FactoryGirl.create(:order)}
   let (:response) {{
         name: 'SunnyShip IsraniShip',
         email: 'sunny@zoraab.com',
@@ -35,7 +33,18 @@ describe Order do
         }
       }}
 
-  it "should set order details with appropriate resposne hash" do
+
+  it {should validate_presence_of (:sub_id)}
+  it {should have_and_belong_to_many (:products)}
+  it {should belong_to (:sub)}
+  it {should belong_to (:batch)}
+  it "should create an order number that starts with prespecified prefix" do
+    order1.save
+    expect(order1.order_number[0]).to eq('K')
+    expect(order1.order_number.length).to eq(5)
+  end
+
+  it "should set order details with appropriate response hash" do
     order1.set_order_details(response)
     order1.save
     expect(order1.name).to eq ('SunnyShip IsraniShip')
@@ -54,5 +63,11 @@ describe Order do
     expect(order1.billing_state).to eq ('NJ')
     expect(order1.billing_zip).to eq ('07035')
     expect(order1.billing_country).to eq ('US')
+  end
+
+  it 'should provide a list of pending orders' do
+    order1.save
+    order2.save
+    expect(Order.pending).to eq([order1,order2])
   end
 end
