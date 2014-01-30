@@ -179,12 +179,16 @@ var OrdersView = {
     $('.sys-msg').empty()
     $('.sys-msg').append('<h2>' + msg + '</h2>')
     $('.sys-msg').addClass('sys-msg-show')
+    $('.sys-msg').addClass('sys-msg-impt')
     setTimeout(function() {
       OrdersView.removeSysMsg()
     },2000)
   },
   removeSysMsg: function() {
     $('.sys-msg').removeClass('sys-msg-show')
+    setTimeout(function() {
+      $('.sys-msg').removeClass('sys-msg-impt')
+    },1000)
     $('.overlay').removeClass('overlay-show')
     setTimeout(function() {
       $('.overlay').removeClass('overlay-impt')

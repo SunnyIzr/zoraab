@@ -72,7 +72,7 @@
 
 .sys-msg{
   background-color: #e0ffc9;
-  z-index: 200;
+  z-index: -100;
   position: fixed;
   padding:50px;
   right: 0;
@@ -93,6 +93,10 @@
 
 .sys-msg-show {
   opacity:1.0;
+}
+
+.sys-msg-impt {
+  z-index:200;
 }
 
 .arrows{
