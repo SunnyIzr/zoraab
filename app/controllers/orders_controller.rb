@@ -1,7 +1,7 @@
 class OrdersController < ApplicationController
   def show
     @order = Order.find(params[:id])
-    @prods = @order.products.map { |product| Shopify.data(product.sku)}
+    @prods = @order.get_prod_data
     respond_to do |format|
       format.html
       format.csv { send_data @order.to_csv(@prods) }
@@ -17,12 +17,8 @@ class OrdersController < ApplicationController
   def create
     update_shopify if params[:commit] == "Save and Update Shopify" || params[:update_shopify] == '1'
     @order = Order.new(order_params)
-    @sub = Sub.find(params[:sub_id])
-    response = ChargifyResponse.parse(@sub.chargify)
-    @order.set_order_details(response)
-    params[:item].each do |item|
-      @order.products << Product.find_or_create_by(sku: item)
-    end
+    @order.set_order_details
+    @order.set_order_products(params[:item])
     if @order.save
       OutstandingSignup.refresh_outstanding_signups
       OutstandingRenewal.refresh_outstanding_renewals
@@ -46,15 +42,6 @@ class OrdersController < ApplicationController
         msg = { :status => "ok", :message => "Success!" }
         format.json  { render :json => msg }
       end
-    end
-  end
-
-  def new_batch
-    @subs = []
-    @orders = []
-    Sub.pull_subs_due(params['days'].to_i).each do |sub|
-      @subs << ChargifyResponse.parse(sub.chargify)
-      @orders << sub.orders.new
     end
   end
 
