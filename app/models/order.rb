@@ -54,7 +54,7 @@ class Order < ActiveRecord::Base
     end
   end
 
-  def to_csv(prods) #untested
+  def to_csv(prods)
     CSV.generate() do |csv|
       csv << ['Order #','Order Date','Plan','customer_name','customer_email','shipping_address','shipping_address_2','shipping_city','shipping_state','shipping_zip','shipping_country','SKU']
       prods.each do |prod|
