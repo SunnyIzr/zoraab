@@ -8,6 +8,27 @@ class Batch < ActiveRecord::Base
     end
   end
 
+  def setup_new(days)
+    subs = []
+    orders = []
+    Sub.pull_subs_due(days).each do |sub|
+      subs << ChargifyResponse.parse(sub.chargify)
+      orders << sub.orders.new
+    end
+    {subs: subs, orders: orders}
+  end
+
+  def get_prod_data
+    products = []
+    self.orders.each {|order| products << order.products }
+    products.flatten!.uniq!
+    product_data = {}
+    products.each do |product|
+      product_data[product.sku] = Shopify.data(product.sku)
+    end
+    product_data
+  end
+
   def to_csv
     CSV.generate() do |csv|
       csv << ['Order #','Order Date','Plan','customer_name','customer_email','shipping_address','shipping_address_2','shipping_city','shipping_state','shipping_zip','shipping_country','SKU']

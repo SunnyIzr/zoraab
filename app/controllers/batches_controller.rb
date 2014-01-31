@@ -1,15 +1,7 @@
 class BatchesController < ApplicationController
   def show
     @batch = Batch.find(params[:id])
-    @prods = []
-    @batch.orders.each do |order|
-      @prods << order.products
-    end
-    @prods.flatten!.uniq!
-    @product_data = {}
-    @prods.each do |product|
-      @product_data[product.sku] = Shopify.data(product.sku)
-    end
+    @product_data = @batch.get_prod_data
     respond_to do |format|
       format.html
       format.csv { send_data @batch.to_csv }
@@ -23,12 +15,9 @@ class BatchesController < ApplicationController
   def new
     Batch.destroy_empty_batches
     @batch = Batch.create
-    @subs = []
-    @orders = []
-    Sub.pull_subs_due(params['days'].to_i).each do |sub|
-      @subs << ChargifyResponse.parse(sub.chargify)
-      @orders << sub.orders.new
-    end
+    setup_batch = @batch.setup_new(params['days'].to_i)
+    @subs = setup_batch[:subs]
+    @orders = setup_batch[:orders]
   end
 
 end
