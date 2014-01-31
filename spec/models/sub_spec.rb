@@ -2,6 +2,10 @@ require 'spec_helper'
 
 describe Sub do
   let (:sub) {FactoryGirl.create(:sub)}
+  let (:order) {FactoryGirl.create(:order)}
+  let (:pref1) {FactoryGirl.create(:pref)}
+  let (:pref2) {FactoryGirl.create(:pref)}
+  let (:pref3) {FactoryGirl.create(:pref)}
   let (:order1) {FactoryGirl.create(:order)}
   let (:order2) {FactoryGirl.create(:order)}
   let (:product1) {FactoryGirl.create(:product)}
@@ -35,9 +39,37 @@ describe Sub do
 
     expect(sub.order_history).to eq(['sku_3', 'sku_4', 'sku_1', 'sku_2'])
 
+  end
 
+  it "should retrieve Wufoo preferences" do
+    pref1.save
+    pref2.pref = 'casual'
+    pref2.save
+    pref3.pref = 'fun'
+    pref3.save
 
+    expect(sub.retrieve_wufoo_prefs). to eq([pref1,pref3])
 
   end
+
+  it 'should obtain Chargify response based on cid that contains all pertinent information' do
+    expect(sub.chargify['state']).to eq('canceled')
+    expect(sub.chargify['customer'].first_name).to eq('SunnyShip')
+    expect(sub.chargify['customer'].last_name).to eq('IsraniShip')
+    expect(sub.chargify['customer'].email).to eq('sunny@zoraab.com')
+    expect(sub.chargify['product'].name).to eq('Sock Dabbler (2 Pairs/Mo)')
+
+  end
+
+  it 'should indicate whether an order for the next pmt date was NOT created' do
+    sub.save
+    next_pmt_date = ChargifyResponse.next_pmt_date(sub.chargify)
+    order.created_at = next_pmt_date
+    order.save
+    sub.orders << order
+    expect(sub.not_exist?(next_pmt_date)).to eq(false)
+  end
+
+
 
 end
