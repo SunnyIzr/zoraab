@@ -60,16 +60,16 @@ describe ChargifyResponse do
   end
 
   it "should display all parsed data in a hash" do
-    expect(ChargifyResponse.parse(response)).to eq ({
-        id: 4258861,
-        name: 'SunnyShip IsraniShip',
-        email: 'sunny@zoraab.com',
-        plan: 'Sock Dabbler (2 Pairs/Mo)',
-        price: 20,
-        items: 2,
-        status: 'canceled',
-        start_date: '25 Nov 2013',
-        shipping_address: {
+    hash = ChargifyResponse.parse(response)
+    expect(hash[:id]).to eq(4258861)
+    expect(hash[:name]).to eq('SunnyShip IsraniShip')
+    expect(hash[:email]).to eq('sunny@zoraab.com')
+    expect(hash[:plan]).to eq('Sock Dabbler (2 Pairs/Mo)')
+    expect(hash[:price]).to eq(20)
+    expect(hash[:items]).to eq(2)
+    expect(hash[:status]).to eq('canceled')
+    expect(hash[:start_date]).to eq('25 Nov 2013')
+    expect(hash[:shipping_address]).to eq({
           :name => 'SunnyShip IsraniShip',
           :address => '123 Shipping Street',
           :address2 => nil,
@@ -78,8 +78,8 @@ describe ChargifyResponse do
           :zip => '12345',
           :country => 'CA',
           :phone => nil
-        },
-        billing_address: {
+        })
+    expect(hash[:billing_address]).to eq({
           :name => 'Sunny Israni',
           :address => '43 Rosenbrook Drive',
           :address2 => nil,
@@ -87,11 +87,7 @@ describe ChargifyResponse do
           :state => 'NJ',
           :zip => '07035',
           :country => 'US',
-          :phone => nil
-        },
-      :next_pmt_date => Time.new,
-      :days_till_due=>0
-      })
+          :phone => nil})
   end
 
 
