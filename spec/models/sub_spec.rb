@@ -70,6 +70,11 @@ describe Sub do
     expect(sub.not_exist?(next_pmt_date)).to eq(false)
   end
 
+  it "should pull back all subs that are due within a time period" do
+    sub.save
+    expect(Sub.pull_subs_due(30)).to eq([])
+  end
+
 
 
 end

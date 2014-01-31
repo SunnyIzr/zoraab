@@ -4,6 +4,7 @@ describe Kitter do
   let (:dress_prod_list) {%w[D0 D1 D2 D3]}
   let (:fashion_prod_list) {%w[F0 F1 F2 F3]}
   let (:casual_prod_list) {%w[C0 C1 C2 C3]}
+  let (:)
 
   it "should produce the inputted list of there is only one list" do
     expect(Kitter.alt_between_lists([dress_prod_list])).to eq (%w[D0 D1 D2 D3])

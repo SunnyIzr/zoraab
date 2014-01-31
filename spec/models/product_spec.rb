@@ -7,6 +7,7 @@ describe Product do
   let (:product1) {FactoryGirl.create(:product)}
   let (:product2) {FactoryGirl.create(:product)}
   let (:product3) {FactoryGirl.create(:product)}
+
   it { should validate_presence_of (:sku)}
   it { should validate_uniqueness_of (:sku)}
   it { should have_and_belong_to_many (:prefs)}

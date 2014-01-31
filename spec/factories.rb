@@ -16,4 +16,8 @@ FactoryGirl.define do
     sku {'sku'}
   end
 
+  factory :outstanding_signup do
+    trans_id {123345}
+  end
+
 end
