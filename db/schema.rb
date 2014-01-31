@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140128024305) do
+ActiveRecord::Schema.define(version: 20140131045229) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -22,7 +22,7 @@ ActiveRecord::Schema.define(version: 20140128024305) do
   end
 
   create_table "kitter_sessions", force: true do |t|
-    t.string   "sub_id"
+    t.integer  "sub_id"
     t.text     "product_ids"
     t.datetime "created_at"
     t.datetime "updated_at"

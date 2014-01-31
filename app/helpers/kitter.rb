@@ -6,6 +6,13 @@
 module Kitter
   extend self
 
+  def suggest_prod_ids(sub_id)
+    suggestions = generate_kitter_suggestions(sub_id)
+    suggestions.map! do |product|
+      product.id
+    end
+  end
+
   def generate_kitter_suggestions(sub_id)
     prefs = Sub.find(sub_id).prefs.map {|pref| pref.pref}
     prod_lists = []
