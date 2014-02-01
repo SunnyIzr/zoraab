@@ -17,3 +17,5 @@
 
 # Ignore env file
 .env
+
+/coverage/
