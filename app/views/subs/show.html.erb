@@ -71,14 +71,14 @@
         </tr>
       </thead>
       <tbody>
-        <% @sub.orders.each do |order| %>
+        <% @sub.orders.sort_by! { |order| order.created_at }.reverse.each do |order| %>
         <tr>
           <td><a href="/orders/<%=order.id%>"><%=order.order_number%></a></td>
           <td><%=order.created_at.strftime('%m/%d/%y')%></td>
           <td>
             <ul class="inline-list">
               <% order.products.each do |product| %>
-              <li><div class='preview-image'><img src="<%=Shopify.data(product.sku)[:small_pic]%>"></div></li>
+              <li><div class='preview-image'><img src="<%=@order_prod_data[product.sku][:small_pic]%>"></div></li>
               <%end%>
             </ul>
         </tr>

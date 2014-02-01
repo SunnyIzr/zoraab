@@ -67,9 +67,9 @@ task 'db:seed_orders' => :environment do
         order.trans_id = 00000000
         order.save
       end
-      product = Product.find_or_create_by(sku: row[12])
+      product = Product.find_or_create_by(sku: row[12].downcase)
       if !order.products.include?(product)
-        puts "Adding sku #{row[12]} to order"
+        puts "Adding sku #{row[12].downcase} to order"
         order.products << product
       end
 

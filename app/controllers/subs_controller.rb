@@ -22,6 +22,7 @@ class SubsController < ApplicationController
   def show
     @sub = Sub.find(params[:id])
     @response = ChargifyResponse.parse(@sub.chargify)
+    @order_prod_data = @sub.get_prod_data
   end
 
   def index
