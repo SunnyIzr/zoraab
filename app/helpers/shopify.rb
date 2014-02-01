@@ -2,6 +2,7 @@ module Shopify
   BRANDS = [  "Foot Traffic",
               "Hot Sox",
               "Happy Socks",
+              "Mint Socks",
               "Pact",
               "Perry Ellis",
               "Richer Poorer",
