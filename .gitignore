@@ -19,4 +19,7 @@
 .env
 
 /coverage/*
+/coverage/.
+/coverage
+coverage
 
