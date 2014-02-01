@@ -37,7 +37,7 @@ describe Sub do
     sub.orders << [order1,order2]
 
 
-    expect(sub.order_history).to eq(['sku_3', 'sku_4', 'sku_1', 'sku_2'])
+    expect(sub.order_history).to eq(['sku_1', 'sku_2', 'sku_3', 'sku_4'])
 
   end
 
