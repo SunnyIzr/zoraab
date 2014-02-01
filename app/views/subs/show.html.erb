@@ -78,7 +78,7 @@
           <td>
             <ul class="inline-list">
               <% order.products.each do |product| %>
-              <li><img src="<%=Shopify.data(product.sku)[:small_pic]%>"></li>
+              <li><div class='preview-image'><img src="<%=Shopify.data(product.sku)[:small_pic]%>"></div></li>
               <%end%>
             </ul>
         </tr>

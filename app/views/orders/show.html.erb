@@ -59,7 +59,7 @@
             <a href="<%=ENV['SITE']%>products/<%=product[:sku]%>" target="_blank">
               <%= product[:sku] %></a>
             </td>
-            <td><img src="<%= product[:small_pic] %>"></td>
+            <td><div class='preview-image'><img src="<%= product[:small_pic] %>"></div></td>
             </td>
           </tr>
         <% end%>
