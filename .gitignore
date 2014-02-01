@@ -18,5 +18,5 @@
 # Ignore env file
 .env
 
-/coverage/.
+/coverage/*
 
