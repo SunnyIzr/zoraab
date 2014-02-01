@@ -26,3 +26,5 @@
 .DS_Store
 .DS_Store?
 
+# Ignore coverage files
+/seed-data/*
