@@ -40,15 +40,35 @@ class Sub < ActiveRecord::Base
 
   def self.pull_subs_due(days)
     ary = []
+    cdata = retrieve_all_active_subs
     all.each do |sub|
-      ary << sub if sub.due?(days)
+      p "checkig sub #{sub.cid}"
+      ary << sub if sub.due?(days,cdata[sub.cid])
     end
     ary
   end
 
-  def due?(days)
-    data = ChargifyResponse.parse(self.chargify)
-    return data[:days_till_due]<= days && data[:status] == 'active' && self.not_exist?(data[:next_pmt_date])
+  def self.retrieve_all_active_subs
+    i = 0
+    current_page = [1]
+    subs = {}
+    while current_page.count > 0 do
+      i +=1
+      current_page = Chargify::Subscription.find(:all, params: {per_page: 200, page: i, state: 'active'})
+      if current_page.count > 0
+        current_page.each do |sub|
+          if sub.product.attributes['product_family'].attributes['name'] != 'Shipping for Fab'
+            subs[sub.id] = ChargifyResponse.parse(sub.attributes)
+          end
+        end
+      end
+    end
+    subs
+  end
+
+  def due?(days,cdata)
+    return false if cdata.nil?
+    return cdata[:days_till_due]<= days && cdata[:status] == 'active' && self.not_exist?(cdata[:next_pmt_date])
   end
 
   def not_exist?(next_pmt_date)
