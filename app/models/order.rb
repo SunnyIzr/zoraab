@@ -16,7 +16,7 @@ class Order < ActiveRecord::Base
   def set_order_number
     unless self.order_number
       digits = 4 - self.id.to_s.length
-      self.order_number = "K" + ("0"*digits) + self.id.to_s
+      self.order_number = "ZK" + ("0"*digits) + self.id.to_s
       self.save
     end
   end

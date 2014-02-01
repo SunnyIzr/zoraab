@@ -49,6 +49,8 @@ gem 'ruby_odata'
 gem 'simplecov', :require => false, :group => :test
 
 gem 'rails_12factor', group: :production
+
+gem "will_paginate", "~> 3.0.5"
 # Use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
 

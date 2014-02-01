@@ -25,7 +25,7 @@ class SubsController < ApplicationController
   end
 
   def index
-    @subs = Sub.all
+    @subs = Sub.paginate(:page => params[:page], :per_page => 10)
     @responses = @subs.map { |sub| ChargifyResponse.parse(sub.chargify) }
   end
 
