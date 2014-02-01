@@ -16,7 +16,7 @@ class Order < ActiveRecord::Base
   def set_order_number
     unless self.order_number
       digits = 4 - self.id.to_s.length
-      self.order_number = "K" + ("0"*digits) + self.id.to_s
+      self.order_number = "ZK" + ("0"*digits) + self.id.to_s
       self.save
     end
   end
@@ -45,7 +45,13 @@ class Order < ActiveRecord::Base
   end
 
   def get_prod_data
-    self.products.map { |product| Shopify.data(product.sku)}
+    self.products.map do |product|
+      if product.active == true
+        Shopify.data(product.sku)
+      else
+        {sku: product.sku, small_pic: '/assets/no-prev.jpg'}
+      end
+    end
   end
 
   def set_order_products(ary_of_skus)

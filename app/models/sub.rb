@@ -22,6 +22,22 @@ class Sub < ActiveRecord::Base
     prod_skus
   end
 
+  def get_prod_data
+    products = []
+    self.orders.each {|order| products << order.products }
+    products.flatten!.uniq!
+    product_data = {}
+    products.each do |product|
+      if product.active == true
+        product_data[product.sku] = Shopify.data(product.sku)
+      else
+        product_data[product.sku] = {small_pic: '/assets/no-prev.jpg'}
+      end
+
+    end
+    product_data
+  end
+
   def self.pull_subs_due(days)
     ary = []
     all.each do |sub|
