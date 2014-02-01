@@ -4,10 +4,8 @@
 # or operating system, you probably want to add a global ignore instead:
 #   git config --global core.excludesfile '~/.gitignore_global'
 
+# Ignore coverage files
 /coverage/*
-/coverage/.
-/coverage
-coverage
 
 # Ignore bundler config.
 /.bundle
@@ -23,4 +21,8 @@ coverage
 # Ignore env file
 .env
 
+# OS generated files #
+######################
+.DS_Store
+.DS_Store?
 
