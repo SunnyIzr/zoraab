@@ -18,7 +18,7 @@ module Shopify
     {
       sku: sku,
       title: res['title'],
-      price: res['price'],
+      price: res['variants'][0].attributes['price'].to_f,
       q: res['variants'][0].attributes['inventory_quantity'],
       vendor: res['vendor'],
       tags: res['tags'],

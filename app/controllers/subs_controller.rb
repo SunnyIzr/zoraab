@@ -5,7 +5,7 @@ class SubsController < ApplicationController
 
   def create
     @sub = Sub.new(sub_params)
-
+    @sub.retrieve_wufoo_prefs
     if @sub.save
       redirect_to sub_path(@sub.id)
     else
@@ -14,18 +14,9 @@ class SubsController < ApplicationController
   end
 
   def create_with_trans
-    @sub = Sub.find_by(cid: params['cid'])
-    if @sub == nil
-      @sub = Sub.new(cid: params['cid'])
-      if @sub.save
-        redirect_to new_sub_order_path(@sub) + '?trans_id=' + params['trans_id']
-      else
-        render text: "There was an error with your request. Either you did not input a Chargify ID or the subscriber already exists in Coz with that Chargify ID. Please Try Again."
-      end
-    else
-      redirect_to new_sub_order_path(@sub) + '?trans_id=' + params['trans_id']
-    end
-
+    @sub = Sub.find_or_create_by(cid: params['cid'])
+    @sub.retrieve_wufoo_prefs if @sub.prefs.empty?
+    redirect_to new_sub_order_path(@sub) + '?trans_id=' + params['trans_id']
   end
 
   def show
@@ -51,11 +42,8 @@ class SubsController < ApplicationController
   end
 
   def kitter
-    @kitter_suggestions = Kitter.generate_kitter_suggestions(params['sub_id'])
-    @kitter_suggestions.map! do |product|
-      product.id
-    end
-    ksesh = KitterSession.find_or_create_by(sub_id: params['sub_id'])
+    @kitter_suggestions = Kitter.suggest_prod_ids(params['sub_id'])
+    ksesh = KitterSession.find_or_create_by(sub_id: params['sub_id'].to_i)
     ksesh.product_ids = @kitter_suggestions
     ksesh.save!
     render json: @kitter_suggestions

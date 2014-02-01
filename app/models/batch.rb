@@ -1,11 +1,31 @@
 class Batch < ActiveRecord::Base
   has_many :orders
-  accepts_nested_attributes_for :orders
 
   def self.destroy_empty_batches
     all.each do |batch|
       batch.destroy if batch.orders.empty?
     end
+  end
+
+  def setup_new(days)
+    subs = []
+    orders = []
+    Sub.pull_subs_due(days).each do |sub|
+      subs << ChargifyResponse.parse(sub.chargify)
+      orders << sub.orders.new
+    end
+    {subs: subs, orders: orders}
+  end
+
+  def get_prod_data
+    products = []
+    self.orders.each {|order| products << order.products }
+    products.flatten!.uniq!
+    product_data = {}
+    products.each do |product|
+      product_data[product.sku] = Shopify.data(product.sku)
+    end
+    product_data
   end
 
   def to_csv
