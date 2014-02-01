@@ -42,7 +42,6 @@ class Sub < ActiveRecord::Base
     ary = []
     cdata = retrieve_all_active_subs
     all.each do |sub|
-      p "checkig sub #{sub.cid}"
       ary << sub if sub.due?(days,cdata[sub.cid])
     end
     ary
