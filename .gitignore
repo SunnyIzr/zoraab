@@ -4,6 +4,11 @@
 # or operating system, you probably want to add a global ignore instead:
 #   git config --global core.excludesfile '~/.gitignore_global'
 
+/coverage/*
+/coverage/.
+/coverage
+coverage
+
 # Ignore bundler config.
 /.bundle
 
@@ -18,8 +23,4 @@
 # Ignore env file
 .env
 
-/coverage/*
-/coverage/.
-/coverage
-coverage
 
