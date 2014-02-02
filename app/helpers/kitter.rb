@@ -7,10 +7,12 @@ module Kitter
   extend self
 
   def suggest_prod_ids(sub_id)
-    suggestions = generate_kitter_suggestions(sub_id).compact!
-    suggestions.map! do |product|
-      product.id
+    suggestions = generate_kitter_suggestions(sub_id).compact
+    prod_ids = []
+    suggestions.each_with_index do |product,indx|
+      prod_ids << product.id
     end
+    prod_ids
   end
 
   def generate_kitter_suggestions(sub_id)
