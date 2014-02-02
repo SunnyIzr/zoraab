@@ -85,6 +85,7 @@ var OrdersController = {
       $('.overlay').addClass('overlay-impt')
       $('.loader').addClass('loader-show')
       $('.loader').addClass('loader-impt')
+      $('#ballWrapper').removeClass('ballWrapper')
       OrdersModel.sendToShipstation(orderId)
     })
   }
@@ -116,9 +117,11 @@ var OrdersModel = {
     $.post(path,{order_id: orderId}).done(function(data) {
 
       $('.loader').removeClass('loader-show')
+      $('#ballWrapper').addClass('ballWrapper')
       OrdersView.displaySysMsg('Sent to Shipstation!')
     }).fail(function(data) {
       $('.loader').removeClass('loader-show')
+      $('#ballWrapper').addClass('ballWrapper')
       OrdersView.displaySysMsg('Unable to Send!')
     })
 

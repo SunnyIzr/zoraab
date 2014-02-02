@@ -140,9 +140,9 @@ td {
   height: 300px;
   position: fixed;
   left: 50%;
+  z-index:100;
   top: 35%;
   margin-left: -70px;
-  z-index: 100;
   -webkit-transform: scale(1);
   -moz-transform: scale(1);
   -ms-transform: scale(1);
@@ -153,6 +153,11 @@ td {
   transition: all 5s linear 0s;
   cursor: pointer;
 }
+
+.ballWrapper {
+  display:none;
+}
+
 
 #ballWrapper:active {
   -webkit-transform: scale(0);
