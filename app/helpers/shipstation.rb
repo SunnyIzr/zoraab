@@ -3,9 +3,13 @@ module Shipstation
 
 
   def get_order(ssid)
-    SHIPSTATION.Orders.filter("OrderID eq " + ssid.to_s)
-    order = SHIPSTATION.execute
-    order[0]
+    if ssid != nil
+        SHIPSTATION.Orders.filter("OrderID eq " + ssid.to_s)
+        order = SHIPSTATION.execute
+        return order[0]
+    else
+        return nil
+    end
   end
 
   def send_order(order)
