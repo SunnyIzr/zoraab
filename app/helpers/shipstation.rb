@@ -1,6 +1,13 @@
 module Shipstation
   extend self
 
+
+  def get_order(ssid)
+    SHIPSTATION.Orders.filter("OrderID eq " + ssid.to_s)
+    order = SHIPSTATION.execute
+    order[0]
+  end
+
   def send_order(order)
     ss_order = create_order(order)
     SHIPSTATION.AddToOrders(ss_order)
@@ -13,14 +20,12 @@ module Shipstation
     created_order[0]
   end
 
-
-
   def create_order(order)
     shipstation_order = blank_order
     shipstation_order.OrderDate = order.created_at
     shipstation_order.PayDate = order.created_at
-    shipstation_order.OrderNumber = order.order_number
-    # shipstation_order.OrderNumber = 'TESTING!!!'
+    # shipstation_order.OrderNumber = order.order_number
+    shipstation_order.OrderNumber = 'TESTING!!!'
     shipstation_order.ShipName = order.name
     shipstation_order.ShipStreet1 = order.address
     shipstation_order.ShipStreet2 = order.address2
