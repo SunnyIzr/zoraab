@@ -39,12 +39,12 @@ class Sub < ActiveRecord::Base
   end
 
   def self.pull_subs_due(days)
-    ary = []
+    subs = {}
     cdata = retrieve_all_active_subs
     all.each do |sub|
-      ary << sub if sub.due?(days,cdata[sub.cid])
+      subs[sub.cid] = cdata[sub.cid] if sub.due?(days,cdata[sub.cid])
     end
-    ary
+    subs
   end
 
   def self.retrieve_all_active_subs
