@@ -47,7 +47,6 @@ describe Batch do
     order3.save
     batch1.orders << [order1,order2,order3]
     data = batch1.get_prod_data
-    p data
 
      expect(data['ms-cr704'][:sku]).to eq("ms-cr704")
      expect(data['ms-cr704'][:title]).to eq("Concrete Rose")
