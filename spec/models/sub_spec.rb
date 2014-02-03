@@ -2,6 +2,12 @@ require 'spec_helper'
 
 describe Sub do
   let (:sub) {FactoryGirl.create(:sub)}
+  let (:sub1) {FactoryGirl.create(:sub)}
+  let (:sub2) {FactoryGirl.create(:sub)}
+  let (:sub3) {FactoryGirl.create(:sub)}
+  let (:sub4) {FactoryGirl.create(:sub)}
+  let (:sub5) {FactoryGirl.create(:sub)}
+  let (:sub6) {FactoryGirl.create(:sub)}
   let (:order) {FactoryGirl.create(:order)}
   let (:pref1) {FactoryGirl.create(:pref)}
   let (:pref2) {FactoryGirl.create(:pref)}
@@ -71,8 +77,24 @@ describe Sub do
   end
 
   it "should pull back all subs that are due within a time period" do
-    sub.save
-    expect(Sub.pull_subs_due(30)).to eq([])
+    subs = Sub.retrieve_all_active_subs
+    subs_due = []
+    subs_not_due = []
+    subs.each { |key,value| subs_due << key if value[:next_pmt_date] < (Time.new + (5.day)) }
+    subs.each { |key,value| subs_not_due << key if value[:next_pmt_date] > (Time.new + (5.day)) }
+    sub1.cid = subs_due[0]
+    sub1.save
+    sub2.cid = subs_due[1]
+    sub2.save
+    sub3.cid = subs_due[2]
+    sub3.save
+    sub4.cid = subs_not_due[0]
+    sub4.save
+    sub5.cid = subs_not_due[1]
+    sub5.save
+    sub6.cid = subs_not_due[2]
+    sub6.save
+    expect(Sub.pull_subs_due(5)).to eq({sub1.cid => subs[sub1.cid], sub2.cid => subs[sub2.cid], sub3.cid => subs[sub3.cid]})
   end
 
 
