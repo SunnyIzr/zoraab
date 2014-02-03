@@ -29,7 +29,7 @@ class OrdersController < ApplicationController
   end
 
   def index
-    @orders = Order.paginate(:page => params[:page], :per_page => 20)
+    @orders = Order.order('created_at DESC').paginate(:page => params[:page], :per_page => 20)
   end
 
   def update_shopify
