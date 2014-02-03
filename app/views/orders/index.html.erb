@@ -1,0 +1,36 @@
+<div class="row">
+  <div class="large-12 columns">
+    <h4>All Subscribers</h4>
+  </div>
+</div>
+<div class="row">
+  <div class="large-12 columns">
+  <%= will_paginate @orders %>
+    <table>
+      <thead>
+        <tr>
+          <th>Order ID</th>
+          <th>Date</th>
+          <th>Name</th>
+          <th>Plan</th>
+          <th>Details</th>
+        </tr>
+      </thead>
+      <tbody>
+        <%@orders.each_with_index do |order, index|%>
+        <tr>
+          <td>
+            <a href="/orders/<%=order.id%>" target="_blank">
+              <%=order.order_number%>
+            </a>
+          </td>
+          <td><%=order.created_at.strftime('%m/%d/%y')%></td>
+          <td><%=order.name%></td>
+          <td><%=order.plan%></td>
+          <td><%=order.ship_state%></td>
+        </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

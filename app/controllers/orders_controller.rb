@@ -2,14 +2,6 @@ class OrdersController < ApplicationController
   def show
     @order = Order.find(params[:id])
     @prods = @order.get_prod_data
-    ss_order = Shipstation.get_order(@order.ssid)
-    if ss_order == nil
-      @state = "Never Sent to Shipstation"
-    elsif ss_order.ShipDate == nil
-      @state = 'Unshipped'
-    else
-      @state = "Shipped - #{ss_order.ShipDate.strftime('%a %d %b %Y')}"
-    end
     respond_to do |format|
       format.html
       format.csv { send_data @order.to_csv(@prods) }
@@ -34,6 +26,10 @@ class OrdersController < ApplicationController
     else
       render text: "FAIL!"
     end
+  end
+
+  def index
+    @orders = Order.paginate(:page => params[:page], :per_page => 20)
   end
 
   def update_shopify
