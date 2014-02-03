@@ -15,8 +15,9 @@ describe Order do
 
   it "should create an order number that starts with prespecified prefix" do
     order1.save
-    expect(order1.order_number[0]).to eq('K')
-    expect(order1.order_number.length).to eq(5)
+    expect(order1.order_number[0]).to eq('Z')
+    expect(order1.order_number[1]).to eq('K')
+    expect(order1.order_number.length).to eq(6)
   end
 
   it "should set order details with appropriate response hash" do
