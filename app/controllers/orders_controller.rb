@@ -28,6 +28,10 @@ class OrdersController < ApplicationController
     end
   end
 
+  def index
+    @orders = Order.order('created_at DESC').paginate(:page => params[:page], :per_page => 20)
+  end
+
   def update_shopify
     params[:item].each do |sku|
       Shopify.reduce_shopify_inv(sku)
@@ -42,6 +46,8 @@ class OrdersController < ApplicationController
         msg = { :status => "ok", :message => "Success!" }
         format.json  { render :json => msg }
       end
+      order.ssid = ss_order.OrderID
+      order.save
     end
   end
 

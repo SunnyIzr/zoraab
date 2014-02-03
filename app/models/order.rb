@@ -60,6 +60,17 @@ class Order < ActiveRecord::Base
     end
   end
 
+  def ship_state
+    ss_order = Shipstation.get_order(self.ssid)
+    if ss_order == nil
+      return "Never Sent to Shipstation"
+    elsif ss_order.ShipDate == nil
+      return 'Unshipped'
+    else
+      return "Shipped - #{ss_order.ShipDate.strftime('%a %d %b %Y')}"
+    end
+  end
+
   def to_csv(prods)
     CSV.generate() do |csv|
       csv << ['Order #','Order Date','Plan','customer_name','customer_email','shipping_address','shipping_address_2','shipping_city','shipping_state','shipping_zip','shipping_country','SKU']
