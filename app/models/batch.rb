@@ -10,9 +10,9 @@ class Batch < ActiveRecord::Base
   def setup_new(days)
     subs = []
     orders = []
-    Sub.pull_subs_due(days).each do |sub|
-      subs << ChargifyResponse.parse(sub.chargify)
-      orders << sub.orders.new
+      Sub.pull_subs_due(days).each do |cid,sub|
+      subs << sub
+      orders << Sub.find_by(cid: sub[:id]).orders.new
     end
     {subs: subs, orders: orders}
   end

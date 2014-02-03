@@ -20,7 +20,7 @@
  <div class="large-4 columns">
     <div class="panel">
       <h5> Subscriber Details </h5>
-      <p><%=@response[:name]%><br>
+      <p><a href='/subs/<%=@sub.id%>'><%=@response[:name]%></a><br>
       <%=@response[:email]%><br>
       <%= @response[:plan]%><br>
       $<%= @response[:price]%></p>
@@ -74,8 +74,8 @@
         <tbody>
       </table>
       <a href="#" data-subid="<%= @sub.id%>" class="generate-button button ungen">Generate<a>
-      <%= submit_tag("Save", class: 'button') %>
-      <%= submit_tag("Save and Update Shopify", class: 'button') %>
+      <%= submit_tag("Save", class: 'button long-load') %>
+      <%= submit_tag("Save and Update Shopify", class: 'button long-load') %>
     <% end %>
   </div>
   <div class="large-7 columns left">

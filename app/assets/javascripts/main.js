@@ -30,6 +30,6 @@ function revealLoader() {
   $('.overlay').addClass('overlay-show')
   $('.overlay').addClass('overlay-impt')
   $('.loader').addClass('loader-show')
-
+  $('#ballWrapper').removeClass('ballWrapper')
 }
 
