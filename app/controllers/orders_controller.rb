@@ -2,6 +2,14 @@ class OrdersController < ApplicationController
   def show
     @order = Order.find(params[:id])
     @prods = @order.get_prod_data
+    ss_order = Shipstation.get_order(@order.ssid)
+    if ss_order == nil
+      @state = "Never Sent to Shipstation"
+    elsif ss_order.ShipDate == nil
+      @state = 'Unshipped'
+    else
+      @state = "Shipped - #{ss_order.ShipDate.strftime('%a %d %b %Y')}"
+    end
     respond_to do |format|
       format.html
       format.csv { send_data @order.to_csv(@prods) }
@@ -42,6 +50,8 @@ class OrdersController < ApplicationController
         msg = { :status => "ok", :message => "Success!" }
         format.json  { render :json => msg }
       end
+      order.ssid = ss_order.OrderID
+      order.save
     end
   end
 
