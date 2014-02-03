@@ -70,30 +70,31 @@ describe Order do
     product3.save
     order1.products << [product1,product2,product3]
     order1.save
-    expect(order1.get_prod_data).to eq([{:sku=>"ms-cr704",
-       :title=>"Concrete Rose",
-       :price=>11.0,
-       :q=>961,
-       :vendor=>"Mint Socks",
-       :tags=>"Blocks, Blue, Cotton, Crew, Fashion Socks, Fun Socks, Men, Mint Socks, New, Pink, Print",
-       :pic=>"http://cdn.shopify.com/s/files/1/0127/4312/products/MS-CR704.jpg?v=1385514743",
-       :small_pic=>"http://cdn.shopify.com/s/files/1/0127/4312/products/MS-CR704.jpg?v=1385514743",
-       :publish_date=>"2013-11-26T15:41:02-05:00"},{:sku=>"ms-at707",
-       :title=>"Antiquity",
-       :price=>11.0,
-       :q=>901,
-       :vendor=>"Mint Socks",
-       :tags=>"Blue, Cotton, Crew, Fashion Socks, Fun Socks, Men, Mint Socks, New, Print",
-       :pic=>"http://cdn.shopify.com/s/files/1/0127/4312/products/MS-AT707.jpg?v=1385515047",
-       :small_pic=>"http://cdn.shopify.com/s/files/1/0127/4312/products/MS-AT707.jpg?v=1385515047",
-       :publish_date=>"2013-11-26T15:41:32-05:00"},{:sku=>"ms-mk709",
-       :title=>"Marakkesh",
-       :price=>11.0,
-       :q=>939,
-       :vendor=>"Mint Socks",
-       :tags=>"Blue, Brown, Cotton, Crew, Fashion Socks, Fun Socks, Men, Mint Socks, New, Orange, Print",
-       :pic=>"http://cdn.shopify.com/s/files/1/0127/4312/products/MS-MK709.jpg?v=1385514816",
-       :small_pic=>"http://cdn.shopify.com/s/files/1/0127/4312/products/MS-MK709.jpg?v=1385514816",
-       :publish_date=>"2013-11-26T15:40:37-05:00"}])
+    data = order1.get_prod_data
+
+     expect(data[0][:sku]).to eq("ms-cr704")
+     expect(data[0][:title]).to eq("Concrete Rose")
+     expect(data[0][:price]).to eq(11.0)
+     expect(data[0][:vendor]).to eq("Mint Socks")
+     expect(data[0][:tags]).to eq("Blocks, Blue, Cotton, Crew, Fashion Socks, Fun Socks, Men, Mint Socks, New, Pink, Print")
+     expect(data[0][:pic]).to eq("http://cdn.shopify.com/s/files/1/0127/4312/products/MS-CR704.jpg?v=1385514743")
+     expect(data[0][:small_pic]).to eq("http://cdn.shopify.com/s/files/1/0127/4312/products/MS-CR704.jpg?v=1385514743")
+     expect(data[0][:publish_date]).to eq("2013-11-26T15:41:02-05:00")
+     expect(data[1][:sku]).to eq("ms-at707")
+     expect(data[1][:title]).to eq("Antiquity")
+     expect(data[1][:price]).to eq(11.0)
+     expect(data[1][:vendor]).to eq("Mint Socks")
+     expect(data[1][:tags]).to eq("Blue, Cotton, Crew, Fashion Socks, Fun Socks, Men, Mint Socks, New, Print")
+     expect(data[1][:pic]).to eq("http://cdn.shopify.com/s/files/1/0127/4312/products/MS-AT707.jpg?v=1385515047")
+     expect(data[1][:small_pic]).to eq("http://cdn.shopify.com/s/files/1/0127/4312/products/MS-AT707.jpg?v=1385515047")
+     expect(data[1][:publish_date]).to eq("2013-11-26T15:41:32-05:00")
+     expect(data[2][:sku]).to eq("ms-mk709")
+     expect(data[2][:title]).to eq("Marakkesh")
+     expect(data[2][:price]).to eq(11.0)
+     expect(data[2][:vendor]).to eq("Mint Socks")
+     expect(data[2][:tags]).to eq("Blue, Brown, Cotton, Crew, Fashion Socks, Fun Socks, Men, Mint Socks, New, Orange, Print")
+     expect(data[2][:pic]).to eq("http://cdn.shopify.com/s/files/1/0127/4312/products/MS-MK709.jpg?v=1385514816")
+     expect(data[2][:small_pic]).to eq("http://cdn.shopify.com/s/files/1/0127/4312/products/MS-MK709.jpg?v=1385514816")
+     expect(data[2][:publish_date]).to eq("2013-11-26T15:40:37-05:00")
   end
 end
