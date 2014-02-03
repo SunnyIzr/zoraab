@@ -10,8 +10,9 @@ class Batch < ActiveRecord::Base
   def setup_new(days)
     subs = []
     orders = []
+    cdata = Sub.retrieve_all_active_subs
     Sub.pull_subs_due(days).each do |sub|
-      subs << ChargifyResponse.parse(sub.chargify)
+      subs << cdata[sub.cid]
       orders << sub.orders.new
     end
     {subs: subs, orders: orders}

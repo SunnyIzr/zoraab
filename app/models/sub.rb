@@ -25,7 +25,7 @@ class Sub < ActiveRecord::Base
   def get_prod_data
     products = []
     self.orders.each {|order| products << order.products }
-    products.flatten!.uniq!
+    products.flatten!.uniq! if !products.empty?
     product_data = {}
     products.each do |product|
       if product.active == true
