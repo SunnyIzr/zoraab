@@ -46,32 +46,33 @@ describe Batch do
     order3.products << product3
     order3.save
     batch1.orders << [order1,order2,order3]
+    data = batch1.get_prod_data
+    p data
 
-    expect(batch1.get_prod_data).to eq({'ms-cr704'=> {:sku=>"ms-cr704",
-       :title=>"Concrete Rose",
-       :price=>11.0,
-       :q=>961,
-       :vendor=>"Mint Socks",
-       :tags=>"Blocks, Blue, Cotton, Crew, Fashion Socks, Fun Socks, Men, Mint Socks, New, Pink, Print",
-       :pic=>"http://cdn.shopify.com/s/files/1/0127/4312/products/MS-CR704.jpg?v=1385514743",
-       :small_pic=>"http://cdn.shopify.com/s/files/1/0127/4312/products/MS-CR704.jpg?v=1385514743",
-       :publish_date=>"2013-11-26T15:41:02-05:00"},'ms-at707'=> {:sku=>"ms-at707",
-       :title=>"Antiquity",
-       :price=>11.0,
-       :q=>901,
-       :vendor=>"Mint Socks",
-       :tags=>"Blue, Cotton, Crew, Fashion Socks, Fun Socks, Men, Mint Socks, New, Print",
-       :pic=>"http://cdn.shopify.com/s/files/1/0127/4312/products/MS-AT707.jpg?v=1385515047",
-       :small_pic=>"http://cdn.shopify.com/s/files/1/0127/4312/products/MS-AT707.jpg?v=1385515047",
-       :publish_date=>"2013-11-26T15:41:32-05:00"},'ms-mk709'=> {:sku=>"ms-mk709",
-       :title=>"Marakkesh",
-       :price=>11.0,
-       :q=>939,
-       :vendor=>"Mint Socks",
-       :tags=>"Blue, Brown, Cotton, Crew, Fashion Socks, Fun Socks, Men, Mint Socks, New, Orange, Print",
-       :pic=>"http://cdn.shopify.com/s/files/1/0127/4312/products/MS-MK709.jpg?v=1385514816",
-       :small_pic=>"http://cdn.shopify.com/s/files/1/0127/4312/products/MS-MK709.jpg?v=1385514816",
-       :publish_date=>"2013-11-26T15:40:37-05:00"}})
+     expect(data['ms-cr704'][:sku]).to eq("ms-cr704")
+     expect(data['ms-cr704'][:title]).to eq("Concrete Rose")
+     expect(data['ms-cr704'][:price]).to eq(11.0)
+     expect(data['ms-cr704'][:vendor]).to eq("Mint Socks")
+     expect(data['ms-cr704'][:tags]).to eq("Blocks, Blue, Cotton, Crew, Fashion Socks, Fun Socks, Men, Mint Socks, New, Pink, Print")
+     expect(data['ms-cr704'][:pic]).to eq("http://cdn.shopify.com/s/files/1/0127/4312/products/MS-CR704.jpg?v=1385514743")
+     expect(data['ms-cr704'][:small_pic]).to eq("http://cdn.shopify.com/s/files/1/0127/4312/products/MS-CR704.jpg?v=1385514743")
+     expect(data['ms-cr704'][:publish_date]).to eq("2013-11-26T15:41:02-05:00")
+     expect(data['ms-at707'][:sku]).to eq("ms-at707")
+     expect(data['ms-at707'][:title]).to eq("Antiquity")
+     expect(data['ms-at707'][:price]).to eq(11.0)
+     expect(data['ms-at707'][:vendor]).to eq("Mint Socks")
+     expect(data['ms-at707'][:tags]).to eq("Blue, Cotton, Crew, Fashion Socks, Fun Socks, Men, Mint Socks, New, Print")
+     expect(data['ms-at707'][:pic]).to eq("http://cdn.shopify.com/s/files/1/0127/4312/products/MS-AT707.jpg?v=1385515047")
+     expect(data['ms-at707'][:small_pic]).to eq("http://cdn.shopify.com/s/files/1/0127/4312/products/MS-AT707.jpg?v=1385515047")
+     expect(data['ms-at707'][:publish_date]).to eq("2013-11-26T15:41:32-05:00")
+     expect(data['ms-mk709'][:sku]).to eq("ms-mk709")
+     expect(data['ms-mk709'][:title]).to eq("Marakkesh")
+     expect(data['ms-mk709'][:price]).to eq(11.0)
+     expect(data['ms-mk709'][:vendor]).to eq("Mint Socks")
+     expect(data['ms-mk709'][:tags]).to eq("Blue, Brown, Cotton, Crew, Fashion Socks, Fun Socks, Men, Mint Socks, New, Orange, Print")
+     expect(data['ms-mk709'][:pic]).to eq("http://cdn.shopify.com/s/files/1/0127/4312/products/MS-MK709.jpg?v=1385514816")
+     expect(data['ms-mk709'][:small_pic]).to eq("http://cdn.shopify.com/s/files/1/0127/4312/products/MS-MK709.jpg?v=1385514816")
+     expect(data['ms-mk709'][:publish_date]).to eq("2013-11-26T15:40:37-05:00")
   end
 
   it 'should prepare a new batch with subs and orders' do
