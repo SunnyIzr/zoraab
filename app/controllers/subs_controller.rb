@@ -14,7 +14,9 @@ class SubsController < ApplicationController
   end
 
   def create_with_trans
-    @sub = Sub.find_or_create_by(cid: params['cid'])
+    p '?'*100
+    p params
+    @sub = Sub.find_or_create_by(cid: params['cid'], upfront: params['upfront'])
     @sub.retrieve_wufoo_prefs if @sub.prefs.empty?
     redirect_to new_sub_order_path(@sub) + '?trans_id=' + params['trans_id']
   end
@@ -64,6 +66,6 @@ class SubsController < ApplicationController
 
   private
   def sub_params
-    params.permit(:cid,:trans_id)
+    params.permit(:cid,:trans_id,:upfront)
   end
 end
