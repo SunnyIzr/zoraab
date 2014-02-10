@@ -9,7 +9,7 @@ class QuickbooksController < ApplicationController
   end
 
   def authenticate
-    callback = oauth_callback_vendors_url
+    callback = oauth_callback_quickbooks_url
     token = $qb_oauth_consumer.get_request_token(:oauth_callback => callback)
     session[:qb_request_token] = token
     redirect_to("https://appcenter.intuit.com/Connect/Begin?oauth_token=#{token.token}") and return
