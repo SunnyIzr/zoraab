@@ -20,6 +20,7 @@ Zoraab::Application.routes.draw do
   post '/subs-with-trans/' => 'subs#create_with_trans'
   post '/update-shopify/' => 'orders#update_shopify'
   post '/send-to-shipstation'=> 'orders#send_to_shipstation'
+  get '/quickbooks' => 'quickbooks#index'
 
 
   # The priority is based upon order of creation: first created -> highest priority.
