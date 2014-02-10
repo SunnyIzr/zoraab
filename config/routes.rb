@@ -8,6 +8,13 @@ Zoraab::Application.routes.draw do
 
   resources :batches, only: [:new, :create, :show, :index]
 
+  resources :quickbooks do
+    collection do
+      get :authenticate
+      get :oauth_callback
+    end
+  end
+
   get '/search' => 'subs#search'
   post '/search/' => 'subs#show_by_cid'
   get '/search/:cid' => 'subs#show_by_cid'
