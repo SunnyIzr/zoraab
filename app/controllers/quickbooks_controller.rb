@@ -2,10 +2,11 @@ class QuickbooksController < ApplicationController
 
   def index
     p '*'*100
+    p 'TOKEN:'
     p session[:token]
     p '*'*100
+    p 'SECRET:'
     p session[:secret]
-    p session[:realm_id]
   end
 
   def authenticate
@@ -20,7 +21,7 @@ class QuickbooksController < ApplicationController
     session[:token] = at.token
     session[:secret] = at.secret
     session[:realm_id] = params['realmId']
-    redirect_to root_url, notice: "Your QuickBooks account has been successfully linked."
+    redirect_to quickbooks_url, notice: "Your QuickBooks account has been successfully linked."
   end
 
   private
@@ -29,10 +30,6 @@ class QuickbooksController < ApplicationController
       @vendor_service = Quickbooks::Service::Vendor.new
       @vendor_service.access_token = oauth_client
       @vendor_service.company_id = session[:realm_id]
-    end
-    # Use callbacks to share common setup or constraints between actions.
-    def set_vendor
-      @vendor = Vendor.find(params[:id])
     end
 
 end
