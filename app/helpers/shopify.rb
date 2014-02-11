@@ -76,4 +76,35 @@ module Shopify
     shopify_pref.split(' ').first.downcase
   end
 
+  def order(order)
+    {
+      number: order.name,
+      created_at: order.created_at,
+      email: order.email,
+      gateway: order.gateway,
+      total: order.total_price,
+      discount: order.total_discounts,
+      billing_address: {
+        name: order.billing_address.first_name + ' ' + order.billing_address.last_name,
+        address1: order.billing_address.address1,
+        city: order.billing_address.city,
+        state: order.billing_address.province_code,
+        zip: order.billing_address.zip,
+        country: order.billing_address.country_code
+      },
+      shipping_address: {
+        name: order.shipping_address.first_name + ' ' + order.shipping_address.last_name,
+        address1: order.shipping_address.address1,
+        city: order.shipping_address.city,
+        state: order.shipping_address.province_code,
+        zip: order.shipping_address.zip,
+        country: order.shipping_address.country_code
+      },
+      line_items: order.line_items.map {|item| {
+        sku: item.sku,
+        price: item.price,
+        q: item.quantity } }
+    }
+  end
+
 end
