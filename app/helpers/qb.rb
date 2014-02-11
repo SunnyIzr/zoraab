@@ -1,14 +1,13 @@
 module Qb
-  attr_accessor :exs, :cust, :sr, :prod, :acc, :pmt
 
   extend self
 
   def init
-    set_sr
+    sales_receipt_service
     customer_service
     product_service
     acct_service
-    set_pm
+    payment_method_service
   end
 
   def create_order(order)
@@ -117,23 +116,20 @@ module Qb
     @sr.create(qb_order)
   end
 
-
-  def set_sr
+  private
+  def sales_receipt_service
     oauth_client = OAuth::AccessToken.new($qb_oauth_consumer, ENV['QB_TOKEN'] , ENV['QB_TOKEN_SECRET'])
     @sr = Quickbooks::Service::SalesReceipt.new
     @sr.access_token = oauth_client
     @sr.company_id = ENV['QB_RID']
-    @exs = @sr.query("select * from SalesReceipt where DocNumber = 'TEST3'").entries[0]
   end
 
-  def set_pm
+  def payment_method_service
     oauth_client = OAuth::AccessToken.new($qb_oauth_consumer, ENV['QB_TOKEN'] , ENV['QB_TOKEN_SECRET'])
     @pmt = Quickbooks::Service::PaymentMethod.new
     @pmt.access_token = oauth_client
     @pmt.company_id = ENV['QB_RID']
   end
-
-  private
 
   def customer_service
     oauth_client = OAuth::AccessToken.new($qb_oauth_consumer, ENV['QB_TOKEN'] , ENV['QB_TOKEN_SECRET'])
