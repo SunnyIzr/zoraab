@@ -11,6 +11,11 @@ module Qb
     set_pm
   end
 
+  def create_order(order)
+    qbo = new_order(order)
+    save_order(qbo)
+  end
+
 
   def new_order(order)
     qb_order = Quickbooks::Model::SalesReceipt.new
