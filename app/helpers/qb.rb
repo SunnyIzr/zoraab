@@ -1,5 +1,5 @@
 module Qb
-  attr_accessor :exs, :cust, :sr, :prod, :acc
+  attr_accessor :exs, :cust, :sr, :prod, :acc, :pmt
 
   extend self
 
@@ -8,6 +8,7 @@ module Qb
     customer_service
     product_service
     acct_service
+    set_pm
   end
 
 
@@ -21,6 +22,9 @@ module Qb
     bill_email = Quickbooks::Model::EmailAddress.new
     bill_email.address = order[:email]
     qb_order.bill_email = bill_email
+    payment_method_ref = Quickbooks::Model::BaseReference.new(@pmt.query("select * from PaymentMethod where Name = '"+"#{order[:gateway]}"+"'").entries[0].id)
+    payment_method_ref.name = order[:gateway]
+    qb_order.payment_method_ref = payment_method_ref
     bill_address = Quickbooks::Model::PhysicalAddress.new
     bill_address.line1 = order[:billing_address][:name]
     bill_address.line2 = order[:billing_address][:address1]
@@ -37,9 +41,7 @@ module Qb
     ship_address.country = order[:shipping_address][:country]
     ship_address.postal_code = order[:shipping_address][:zip]
     qb_order.ship_address = ship_address
-    deposit_account_ref = Quickbooks::Model::BaseReference.new(@acc.query("select * from Account where Name = 'Bank of America'").entries[0].id)
-    deposit_account_ref.name = 'Bank of America'
-    qb_order.deposit_to_account_ref = deposit_account_ref
+    qb_order.deposit_to_account_ref = deposit_to(order)
     qb_order.line_items = create_line_items(order[:line_items])
     qb_order
   end
@@ -47,6 +49,18 @@ module Qb
   def create_line_items(line_items)
     line_items.map do |line|
       add_line_item(line)
+    end
+  end
+
+  def deposit_to(order)
+    if order[:gateway] == 'paypal'
+      deposit_account_ref = Quickbooks::Model::BaseReference.new(@acc.query("select * from Account where Name = 'Paypal AR'").entries[0].id)
+      deposit_account_ref.name = 'Paypal AR'
+      return deposit_account_ref
+    else
+      deposit_account_ref = Quickbooks::Model::BaseReference.new(@acc.query("select * from Account where Name = 'Bank of America'").entries[0].id)
+      deposit_account_ref.name = 'Bank of America'
+      return deposit_account_ref
     end
   end
 
@@ -73,10 +87,18 @@ module Qb
     @sr = Quickbooks::Service::SalesReceipt.new
     @sr.access_token = oauth_client
     @sr.company_id = ENV['QB_RID']
-    @exs = @sr.query("select * from SalesReceipt where DocNumber = 'TEST4'").entries[0]
+    @exs = @sr.query("select * from SalesReceipt where DocNumber = 'TEST3'").entries[0]
+  end
+
+  def set_pm
+    oauth_client = OAuth::AccessToken.new($qb_oauth_consumer, ENV['QB_TOKEN'] , ENV['QB_TOKEN_SECRET'])
+    @pmt = Quickbooks::Service::PaymentMethod.new
+    @pmt.access_token = oauth_client
+    @pmt.company_id = ENV['QB_RID']
   end
 
   private
+
   def customer_service
     oauth_client = OAuth::AccessToken.new($qb_oauth_consumer, ENV['QB_TOKEN'] , ENV['QB_TOKEN_SECRET'])
     @cust = Quickbooks::Service::Customer.new
