@@ -26,10 +26,10 @@ class QuickbooksController < ApplicationController
 
   private
     def set_qb_service
-      oauth_client = OAuth::AccessToken.new($qb_oauth_consumer, session[:token], session[:secret])
+      oauth_client = OAuth::AccessToken.new($qb_oauth_consumer, ENV['QB_TOKEN'] , ENV['QB_TOKEN_SECRET'])
       @vendor_service = Quickbooks::Service::Vendor.new
       @vendor_service.access_token = oauth_client
-      @vendor_service.company_id = session[:realm_id]
+      @vendor_service.company_id = ENV['RID']
     end
 
 end
