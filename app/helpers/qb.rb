@@ -42,14 +42,19 @@ module Qb
     ship_address.postal_code = order[:shipping_address][:zip]
     qb_order.ship_address = ship_address
     qb_order.deposit_to_account_ref = deposit_to(order)
-    qb_order.line_items = create_line_items(order[:line_items])
+    qb_order.line_items = create_line_items(order[:line_items], order[:discount],order[:shipping_total])
     qb_order
   end
 
-  def create_line_items(line_items)
-    line_items.map do |line|
-      add_line_item(line)
+  def create_line_items(line_items, discount, shipping)
+    items = line_items.map { |line| add_line_item(line) }
+    if discount.to_f > 0.0
+      items << add_discount_line(discount)
     end
+    if shipping.to_f > 0.0
+      items << add_shipping_line(shipping)
+    end
+    return items
   end
 
   def deposit_to(order)
@@ -74,6 +79,32 @@ module Qb
     line_item.sales_item_line_detail.unit_price = BigDecimal.new(line[:price])
     line_item.sales_item_line_detail.quantity = BigDecimal.new(line[:q])
     line_item.amount = BigDecimal.new((line[:price].to_f*line[:q].to_f).to_s)
+    line_item
+  end
+
+  def add_discount_line(discount)
+    line_item = Quickbooks::Model::Line.new
+    line_item.detail_type = 'SalesItemLineDetail'
+    line_item.sales_item_line_detail = Quickbooks::Model::SalesItemLineDetail.new
+    item_ref = Quickbooks::Model::BaseReference.new(@prod.query("select * from Item where Name = 'Discount Code'").entries[0].id)
+    item_ref.name = 'Discount Code'
+    line_item.sales_item_line_detail.item_ref = item_ref
+    line_item.sales_item_line_detail.unit_price = BigDecimal.new('-'+discount)
+    line_item.sales_item_line_detail.quantity = BigDecimal.new(1)
+    line_item.amount = BigDecimal.new('-'+discount)
+    line_item
+  end
+
+  def add_shipping_line(shipping)
+    line_item = Quickbooks::Model::Line.new
+    line_item.detail_type = 'SalesItemLineDetail'
+    line_item.sales_item_line_detail = Quickbooks::Model::SalesItemLineDetail.new
+    item_ref = Quickbooks::Model::BaseReference.new(@prod.query("select * from Item where Name = 'Shipping Charge'").entries[0].id)
+    item_ref.name = 'Shipping_Charge'
+    line_item.sales_item_line_detail.item_ref = item_ref
+    line_item.sales_item_line_detail.unit_price = BigDecimal.new(shipping)
+    line_item.sales_item_line_detail.quantity = BigDecimal.new(1)
+    line_item.amount = BigDecimal.new(shipping)
     line_item
   end
 

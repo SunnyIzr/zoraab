@@ -82,6 +82,7 @@ module Shopify
       created_at: order.created_at,
       email: order.email,
       gateway: order.gateway,
+      shipping_total: order.shipping_lines.first.price,
       total: order.total_price,
       discount: order.total_discounts,
       billing_address: {
