@@ -1,16 +1,72 @@
 module Qb
-  attr_accessor :new, :exs, :cust, :sr, :prod, :acc
+  attr_accessor :exs, :cust, :sr, :prod, :acc
 
   extend self
 
   def init
     set_sr
-    set_c
-    set_p
-    set_a
-    create_new_order
-    set_order_details
+    customer_service
+    product_service
+    acct_service
   end
+
+
+  def new_order(order)
+    qb_order = Quickbooks::Model::SalesReceipt.new
+    qb_order.placed_on = order[:created_at]
+    qb_order.doc_number = order[:number]
+    customer_ref = Quickbooks::Model::BaseReference.new(@cust.query("select * from Customer where DisplayName = 'Web Orders'").entries[0].id)
+    customer_ref.name = 'Web Orders'
+    qb_order.customer_ref = customer_ref
+    bill_email = Quickbooks::Model::EmailAddress.new
+    bill_email.address = order[:email]
+    qb_order.bill_email = bill_email
+    bill_address = Quickbooks::Model::PhysicalAddress.new
+    bill_address.line1 = order[:billing_address][:name]
+    bill_address.line2 = order[:billing_address][:address1]
+    bill_address.city = order[:billing_address][:city]
+    bill_address.country_sub_division_code = order[:billing_address][:state]
+    bill_address.country = order[:billing_address][:country]
+    bill_address.postal_code = order[:billing_address][:zip]
+    qb_order.bill_address = bill_address
+    ship_address = Quickbooks::Model::PhysicalAddress.new
+    ship_address.line1 = order[:shipping_address][:name]
+    ship_address.line2 = order[:shipping_address][:address1]
+    ship_address.city = order[:shipping_address][:city]
+    ship_address.country_sub_division_code = order[:shipping_address][:state]
+    ship_address.country = order[:shipping_address][:country]
+    ship_address.postal_code = order[:shipping_address][:zip]
+    qb_order.ship_address = ship_address
+    deposit_account_ref = Quickbooks::Model::BaseReference.new(@acc.query("select * from Account where Name = 'Bank of America'").entries[0].id)
+    deposit_account_ref.name = 'Bank of America'
+    qb_order.deposit_to_account_ref = deposit_account_ref
+    qb_order.line_items = create_line_items(order[:line_items])
+    qb_order
+  end
+
+  def create_line_items(line_items)
+    line_items.map do |line|
+      add_line_item(line)
+    end
+  end
+
+  def add_line_item(line)
+    line_item = Quickbooks::Model::Line.new
+    line_item.detail_type = 'SalesItemLineDetail'
+    line_item.sales_item_line_detail = Quickbooks::Model::SalesItemLineDetail.new
+    item_ref = Quickbooks::Model::BaseReference.new(@prod.query("select * from Item where Name = '#{line[:sku]}'").entries[0].id)
+    item_ref.name = line[:sku]
+    line_item.sales_item_line_detail.item_ref = item_ref
+    line_item.sales_item_line_detail.unit_price = BigDecimal.new(line[:price])
+    line_item.sales_item_line_detail.quantity = BigDecimal.new(line[:q])
+    line_item.amount = BigDecimal.new((line[:price].to_f*line[:q].to_f).to_s)
+    line_item
+  end
+
+  def save_order(qb_order)
+    @sr.create(qb_order)
+  end
+
 
   def set_sr
     oauth_client = OAuth::AccessToken.new($qb_oauth_consumer, ENV['QB_TOKEN'] , ENV['QB_TOKEN_SECRET'])
@@ -20,77 +76,27 @@ module Qb
     @exs = @sr.query("select * from SalesReceipt where DocNumber = 'TEST4'").entries[0]
   end
 
-  def set_c
+  private
+  def customer_service
     oauth_client = OAuth::AccessToken.new($qb_oauth_consumer, ENV['QB_TOKEN'] , ENV['QB_TOKEN_SECRET'])
     @cust = Quickbooks::Service::Customer.new
     @cust.access_token = oauth_client
     @cust.company_id = ENV['QB_RID']
   end
 
-  def set_p
+  def product_service
     oauth_client = OAuth::AccessToken.new($qb_oauth_consumer, ENV['QB_TOKEN'] , ENV['QB_TOKEN_SECRET'])
     @prod = Quickbooks::Service::Item.new
     @prod.access_token = oauth_client
     @prod.company_id = ENV['QB_RID']
   end
 
-  def set_a
+  def acct_service
     oauth_client = OAuth::AccessToken.new($qb_oauth_consumer, ENV['QB_TOKEN'] , ENV['QB_TOKEN_SECRET'])
     @acc = Quickbooks::Service::Account.new
     @acc.access_token = oauth_client
     @acc.company_id = ENV['QB_RID']
   end
-
-  def create_new_order
-    @new = Quickbooks::Model::SalesReceipt.new
-  end
-
-  def set_order_details
-    @new.placed_on = Time.new(2014,5,30)
-    @new.doc_number = 'TEST4'
-    customer_ref = Quickbooks::Model::BaseReference.new(@cust.query("select * from Customer where DisplayName = 'Web Orders'").entries[0].id)
-    customer_ref.name = 'Web Orders'
-    @new.customer_ref = customer_ref
-    @new.line_items = []
-    bill_email = Quickbooks::Model::EmailAddress.new
-    bill_email.address = 'test@test.com'
-    @new.bill_email = bill_email
-    bill_address = Quickbooks::Model::PhysicalAddress.new
-    bill_address.line1 = 'John Bill Smith'
-    bill_address.line2 = '123 Main Lane'
-    bill_address.city = 'Big City'
-    bill_address.country = 'USA'
-    bill_address.postal_code = '12345'
-    @new.bill_address = bill_address
-    ship_address = Quickbooks::Model::PhysicalAddress.new
-    ship_address.line1 = 'John Ship Smith'
-    ship_address.line2 = '123 Ship Lane'
-    ship_address.city = 'Big City'
-    ship_address.country = 'USA'
-    ship_address.postal_code = '07035'
-    @new.ship_address = ship_address
-    deposit_account_ref = Quickbooks::Model::BaseReference.new(@acc.query("select * from Account where Name = 'Bank of America'").entries[0].id)
-    deposit_account_ref.name = 'Bank of America'
-    @new.deposit_to_account_ref = deposit_account_ref
-  end
-
-  def add_line_item(sku,price,q)
-    line_item = Quickbooks::Model::Line.new
-    line_item.detail_type = 'SalesItemLineDetail'
-    line_item.sales_item_line_detail = Quickbooks::Model::SalesItemLineDetail.new
-    item_ref = Quickbooks::Model::BaseReference.new(@prod.query("select * from Item where Name = '#{sku}'").entries[0].id)
-    item_ref.name = sku
-    line_item.sales_item_line_detail.item_ref = item_ref
-    line_item.sales_item_line_detail.unit_price = BigDecimal.new(price.to_s)
-    line_item.sales_item_line_detail.quantity = BigDecimal.new(q.to_s)
-    line_item.amount = BigDecimal.new((price*q).to_s)
-    line_item
-  end
-
-  def save_order
-    @sr.create(@new)
-  end
-
 
 
 end
