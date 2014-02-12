@@ -109,7 +109,11 @@ module Shopify
   end
 
   def get_single_day(date)
-    ShopifyAPI::Order.find(:all, :params => {'created_at_max' => date+1.day, 'created_at_min' => date})
+    orders = []
+    ShopifyAPI::Order.find(:all, :params => {'created_at_max' => date+1.day, 'created_at_min' => date}).each do |o|
+      orders << order(o)
+    end
+    orders.reverse!
   end
 
 end

@@ -1,5 +1,4 @@
 module Qb
-  attr_reader :sr
 
   extend self
 
