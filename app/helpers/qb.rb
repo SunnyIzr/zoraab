@@ -1,4 +1,5 @@
 module Qb
+  attr_reader :sr
 
   extend self
 
@@ -11,8 +12,15 @@ module Qb
   end
 
   def create_order(order)
-    qbo = new_order(order)
-    save_order(qbo)
+    p '*'*100
+    p "Creating Order " + order[:number]
+    if @sr.query("select * from SalesReceipt where DocNumber = '"+"#{order[:number]}"+"'").entries.size == 0
+      qbo = new_order(order)
+      save_order(qbo)
+    else
+      p 'Order already exists'
+      p '*'*100
+    end
   end
 
 
@@ -74,6 +82,7 @@ module Qb
   end
 
   def add_line_item(line)
+    p "Adding Item #{line[:sku]}"
     line_item = Quickbooks::Model::Line.new
     line_item.detail_type = 'SalesItemLineDetail'
     line_item.sales_item_line_detail = Quickbooks::Model::SalesItemLineDetail.new
@@ -113,7 +122,10 @@ module Qb
   end
 
   def save_order(qb_order)
+    p "Saving Order"
     @sr.create(qb_order)
+    p "Saved"
+    p "*"*100
   end
 
   private
