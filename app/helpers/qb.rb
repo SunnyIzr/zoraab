@@ -10,7 +10,15 @@ module Qb
     payment_method_service
   end
 
+  def create_many_orders(orders)
+    orders.each_with_index do |o,i|
+      puts 'Starting ' + i.to_s
+      create_order(o)
+    end
+  end
+
   def create_order(order)
+    init
     p '*'*100
     p "Creating Order " + order[:number]
     if @sr.query("select * from SalesReceipt where DocNumber = '"+"#{order[:number]}"+"'").entries.size == 0
@@ -53,17 +61,28 @@ module Qb
     ship_address.postal_code = order[:shipping_address][:zip]
     qb_order.ship_address = ship_address
     qb_order.deposit_to_account_ref = deposit_to(order)
-    qb_order.line_items = create_line_items(order[:line_items], order[:discount],order[:shipping_total])
+    qb_order.line_items = create_line_items(order)
     qb_order
   end
 
-  def create_line_items(line_items, discount, shipping)
-    items = line_items.map { |line| add_line_item(line) }
-    if discount.to_f > 0.0
-      items << add_discount_line(discount)
+  def create_line_items(order)
+    items = order[:line_items].map do |line|
+      if item_exist?(line[:sku])
+        add_line_item(line)
+      else
+        p '-'*20 + line[:sku] + ' does not exist!' + '-'*20
+        nil
+      end
     end
-    if shipping.to_f > 0.0
-      items << add_shipping_line(shipping)
+    items.compact!
+    items << add_fee_line(order) if !order[:fees].nil?
+    items << add_gift_card_line(order) if !order[:gift_card_redemption].nil?
+
+    if order[:discount].to_f > 0.0
+      items << add_discount_line(order[:discount])
+    end
+    if order[:shipping].to_f > 0.0
+      items << add_shipping_line(order[:shipping])
     end
     return items
   end
@@ -80,6 +99,32 @@ module Qb
     end
   end
 
+  def add_fee_line(order)
+    line_item = Quickbooks::Model::Line.new
+    line_item.detail_type = 'SalesItemLineDetail'
+    line_item.sales_item_line_detail = Quickbooks::Model::SalesItemLineDetail.new
+    item_ref = Quickbooks::Model::BaseReference.new(@prod.query("select * from Item where Name = '"+order[:fees].keys.first+"'").entries[0].id)
+    item_ref.name = order[:fees].keys.first
+    line_item.sales_item_line_detail.item_ref = item_ref
+    line_item.sales_item_line_detail.unit_price = BigDecimal.new('-'+order[:fees].values.first.to_s)
+    line_item.sales_item_line_detail.quantity = BigDecimal.new(1)
+    line_item.amount = BigDecimal.new('-'+order[:fees].values.first.to_s)
+    line_item
+  end
+
+  def add_gift_card_line(order)
+    line_item = Quickbooks::Model::Line.new
+    line_item.detail_type = 'SalesItemLineDetail'
+    line_item.sales_item_line_detail = Quickbooks::Model::SalesItemLineDetail.new
+    item_ref = Quickbooks::Model::BaseReference.new(@prod.query("select * from Item where Name = 'Gift Card'").entries[0].id)
+    item_ref.name = 'Gift Card'
+    line_item.sales_item_line_detail.item_ref = item_ref
+    line_item.sales_item_line_detail.unit_price = BigDecimal.new('-'+order[:gift_card_redemption].to_s)
+    line_item.sales_item_line_detail.quantity = BigDecimal.new(1)
+    line_item.amount = BigDecimal.new('-'+order[:gift_card_redemption].to_s)
+    line_item
+  end
+
   def add_line_item(line)
     p "Adding Item #{line[:sku]}"
     line_item = Quickbooks::Model::Line.new
@@ -92,6 +137,10 @@ module Qb
     line_item.sales_item_line_detail.quantity = BigDecimal.new(line[:q])
     line_item.amount = BigDecimal.new((line[:price].to_f*line[:q].to_f).to_s)
     line_item
+  end
+
+  def item_exist?(sku)
+    @prod.query("select * from Item where Name = '"+sku+"'").entries.size != 0
   end
 
   def add_discount_line(discount)

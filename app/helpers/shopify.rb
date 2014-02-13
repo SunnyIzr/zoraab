@@ -78,12 +78,15 @@ module Shopify
 
   def order(order)
     {
+      type: 'Shopify',
       number: order.name,
       created_at: order.created_at,
       email: order.email,
       gateway: order.gateway,
-      shipping_total: order.shipping_lines.first.price,
+      shipping_total: shipping_total(order),
+      gift_card_redemption: gift_card_redemption(order),
       total: order.total_price,
+      fees: calc_fees(order),
       discount: order.total_discounts,
       billing_address: {
         name: order.billing_address.first_name + ' ' + order.billing_address.last_name,
@@ -108,12 +111,59 @@ module Shopify
     }
   end
 
+  def shipping_total(order)
+    if order.shipping_lines.empty?
+      return '0.0'
+    else
+      return order.shipping_lines.first.price
+    end
+
+  end
+
+  def gift_card_redemption(order)
+    gift_card_trans = order.transactions.select { |t| t.gateway == 'gift_card' }
+    if gift_card_trans.empty?
+      return nil
+    else
+      amt = 0.0
+      gift_card_trans.each { |trans| amt += trans.amount.to_f }
+      return amt
+    end
+  end
+
+  def calc_fees(order)
+    gift_card_redemption = 0.0 if gift_card_redemption(order).nil?
+    pmt_amt = ((order.total_price.to_f) - gift_card_redemption)
+    if order.gateway == 'paypal'
+      fee =  ( pmt_amt * 0.029 ) + 0.3
+      return {'Paypal Fee' => fee.round(2)}
+    elsif order.gateway == 'shopify_payments'
+      fee = (pmt_amt * 0.0225).round(3) + 0.3
+      return {'Shopify Payments Fee' => fee.round(2)}
+    else
+      return nil
+    end
+
+  end
+
   def get_single_day(date)
     orders = []
     ShopifyAPI::Order.find(:all, :params => {'created_at_max' => date+1.day, 'created_at_min' => date}).each do |o|
       orders << order(o)
     end
     orders.reverse!
+  end
+
+  def get_range(start_date,end_date)
+    orders = []
+    ShopifyAPI::Order.find(:all, :params => {'created_at_max' => end_date, 'created_at_min' => start_date}).each do |o|
+      orders << order(o)
+    end
+    orders.reverse!
+  end
+
+  def remove_zero_orders(orders)
+    orders.select {|o| o if o[:total].to_f > 0.0}
   end
 
 end
