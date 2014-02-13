@@ -10,6 +10,10 @@ module Qb
     payment_method_service
   end
 
+  def get_order(order_number)
+    return @sr.query("select * from SalesReceipt where DocNumber = '"+order_number+"'").entries.first
+  end
+
   def create_many_orders(orders)
     orders.each_with_index do |o,i|
       puts 'Starting ' + i.to_s

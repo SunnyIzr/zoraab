@@ -132,7 +132,11 @@ module Shopify
   end
 
   def calc_fees(order)
-    gift_card_redemption = 0.0 if gift_card_redemption(order).nil?
+    if gift_card_redemption(order).nil?
+      gift_card_redemption = 0.0
+    else
+      gift_card_redemption = gift_card_redemption(order)
+    end
     pmt_amt = ((order.total_price.to_f) - gift_card_redemption)
     if order.gateway == 'paypal'
       fee =  ( pmt_amt * 0.029 ) + 0.3
@@ -156,8 +160,10 @@ module Shopify
 
   def get_range(start_date,end_date)
     orders = []
-    ShopifyAPI::Order.find(:all, :params => {'created_at_max' => end_date, 'created_at_min' => start_date}).each do |o|
+    shopify_orders = ShopifyAPI::Order.find(:all, :params => {'created_at_max' => end_date, 'created_at_min' => start_date,:limit =>200})
+    shopify_orders.each do |o|
       orders << order(o)
+      sleep(1)
     end
     orders.reverse!
   end
