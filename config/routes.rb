@@ -8,6 +8,13 @@ Zoraab::Application.routes.draw do
 
   resources :batches, only: [:new, :create, :show, :index]
 
+  resources :quickbooks do
+    collection do
+      get :authenticate
+      get :oauth_callback
+    end
+  end
+
   get '/search' => 'subs#search'
   post '/search/' => 'subs#show_by_cid'
   get '/search/:cid' => 'subs#show_by_cid'
@@ -20,6 +27,7 @@ Zoraab::Application.routes.draw do
   post '/subs-with-trans/' => 'subs#create_with_trans'
   post '/update-shopify/' => 'orders#update_shopify'
   post '/send-to-shipstation'=> 'orders#send_to_shipstation'
+  get '/quickbooks' => 'quickbooks#index'
 
 
   # The priority is based upon order of creation: first created -> highest priority.

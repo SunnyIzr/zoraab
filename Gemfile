@@ -26,6 +26,7 @@ gem 'jquery-rails'
 # gem 'turbolinks'
 
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
+
 gem 'jbuilder', '~> 1.2'
 
 gem 'chargify_api_ares'
@@ -51,6 +52,10 @@ gem 'simplecov', :require => false, :group => :test
 gem 'rails_12factor', group: :production
 
 gem "will_paginate", "~> 3.0.5"
+
+gem 'quickbooks-ruby', "~>0.0.6"
+
+gem 'oauth-plugin'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
 
