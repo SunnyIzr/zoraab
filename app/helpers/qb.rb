@@ -1,4 +1,5 @@
 module Qb
+  attr_reader :sr
 
   extend self
 
@@ -97,8 +98,8 @@ module Qb
       deposit_account_ref.name = 'Paypal AR'
       return deposit_account_ref
     else
-      deposit_account_ref = Quickbooks::Model::BaseReference.new(@acc.query("select * from Account where Name = 'Bank of America'").entries[0].id)
-      deposit_account_ref.name = 'Bank of America'
+      deposit_account_ref = Quickbooks::Model::BaseReference.new(@acc.query("select * from Account where Name = 'Shopify Payments AR'").entries[0].id)
+      deposit_account_ref.name = 'Shopify Payments AR'
       return deposit_account_ref
     end
   end
