@@ -85,8 +85,8 @@ module Qb
     if order[:discount].to_f > 0.0
       items << add_discount_line(order[:discount])
     end
-    if order[:shipping].to_f > 0.0
-      items << add_shipping_line(order[:shipping])
+    if order[:shipping_total].to_f > 0.0
+      items << add_shipping_line(order[:shipping_total])
     end
     return items
   end

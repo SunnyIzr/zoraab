@@ -150,6 +150,10 @@ module Shopify
 
   end
 
+  def get_order(order_number)
+    order(ShopifyAPI::Order.find(:all, :params => {'name' => order_number}).first)
+  end
+
   def get_single_day(date)
     orders = []
     ShopifyAPI::Order.find(:all, :params => {'created_at_max' => date+1.day, 'created_at_min' => date}).each do |o|
