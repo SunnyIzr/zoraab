@@ -48,7 +48,7 @@
       total: self.amt.to_s,
       fees: {'Braintree Fee' => self.fee},
       discount: 0.0,
-      meom: self.trans_id.to_s,
+      memo: self.trans_id.to_s,
       billing_address: {
         name: self.billing_name,
         address1: self.billing_address,
