@@ -47,6 +47,7 @@ module Qb
     payment_method_ref = Quickbooks::Model::BaseReference.new(@pmt.query("select * from PaymentMethod where Name = '"+"#{order[:gateway]}"+"'").entries[0].id)
     payment_method_ref.name = order[:gateway]
     qb_order.payment_method_ref = payment_method_ref
+    qb_order.private_note = order[:memo]
     bill_address = Quickbooks::Model::PhysicalAddress.new
     bill_address.line1 = order[:billing_address][:name]
     bill_address.line2 = order[:billing_address][:address1]

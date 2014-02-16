@@ -1,4 +1,4 @@
-class SubOrder < Order
+  class SubOrder < Order
   after_save :set_order_number
   has_and_belongs_to_many :products
   belongs_to :sub
@@ -44,10 +44,11 @@ class SubOrder < Order
       email: self.email,
       gateway: 'braintree',
       shipping_total: '0.0',
-      gift_card_redemption: 0.0,
+      gift_card_redemption: nil,
       total: self.amt.to_s,
       fees: {'Braintree Fee' => self.fee},
       discount: 0.0,
+      meom: self.trans_id.to_s,
       billing_address: {
         name: self.billing_name,
         address1: self.billing_address,

@@ -88,6 +88,7 @@ module Shopify
       total: order.total_price,
       fees: calc_fees(order),
       discount: order.total_discounts,
+      memo: '',
       billing_address: {
         name: order.billing_address.first_name + ' ' + order.billing_address.last_name,
         address1: order.billing_address.address1,
