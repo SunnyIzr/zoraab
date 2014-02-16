@@ -10,9 +10,9 @@ describe Kitter do
   let (:pref2) {FactoryGirl.create(:pref)}
   let (:pref3) {FactoryGirl.create(:pref)}
   let (:pref4) {FactoryGirl.create(:pref)}
-  let (:order1) {FactoryGirl.create(:order)}
-  let (:order2) {FactoryGirl.create(:order)}
-  let (:order3) {FactoryGirl.create(:order)}
+  let (:order1) {FactoryGirl.create(:sub_order)}
+  let (:order2) {FactoryGirl.create(:sub_order)}
+  let (:order3) {FactoryGirl.create(:sub_order)}
   let (:product1) {FactoryGirl.create(:product)}
   let (:product2) {FactoryGirl.create(:product)}
   let (:product3) {FactoryGirl.create(:product)}
@@ -74,7 +74,7 @@ describe Kitter do
 
     order1.products << [product1,product2]
     order2.products << [product3]
-    sub.orders << [order1,order2]
+    sub.sub_orders << [order1,order2]
 
     expect(Kitter.remove_dupes(pref3.pref,sub.id)).to eq([product5,product4])
   end
@@ -123,7 +123,7 @@ describe Kitter do
     product6.save
 
     order1.products << [product1,product2]
-    sub.orders << order1
+    sub.sub_orders << order1
     sub.prefs << pref3
 
     expect(Kitter.generate_kitter_suggestions(sub.id)).to eq([product3,product5,product4])

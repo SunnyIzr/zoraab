@@ -71,7 +71,7 @@
         </tr>
       </thead>
       <tbody>
-        <% @sub.orders.sort_by! { |order| order.created_at }.reverse.each do |order| %>
+        <% @sub.sub_orders.sort_by! { |order| order.created_at }.reverse.each do |order| %>
         <tr>
           <td><a href="/orders/<%=order.id%>"><%=order.order_number%></a></td>
           <td><%=order.created_at.strftime('%m/%d/%y')%></td>

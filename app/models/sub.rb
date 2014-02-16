@@ -2,7 +2,7 @@ class Sub < ActiveRecord::Base
   validates_presence_of :cid
   validates_uniqueness_of :cid
   has_and_belongs_to_many :prefs
-  has_many :orders
+  has_many :sub_orders
 
   def chargify
     Chargify::Subscription.find(cid).attributes
@@ -14,8 +14,8 @@ class Sub < ActiveRecord::Base
 
   def order_history
     prod_skus = []
-    self.orders.each do |order|
-      order.products.each do |prod|
+    self.sub_orders.each do |sub_order|
+      sub_order.products.each do |prod|
         prod_skus << prod.sku
       end
     end
@@ -24,7 +24,7 @@ class Sub < ActiveRecord::Base
 
   def get_prod_data
     products = []
-    self.orders.each {|order| products << order.products }
+    self.sub_orders.each {|sub_order| products << sub_order.products }
     products.flatten!.uniq! if !products.empty?
     product_data = {}
     products.each do |product|
@@ -71,8 +71,8 @@ class Sub < ActiveRecord::Base
   end
 
   def not_exist?(next_pmt_date)
-    self.orders.each do |order|
-      if next_pmt_date == order.created_at
+    self.sub_orders.each do |sub_order|
+      if next_pmt_date == sub_order.created_at
         return false
       end
     end

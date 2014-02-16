@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Shipstation do
   let (:sub) {FactoryGirl.create(:sub)}
-  let (:order1) {FactoryGirl.create(:order)}
+  let (:order1) {FactoryGirl.create(:sub_order)}
   let (:product1) {FactoryGirl.create(:product)}
   let (:product2) {FactoryGirl.create(:product)}
 

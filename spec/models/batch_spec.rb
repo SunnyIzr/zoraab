@@ -4,15 +4,15 @@ describe Batch do
   let (:batch1) {FactoryGirl.create(:batch)}
   let (:batch2) {FactoryGirl.create(:batch)}
   let (:batch3) {FactoryGirl.create(:batch)}
-  let (:order1) {FactoryGirl.create(:order)}
-  let (:order2) {FactoryGirl.create(:order)}
-  let (:order3) {FactoryGirl.create(:order)}
+  let (:order1) {FactoryGirl.create(:sub_order)}
+  let (:order2) {FactoryGirl.create(:sub_order)}
+  let (:order3) {FactoryGirl.create(:sub_order)}
   let (:product1) {FactoryGirl.create(:product)}
   let (:product2) {FactoryGirl.create(:product)}
   let (:product3) {FactoryGirl.create(:product)}
 
 
-  it {should have_many (:orders)}
+  it {should have_many (:sub_orders)}
 
   it 'should destroy all batches' do
     batch1.save
@@ -21,8 +21,8 @@ describe Batch do
     order1.save
     order2.save
     order3.save
-    batch1.orders << order1
-    batch3.orders << [order2,order3]
+    batch1.sub_orders << order1
+    batch3.sub_orders << [order2,order3]
     Batch.destroy_empty_batches
 
     expect(Batch.all).to eq ([batch1,batch3])
@@ -45,7 +45,7 @@ describe Batch do
     order2.save
     order3.products << product3
     order3.save
-    batch1.orders << [order1,order2,order3]
+    batch1.sub_orders << [order1,order2,order3]
     data = batch1.get_prod_data
 
      expect(data['ms-cr704'][:sku]).to eq("ms-cr704")

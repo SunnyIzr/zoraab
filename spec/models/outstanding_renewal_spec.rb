@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe OutstandingRenewal do
-  let (:order) {FactoryGirl.create(:order)}
+  let (:order) {FactoryGirl.create(:sub_order)}
 
   it { should validate_presence_of (:trans_id)}
   it { should validate_uniqueness_of (:trans_id)}

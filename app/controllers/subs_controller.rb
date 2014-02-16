@@ -14,8 +14,6 @@ class SubsController < ApplicationController
   end
 
   def create_with_trans
-    p '?'*100
-    p params
     @sub = Sub.find_or_create_by(cid: params['cid'], upfront: params['upfront'])
     @sub.retrieve_wufoo_prefs if @sub.prefs.empty?
     redirect_to new_sub_order_path(@sub) + '?trans_id=' + params['trans_id']
@@ -54,7 +52,7 @@ class SubsController < ApplicationController
 
   def last_order
     @sub = Sub.find(params[:id])
-    @order = @sub.orders.last
+    @order = @sub.sub_orders.last
     redirect_to order_path(@order.id)
   end
 
