@@ -31,6 +31,50 @@ class SubOrder < Order
     end
   end
 
+  def fee
+    fee =  ( self.amt * 0.029 ) + 0.3
+    return fee.round(2)
+  end
+
+  def qb
+      {
+      type: 'Subscription',
+      number: self.order_number,
+      created_at: self.created_at,
+      email: self.email,
+      gateway: 'braintree',
+      shipping_total: '0.0',
+      gift_card_redemption: 0.0,
+      total: self.amt.to_s,
+      fees: {'Braintree Fee' => self.fee},
+      discount: 0.0,
+      billing_address: {
+        name: self.billing_name,
+        address1: self.billing_address,
+        city: self.billing_city,
+        state: self.billing_state,
+        zip: self.billing_zip,
+        country: self.billing_country
+      },
+      shipping_address: {
+        name: self.name,
+        address1: self.address,
+        city: self.city,
+        state: self.state,
+        zip: self.zip,
+        country: self.country
+      },
+      line_items: self.line_items
+    }
+  end
+
+  def line_items
+    ary = []
+    self.products.each { |product| ary << { sku: product.sku, price: '0.0', q: 1 } }
+    ary << { sku: self.plan, price: self.amt.to_s, q: 1}
+    ary
+  end
+
   def set_order_details
     response = ChargifyResponse.parse(self.sub.chargify)
 

@@ -1,5 +1,5 @@
 module Qb
-  attr_reader :sr
+  attr_reader :sr, :prod
 
   extend self
 
@@ -40,9 +40,7 @@ module Qb
     qb_order = Quickbooks::Model::SalesReceipt.new
     qb_order.placed_on = order[:created_at]
     qb_order.doc_number = order[:number]
-    customer_ref = Quickbooks::Model::BaseReference.new(@cust.query("select * from Customer where DisplayName = 'Web Orders'").entries[0].id)
-    customer_ref.name = 'Web Orders'
-    qb_order.customer_ref = customer_ref
+    qb_order.customer_ref = customer_ref(order)
     bill_email = Quickbooks::Model::EmailAddress.new
     bill_email.address = order[:email]
     qb_order.bill_email = bill_email
@@ -68,6 +66,18 @@ module Qb
     qb_order.deposit_to_account_ref = deposit_to(order)
     qb_order.line_items = create_line_items(order)
     qb_order
+  end
+
+  def customer_ref(order)
+    if order[:type] == 'Shopify'
+      customer_ref = Quickbooks::Model::BaseReference.new(@cust.query("select * from Customer where DisplayName = 'Web Orders'").entries[0].id)
+      customer_ref.name = 'Web Orders'
+      return customer_ref
+    elsif order[:type] == 'Subscription'
+      customer_ref = Quickbooks::Model::BaseReference.new(@cust.query("select * from Customer where DisplayName = 'Subscriptions'").entries[0].id)
+      customer_ref.name = 'Subscriptions'
+      return customer_ref
+    end
   end
 
   def create_line_items(order)
@@ -96,6 +106,10 @@ module Qb
     if order[:gateway] == 'paypal'
       deposit_account_ref = Quickbooks::Model::BaseReference.new(@acc.query("select * from Account where Name = 'Paypal AR'").entries[0].id)
       deposit_account_ref.name = 'Paypal AR'
+      return deposit_account_ref
+    elsif order[:gateway] == 'braintree'
+      deposit_account_ref = Quickbooks::Model::BaseReference.new(@acc.query("select * from Account where Name = 'Braintree AR'").entries[0].id)
+      deposit_account_ref.name = 'Braintree AR'
       return deposit_account_ref
     else
       deposit_account_ref = Quickbooks::Model::BaseReference.new(@acc.query("select * from Account where Name = 'Shopify Payments AR'").entries[0].id)
