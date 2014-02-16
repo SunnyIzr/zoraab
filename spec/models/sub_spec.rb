@@ -8,12 +8,12 @@ describe Sub do
   let (:sub4) {FactoryGirl.create(:sub)}
   let (:sub5) {FactoryGirl.create(:sub)}
   let (:sub6) {FactoryGirl.create(:sub)}
-  let (:order) {FactoryGirl.create(:order)}
+  let (:order) {FactoryGirl.create(:sub_order)}
   let (:pref1) {FactoryGirl.create(:pref)}
   let (:pref2) {FactoryGirl.create(:pref)}
   let (:pref3) {FactoryGirl.create(:pref)}
-  let (:order1) {FactoryGirl.create(:order)}
-  let (:order2) {FactoryGirl.create(:order)}
+  let (:order1) {FactoryGirl.create(:sub_order)}
+  let (:order2) {FactoryGirl.create(:sub_order)}
   let (:product1) {FactoryGirl.create(:product)}
   let (:product2) {FactoryGirl.create(:product)}
   let (:product3) {FactoryGirl.create(:product)}
@@ -22,7 +22,7 @@ describe Sub do
 
   it {should validate_presence_of (:cid)}
   it {should have_and_belong_to_many (:prefs)}
-  it {should have_many (:orders)}
+  it {should have_many (:sub_orders)}
   it {should validate_uniqueness_of(:cid) }
 
   it "should provide a list of previously purchased SKUs" do
@@ -40,7 +40,7 @@ describe Sub do
 
     order1.products << [product1,product2]
     order2.products << [product3,product4]
-    sub.orders << [order1,order2]
+    sub.sub_orders << [order1,order2]
 
 
     expect(sub.order_history).to eq(['sku_3', 'sku_4', 'sku_1', 'sku_2'])
@@ -72,7 +72,7 @@ describe Sub do
     next_pmt_date = ChargifyResponse.next_pmt_date(sub.chargify)
     order.created_at = next_pmt_date
     order.save
-    sub.orders << order
+    sub.sub_orders << order
     expect(sub.not_exist?(next_pmt_date)).to eq(false)
   end
 

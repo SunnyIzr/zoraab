@@ -4,7 +4,7 @@ FactoryGirl.define do
     cid {4258861}
   end
 
-  factory :order do
+  factory :sub_order do
     sub_id {1}
   end
 
