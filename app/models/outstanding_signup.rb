@@ -6,7 +6,7 @@ class OutstandingSignup < ActiveRecord::Base
 
   def self.refresh_outstanding_signups
     all.reverse.each do |signup|
-      if signup.trans_id == Order.last.trans_id
+      if signup.trans_id == SubOrder.last.trans_id
         signup.destroy
         return
       end
@@ -14,7 +14,7 @@ class OutstandingSignup < ActiveRecord::Base
   end
 
   def trans_not_exist?
-    if Order.all.map {|order| order.trans_id}.include?(self.trans_id)
+    if SubOrder.all.map {|order| order.trans_id}.include?(self.trans_id)
       errors.add(:trans_id, 'Transaction already fulfilled')
     end
   end

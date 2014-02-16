@@ -2,7 +2,7 @@ class WelcomeController < ApplicationController
   def index
     @os_signups = OutstandingSignup.all
     @os_rens = OutstandingRenewal.all
-    @pending_orders = Order.pending
+    @pending_orders = SubOrder.pending
     @subs = []
     @os_signups.size.times { @subs << Sub.new }
   end

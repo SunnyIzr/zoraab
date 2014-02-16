@@ -1,6 +1,8 @@
 class OrdersController < ApplicationController
   def show
-    @order = Order.find(params[:id])
+    @order = SubOrder.find(params[:id])
+    p '*'*100
+    p @order
     @prods = @order.get_prod_data
     respond_to do |format|
       format.html
@@ -9,14 +11,14 @@ class OrdersController < ApplicationController
   end
 
   def new
-    @order = Order.new(trans_id: params['trans_id'])
+    @order = SubOrder.new(trans_id: params['trans_id'])
     @sub = Sub.find(params[:sub_id])
     @response = ChargifyResponse.parse(@sub.chargify)
   end
 
   def create
     update_shopify if params[:commit] == "Save and Update Shopify" || params[:update_shopify] == '1'
-    @order = Order.new(order_params)
+    @order = SubOrder.new(order_params)
     @order.set_order_details
     @order.set_order_products(params[:item])
     if @order.save
@@ -29,7 +31,7 @@ class OrdersController < ApplicationController
   end
 
   def index
-    @orders = Order.order('created_at DESC').paginate(:page => params[:page], :per_page => 20)
+    @orders = SubOrder.order('created_at DESC').paginate(:page => params[:page], :per_page => 20)
   end
 
   def update_shopify
@@ -39,7 +41,7 @@ class OrdersController < ApplicationController
   end
 
   def send_to_shipstation
-    order = Order.find(params[:order_id])
+    order = SubOrder.find(params[:order_id])
     ss_order = Shipstation.send_order(order)
     if ss_order.OrderID != nil
       respond_to do |format|
