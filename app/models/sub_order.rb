@@ -3,6 +3,7 @@
   belongs_to :sub
   belongs_to :batch
   validates_presence_of :sub_id
+  before_save :calc_fees
 
   def self.pending
     pending_orders = []
@@ -20,9 +21,9 @@
     end
   end
 
-  def fee
-    fee =  ( self.amt * 0.029 ) + 0.3
-    return fee.round(2)
+  def calc_fees
+    fee = ( self.amt * 0.029 ) + 0.3
+    self.fees = fee.round(2)
   end
 
   def qb

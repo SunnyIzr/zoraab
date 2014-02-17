@@ -69,6 +69,12 @@ describe SubOrder do
     expect(sub_order1.line_items[2].rate).to eq(0.0)
   end
 
+  it 'should calc and save fees once sub order is saved' do
+    sub_order1.amt = 18.0
+    sub_order1.save
+    expect(sub_order1.fees).to eq(0.82)
+  end
+
 
 
 end
