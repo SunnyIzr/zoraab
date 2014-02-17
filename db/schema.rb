@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140215230337) do
+ActiveRecord::Schema.define(version: 20140217170434) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -53,7 +53,7 @@ ActiveRecord::Schema.define(version: 20140215230337) do
     t.integer  "trans_id"
     t.integer  "ssid"
     t.float    "amt",              default: 0.0
-    t.string   "type",             default: "SubOrder"
+    t.string   "type"
   end
 
   add_index "orders", ["batch_id"], name: "index_orders_on_batch_id", using: :btree
