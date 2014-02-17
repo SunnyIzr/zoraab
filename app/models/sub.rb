@@ -8,6 +8,40 @@ class Sub < ActiveRecord::Base
     Chargify::Subscription.find(cid).attributes
   end
 
+  def self.active_upfronts
+    ary = []
+    self.where(upfront: true).each do |sub|
+      if sub.next_upfront_due_date != nil
+        ary << sub
+      end
+    end
+    ary
+  end
+
+  def self.refresh_upfronts
+    self.active_upfronts.each do |sub|
+      if sub.upfront_due?
+        data = ChargifyResponse.parse(sub.chargify)
+        oren = OutstandingRenewal.create(trans_id: 0, name: data['name'], plan: data['plan'], cid: sub.cid, amount: 0.0)
+        oren.created_at = sub.next_upfront_due_date
+        oren.save
+      end
+    end
+  end
+
+  def next_upfront_due_date
+    months = self.chargify['product'].attributes['handle'][2].to_i
+    if self.sub_orders.size == months
+      return nil
+    else
+      return (self.sub_orders.last.created_at + 30.days)
+    end
+  end
+
+  def upfront_due?
+    return self.next_upfront_due_date < Time.new
+  end
+
   def retrieve_wufoo_prefs
     self.prefs << Wufoo.find_prefs(cid)
   end
