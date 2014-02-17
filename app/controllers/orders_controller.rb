@@ -20,7 +20,7 @@ class OrdersController < ApplicationController
     update_shopify if params[:commit] == "Save and Update Shopify" || params[:update_shopify] == '1'
     @order = SubOrder.new(order_params)
     @order.set_order_details
-    @order.set_order_products(params[:item])
+    @order.set_order_line_items(params[:item])
     if @order.save
       OutstandingSignup.refresh_outstanding_signups
       OutstandingRenewal.refresh_outstanding_renewals

@@ -1,6 +1,5 @@
   class SubOrder < Order
   after_save :set_order_number
-  has_and_belongs_to_many :products
   belongs_to :sub
   belongs_to :batch
   validates_presence_of :sub_id
@@ -18,16 +17,6 @@
       digits = 4 - self.id.to_s.length
       self.order_number = "ZK" + ("0"*digits) + self.id.to_s
       self.save
-    end
-  end
-
-  def get_prod_data
-    self.products.map do |product|
-      if product.active == true
-        Shopify.data(product.sku)
-      else
-        {sku: product.sku, small_pic: '/assets/no-prev.jpg'}
-      end
     end
   end
 
@@ -65,14 +54,13 @@
         zip: self.zip,
         country: self.country
       },
-      line_items: self.line_items
+      line_items: self.qb_line_items
     }
   end
 
-  def line_itemsd
+  def qb_line_items
     ary = []
-    self.products.each { |product| ary << { sku: product.sku, price: '0.0', q: 1 } }
-    ary << { sku: self.plan, price: self.amt.to_s, q: 1}
+    self.line_items.each { |li| ary << { sku: li.product.sku, price: li.rate.to_s, q: li.q } }
     ary
   end
 
@@ -99,23 +87,17 @@
     self.billing_country = response[:billing_address][:country]
   end
 
-  def set_order_products(ary_of_skus)
+  def set_order_line_items(ary_of_skus)
+    li = self.line_items.new(q: 1, rate: self.amt)
+    li.product = Product.find_or_create_by(sku: self.plan)
+    li.save
     ary_of_skus.each do |sku|
-      self.products << Product.find_or_create_by(sku: sku)
+      li = self.line_items.new(q: 1, rate: 0.0)
+      li.product = Product.find_or_create_by(sku: sku)
     end
   end
 
 
-  def ship_state
-    ss_order = Shipstation.get_order(self.ssid)
-    if ss_order == nil
-      return "Never Sent to Shipstation"
-    elsif ss_order.ShipDate == nil
-      return 'Unshipped'
-    else
-      return "Shipped - #{ss_order.ShipDate.strftime('%a %d %b %Y')}"
-    end
-  end
 
   def to_csv(prods)
     CSV.generate() do |csv|
