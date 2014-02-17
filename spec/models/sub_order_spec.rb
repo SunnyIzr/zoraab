@@ -9,7 +9,6 @@ describe SubOrder do
   let (:sub) {FactoryGirl.create(:sub)}
 
   it {should validate_presence_of (:sub_id)}
-  it {should have_and_belong_to_many (:products)}
   it {should belong_to (:sub)}
   it {should belong_to (:batch)}
 
@@ -48,7 +47,9 @@ describe SubOrder do
     expect(SubOrder.pending).to eq([sub_order1,sub_order2])
   end
 
-  it 'should set the products of an order based on an ary of skus' do
+  it 'should set the line items of an order based on an ary of skus' do
+    sub_order1.plan = 'Sock Dabbler (2 Pairs/Mo)'
+    sub_order1.amt = 39.0
     sub_order1.save
     product1.sku = 'sku_1'
     product1.save
@@ -56,45 +57,18 @@ describe SubOrder do
     product2.save
     product3.sku = 'sku_3'
     product3.save
-    sub_order1.set_order_products(['sku_1','sku_2'])
-    expect(sub_order1.products).to eq([product1,product2])
+    sub_order1.set_order_line_items(['sku_1','sku_2'])
+    expect(sub_order1.line_items[0].product.sku).to eq(sub_order1.plan)
+    expect(sub_order1.line_items[0].q).to eq(1)
+    expect(sub_order1.line_items[0].rate).to eq(sub_order1.amt)
+    expect(sub_order1.line_items[1].product.sku).to eq(product1.sku)
+    expect(sub_order1.line_items[1].q).to eq(1)
+    expect(sub_order1.line_items[1].rate).to eq(0.0)
+    expect(sub_order1.line_items[2].product.sku).to eq(product2.sku)
+    expect(sub_order1.line_items[2].q).to eq(1)
+    expect(sub_order1.line_items[2].rate).to eq(0.0)
   end
 
-  it 'should obtain product data from Shopify for order items' do
-    sub_order1.save
-    product1.sku = 'ms-cr704'
-    product1.save
-    product2.sku = 'ms-at707'
-    product2.save
-    product3.sku = 'ms-mk709'
-    product3.save
-    sub_order1.products << [product1,product2,product3]
-    sub_order1.save
-    data = sub_order1.get_prod_data
 
-     expect(data[0][:sku]).to eq("ms-cr704")
-     expect(data[0][:title]).to eq("Concrete Rose")
-     expect(data[0][:price]).to eq(11.0)
-     expect(data[0][:vendor]).to eq("Mint Socks")
-     expect(data[0][:tags]).to eq("Blocks, Blue, Cotton, Crew, Fashion Socks, Fun Socks, Men, Mint Socks, New, Pink, Print")
-     expect(data[0][:pic]).to eq("http://cdn.shopify.com/s/files/1/0127/4312/products/MS-CR704.jpg?v=1385514743")
-     expect(data[0][:small_pic]).to eq("http://cdn.shopify.com/s/files/1/0127/4312/products/MS-CR704.jpg?v=1385514743")
-     expect(data[0][:publish_date]).to eq("2013-11-26T15:41:02-05:00")
-     expect(data[1][:sku]).to eq("ms-at707")
-     expect(data[1][:title]).to eq("Antiquity")
-     expect(data[1][:price]).to eq(11.0)
-     expect(data[1][:vendor]).to eq("Mint Socks")
-     expect(data[1][:tags]).to eq("Blue, Cotton, Crew, Fashion Socks, Fun Socks, Men, Mint Socks, New, Print")
-     expect(data[1][:pic]).to eq("http://cdn.shopify.com/s/files/1/0127/4312/products/MS-AT707.jpg?v=1385515047")
-     expect(data[1][:small_pic]).to eq("http://cdn.shopify.com/s/files/1/0127/4312/products/MS-AT707.jpg?v=1385515047")
-     expect(data[1][:publish_date]).to eq("2013-11-26T15:41:32-05:00")
-     expect(data[2][:sku]).to eq("ms-mk709")
-     expect(data[2][:title]).to eq("Marakkesh")
-     expect(data[2][:price]).to eq(11.0)
-     expect(data[2][:vendor]).to eq("Mint Socks")
-     expect(data[2][:tags]).to eq("Blue, Brown, Cotton, Crew, Fashion Socks, Fun Socks, Men, Mint Socks, New, Orange, Print")
-     expect(data[2][:pic]).to eq("http://cdn.shopify.com/s/files/1/0127/4312/products/MS-MK709.jpg?v=1385514816")
-     expect(data[2][:small_pic]).to eq("http://cdn.shopify.com/s/files/1/0127/4312/products/MS-MK709.jpg?v=1385514816")
-     expect(data[2][:publish_date]).to eq("2013-11-26T15:40:37-05:00")
-  end
+
 end
