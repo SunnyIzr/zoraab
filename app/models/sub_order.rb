@@ -1,9 +1,9 @@
   class SubOrder < Order
   after_save :set_order_number
-  has_and_belongs_to_many :products
   belongs_to :sub
   belongs_to :batch
   validates_presence_of :sub_id
+  before_save :calc_fees, :set_gateway
 
   def self.pending
     pending_orders = []
@@ -19,61 +19,6 @@
       self.order_number = "ZK" + ("0"*digits) + self.id.to_s
       self.save
     end
-  end
-
-  def get_prod_data
-    self.products.map do |product|
-      if product.active == true
-        Shopify.data(product.sku)
-      else
-        {sku: product.sku, small_pic: '/assets/no-prev.jpg'}
-      end
-    end
-  end
-
-  def fee
-    fee =  ( self.amt * 0.029 ) + 0.3
-    return fee.round(2)
-  end
-
-  def qb
-      {
-      type: 'Subscription',
-      number: self.order_number,
-      created_at: self.created_at,
-      email: self.email,
-      gateway: 'braintree',
-      shipping_total: '0.0',
-      gift_card_redemption: nil,
-      total: self.amt.to_s,
-      fees: {'Braintree Fee' => self.fee},
-      discount: 0.0,
-      meom: self.trans_id.to_s,
-      billing_address: {
-        name: self.billing_name,
-        address1: self.billing_address,
-        city: self.billing_city,
-        state: self.billing_state,
-        zip: self.billing_zip,
-        country: self.billing_country
-      },
-      shipping_address: {
-        name: self.name,
-        address1: self.address,
-        city: self.city,
-        state: self.state,
-        zip: self.zip,
-        country: self.country
-      },
-      line_items: self.line_items
-    }
-  end
-
-  def line_items
-    ary = []
-    self.products.each { |product| ary << { sku: product.sku, price: '0.0', q: 1 } }
-    ary << { sku: self.plan, price: self.amt.to_s, q: 1}
-    ary
   end
 
   def set_order_details
@@ -99,22 +44,38 @@
     self.billing_country = response[:billing_address][:country]
   end
 
-  def set_order_products(ary_of_skus)
+  def set_order_line_items(ary_of_skus)
+    li = self.line_items.new(q: 1, rate: self.amt)
+    li.product = Product.find_or_create_by(sku: self.plan)
+    li.save
     ary_of_skus.each do |sku|
-      self.products << Product.find_or_create_by(sku: sku)
+      li = self.line_items.new(q: 1, rate: 0.0)
+      li.product = Product.find_or_create_by(sku: sku)
+      li.save
     end
   end
 
-
-  def ship_state
-    ss_order = Shipstation.get_order(self.ssid)
-    if ss_order == nil
-      return "Never Sent to Shipstation"
-    elsif ss_order.ShipDate == nil
-      return 'Unshipped'
-    else
-      return "Shipped - #{ss_order.ShipDate.strftime('%a %d %b %Y')}"
+  def calc_fees
+    if self.amt > 0.0
+      fee = ( self.amt * 0.029 ) + 0.3
+      self.fees = fee.round(2)
     end
+  end
+
+  def set_gateway
+    self.gateway = 'braintree'
+  end
+
+  def qb_fees
+    {'Braintree Fee' => self.fees.to_s}
+  end
+
+  def qb_memo
+    self.trans_id.to_s
+  end
+
+  def qb_gift_card
+    nil
   end
 
   def to_csv(prods)

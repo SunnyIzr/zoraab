@@ -1,0 +1,2 @@
+class AmznOrder < Order
+end

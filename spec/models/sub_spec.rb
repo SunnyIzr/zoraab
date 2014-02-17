@@ -38,8 +38,14 @@ describe Sub do
     product5.sku = 'sku_5'
     product5.save
 
-    order1.products << [product1,product2]
-    order2.products << [product3,product4]
+
+    order1.line_items.create(product_id: product1.id, q: 1, rate: 0.0)
+    order1.line_items.create(product_id: product2.id, q: 1, rate: 0.0)
+
+
+    order2.line_items.create(product_id: product3.id, q: 1, rate: 0.0)
+    order2.line_items.create(product_id: product4.id, q: 1, rate: 0.0)
+
     sub.sub_orders << [order1,order2]
 
 

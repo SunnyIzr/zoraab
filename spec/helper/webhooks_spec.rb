@@ -29,7 +29,7 @@ describe Webhooks do
     expect(OutstandingRenewal.last.amount).to eq(45.0)
   end
 
-  it 'should set the trans_id of the pending order if the order already exists' do
+  it 'should set the trans_id and amt of the pending order if the order already exists' do
     sub.cid = 4403985
     sub.save
     sub.sub_orders << order
@@ -40,5 +40,6 @@ describe Webhooks do
     expect(OutstandingSignup.all).to eq([])
     expect(OutstandingRenewal.all).to eq([])
     expect(Order.last.trans_id).to eq(48383911)
+    expect(Order.last.amt).to eq(45.0)
   end
 end

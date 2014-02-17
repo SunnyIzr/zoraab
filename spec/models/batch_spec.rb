@@ -39,11 +39,13 @@ describe Batch do
     product2.save
     product3.sku = 'ms-mk709'
     product3.save
-    order1.products << [product1,product2]
+    order1.line_items.create(product_id: product1.id, q: 1, rate: 0.0)
+    order1.line_items.create(product_id: product2.id, q: 1, rate: 0.0)
     order1.save
-    order2.products << [product2,product3]
+    order2.line_items.create(product_id: product2.id, q: 1, rate: 0.0)
+    order2.line_items.create(product_id: product3.id, q: 1, rate: 0.0)
     order2.save
-    order3.products << product3
+    order3.line_items.create(product_id: product3.id, q: 1, rate: 0.0)
     order3.save
     batch1.sub_orders << [order1,order2,order3]
     data = batch1.get_prod_data

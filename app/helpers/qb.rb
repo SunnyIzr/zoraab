@@ -1,5 +1,5 @@
 module Qb
-  attr_reader :sr, :prod
+  # attr_reader :sr, :prod
 
   extend self
 
@@ -126,7 +126,7 @@ module Qb
     item_ref = Quickbooks::Model::BaseReference.new(@prod.query("select * from Item where Name = '"+order[:fees].keys.first+"'").entries[0].id)
     item_ref.name = order[:fees].keys.first
     line_item.sales_item_line_detail.item_ref = item_ref
-    line_item.sales_item_line_detail.unit_price = BigDecimal.new('-'+order[:fees].values.first.to_s)
+    line_item.sales_item_line_detail.unit_price = BigDecimal.new('-'+order[:fees].values.first)
     line_item.sales_item_line_detail.quantity = BigDecimal.new(1)
     line_item.amount = BigDecimal.new('-'+order[:fees].values.first.to_s)
     line_item
@@ -194,6 +194,11 @@ module Qb
     @sr.create(qb_order)
     p "Saved"
     p "*"*100
+  end
+
+  def delete_order(order_number)
+    qbo = get_order(order_number)
+    @sr.delete_by_query_string(qbo)
   end
 
   private

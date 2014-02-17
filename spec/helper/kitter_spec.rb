@@ -73,7 +73,12 @@ describe Kitter do
     product5.save
 
     order1.products << [product1,product2]
+    order1.line_items.create(product_id: product1.id, q: 1, rate: 0.0)
+    order1.line_items.create(product_id: product2.id, q: 1, rate: 0.0)
+
     order2.products << [product3]
+    order2.line_items.create(product_id: product3.id, q: 1, rate: 0.0)
+
     sub.sub_orders << [order1,order2]
 
     expect(Kitter.remove_dupes(pref3.pref,sub.id)).to eq([product5,product4])
@@ -123,6 +128,9 @@ describe Kitter do
     product6.save
 
     order1.products << [product1,product2]
+    order1.line_items.create(product_id: product1.id, q: 1, rate: 0.0)
+    order1.line_items.create(product_id: product2.id, q: 1, rate: 0.0)
+
     sub.sub_orders << order1
     sub.prefs << pref3
 

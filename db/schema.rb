@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140215230337) do
+ActiveRecord::Schema.define(version: 20140217190253) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -24,6 +24,15 @@ ActiveRecord::Schema.define(version: 20140215230337) do
   create_table "kitter_sessions", force: true do |t|
     t.integer  "sub_id"
     t.text     "product_ids"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "line_items", force: true do |t|
+    t.integer  "order_id"
+    t.integer  "product_id"
+    t.float    "rate"
+    t.integer  "q"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -53,7 +62,11 @@ ActiveRecord::Schema.define(version: 20140215230337) do
     t.integer  "trans_id"
     t.integer  "ssid"
     t.float    "amt",              default: 0.0
-    t.string   "type",             default: "SubOrder"
+    t.string   "type"
+    t.string   "gateway"
+    t.float    "shipping_charge",  default: 0.0
+    t.float    "discount",         default: 0.0
+    t.float    "fees",             default: 0.0
   end
 
   add_index "orders", ["batch_id"], name: "index_orders_on_batch_id", using: :btree

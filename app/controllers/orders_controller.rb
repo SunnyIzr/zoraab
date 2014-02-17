@@ -1,8 +1,6 @@
 class OrdersController < ApplicationController
   def show
     @order = SubOrder.find(params[:id])
-    p '*'*100
-    p @order
     @prods = @order.get_prod_data
     respond_to do |format|
       format.html
@@ -11,7 +9,7 @@ class OrdersController < ApplicationController
   end
 
   def new
-    @order = SubOrder.new(trans_id: params['trans_id'])
+    @order = SubOrder.new(trans_id: params['trans_id'],amt: params['amt'])
     @sub = Sub.find(params[:sub_id])
     @response = ChargifyResponse.parse(@sub.chargify)
   end
@@ -20,8 +18,9 @@ class OrdersController < ApplicationController
     update_shopify if params[:commit] == "Save and Update Shopify" || params[:update_shopify] == '1'
     @order = SubOrder.new(order_params)
     @order.set_order_details
-    @order.set_order_products(params[:item])
-    if @order.save
+    @order.save
+    @order.set_order_line_items(params[:item])
+    if @order.id != nil
       OutstandingSignup.refresh_outstanding_signups
       OutstandingRenewal.refresh_outstanding_renewals
       redirect_to order_path(@order.id)
@@ -55,7 +54,7 @@ class OrdersController < ApplicationController
 
   private
   def order_params
-    params.permit(:sub_id, :order_id, :order_number,:created_at,:batch_id,:trans_id)
+    params.permit(:amt, :sub_id, :order_id, :order_number,:created_at,:batch_id,:trans_id)
   end
 
   def items_params
