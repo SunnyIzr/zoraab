@@ -69,7 +69,7 @@
     }
   end
 
-  def line_items
+  def line_itemsd
     ary = []
     self.products.each { |product| ary << { sku: product.sku, price: '0.0', q: 1 } }
     ary << { sku: self.plan, price: self.amt.to_s, q: 1}
