@@ -22,7 +22,7 @@ class Sub < ActiveRecord::Base
     self.active_upfronts.each do |sub|
       if sub.upfront_due?
         data = ChargifyResponse.parse(sub.chargify)
-        oren = OutstandingRenewal.create(trans_id: 0, name: data['name'], plan: data['plan'], cid: sub.cid, amount: 0.0)
+        oren = OutstandingRenewal.create(trans_id: 1  , name: data['name'], plan: data['plan'], cid: sub.cid, amount: 0.0)
         oren.created_at = sub.next_upfront_due_date
         oren.save
       end

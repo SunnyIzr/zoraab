@@ -13,8 +13,10 @@ class OutstandingRenewal < ActiveRecord::Base
   end
 
   def trans_not_exist?
-    if SubOrder.all.map {|order| order.trans_id}.include?(self.trans_id)
-      errors.add(:trans_id, 'Transaction already fulfilled')
+    unless self.trans_id == 1
+      if SubOrder.all.map {|order| order.trans_id}.include?(self.trans_id)
+        errors.add(:trans_id, 'Transaction already fulfilled')
+      end
     end
   end
 
