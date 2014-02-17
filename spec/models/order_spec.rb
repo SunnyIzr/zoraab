@@ -55,4 +55,11 @@ describe SubOrder do
     expect(order1.ship_state).to eq('Never Sent to Shipstation')
     expect(order2.ship_state).to eq('Shipped - Mon 10 Feb 2014')
   end
+
+  it 'should return net amt' do
+    order1.amt = 100.0
+    order1.fees = 11.75
+    order1.save
+    expect(order1.net_amt).to eq(88.25)
+  end
 end

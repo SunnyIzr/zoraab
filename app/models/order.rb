@@ -71,6 +71,10 @@ class Order < ActiveRecord::Base
     qb_types[self.type]
   end
 
+  def net_amt
+    return (self.amt - self.fees)
+  end
+
 
 
 
