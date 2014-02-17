@@ -16,7 +16,7 @@ class SubsController < ApplicationController
   def create_with_trans
     @sub = Sub.find_or_create_by(cid: params['cid'], upfront: params['upfront'])
     @sub.retrieve_wufoo_prefs if @sub.prefs.empty?
-    redirect_to new_sub_order_path(@sub) + '?trans_id=' + params['trans_id']
+    redirect_to new_sub_order_path(@sub) + '?trans_id=' + params['trans_id'] + '&amp;amt=' + params['amt']
   end
 
   def show
