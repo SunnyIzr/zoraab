@@ -20,8 +20,9 @@ class OrdersController < ApplicationController
     update_shopify if params[:commit] == "Save and Update Shopify" || params[:update_shopify] == '1'
     @order = SubOrder.new(order_params)
     @order.set_order_details
+    @order.save
     @order.set_order_line_items(params[:item])
-    if @order.save
+    if @order.id != nil
       OutstandingSignup.refresh_outstanding_signups
       OutstandingRenewal.refresh_outstanding_renewals
       redirect_to order_path(@order.id)

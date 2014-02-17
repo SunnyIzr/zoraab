@@ -3,7 +3,13 @@ class Order < ActiveRecord::Base
   self.inheritance_column = :type
 
   def products
-    self.line_items.map { |li| li.product }
+    products = []
+    self.line_items.each do |li|
+      unless li.product.sku.include?('Sock ')
+        products << li.product
+      end
+    end
+    products
   end
 
   def get_prod_data
