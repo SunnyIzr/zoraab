@@ -2,12 +2,13 @@ require 'spec_helper'
 
 describe SubOrder do
   let (:order1) {FactoryGirl.create(:order)}
-  let (:order2) {FactoryGirl.create(:order)}
+  # let (:order2) {FactoryGirl.create(:order)}
   let (:product1) {FactoryGirl.create(:product)}
   let (:product2) {FactoryGirl.create(:product)}
   let (:product3) {FactoryGirl.create(:product)}
 
   it {should have_many (:line_items)}
+  it {should validate_uniqueness_of (:order_number)}
 
   it 'should obtain product data from Shopify for order items' do
     order1.save
@@ -50,6 +51,7 @@ describe SubOrder do
 
   it 'should indicate if an order was sent to shipstation and if/when it was shipped' do
     order1.save
+    order2 = Order.create(order_number:'order 2')
     order2.ssid = 79066562
     order2.save
     expect(order1.ship_state).to eq('Never Sent to Shipstation')

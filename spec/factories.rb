@@ -9,7 +9,6 @@ FactoryGirl.define do
   end
 
   factory :order do
-    sub_id {1}
   end
 
   factory :pref do

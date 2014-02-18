@@ -1,5 +1,6 @@
 class Order < ActiveRecord::Base
   has_many :line_items
+  validates_uniqueness_of :order_number
   self.inheritance_column = :type
 
   def products
