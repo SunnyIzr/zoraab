@@ -92,8 +92,9 @@ class Order < ActiveRecord::Base
     end
   end
 
-
-
+  def save_to_qb
+    Qb.create_order(self.qb)
+  end
 
 
 end
