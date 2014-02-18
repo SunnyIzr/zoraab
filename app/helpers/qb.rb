@@ -101,8 +101,8 @@ module Qb
 
   def deposit_to(order)
     if order[:gateway] == 'paypal'
-      deposit_account_ref = Quickbooks::Model::BaseReference.new(@acc.query("select * from Account where Name = 'Paypal AR'").entries[0].id)
-      deposit_account_ref.name = 'Paypal AR'
+      deposit_account_ref = Quickbooks::Model::BaseReference.new(@acc.query("select * from Account where Name = 'Paypal'").entries[0].id)
+      deposit_account_ref.name = 'Paypal'
       return deposit_account_ref
     elsif order[:gateway] == 'braintree'
       deposit_account_ref = Quickbooks::Model::BaseReference.new(@acc.query("select * from Account where Name = 'Braintree AR'").entries[0].id)
