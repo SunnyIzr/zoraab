@@ -15,13 +15,6 @@ module Qb
     return @sr.query("select * from SalesReceipt where DocNumber = '"+order_number+"'").entries.first
   end
 
-  def create_many_orders(orders)
-    orders.each_with_index do |o,i|
-      puts 'Starting ' + i.to_s
-      create_order(o)
-    end
-  end
-
   def create_order(order)
     init
     p '*'*100
@@ -34,7 +27,6 @@ module Qb
       p '*'*100
     end
   end
-
 
   def new_order(order)
     qb_order = Quickbooks::Model::SalesReceipt.new
