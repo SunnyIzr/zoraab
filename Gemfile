@@ -56,6 +56,8 @@ gem "will_paginate", "~> 3.0.5"
 gem 'quickbooks-ruby', "~>0.0.6"
 
 gem 'oauth-plugin'
+
+gem 'ruby-mws', :git => 'git://github.com/alexdowad/ruby-mws.git', :branch => 'update_inventory'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
 

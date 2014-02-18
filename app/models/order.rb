@@ -81,6 +81,16 @@ class Order < ActiveRecord::Base
     return (self.amt - self.fees)
   end
 
+  def set_order_line_items(ary_of_hashes)
+    ary_of_hashes.each do |hash|
+      li = self.line_items.new
+      li.q = hash[:q]
+      li.rate = hash[:rate]
+      li.product = Product.find_or_create_by(sku: hash[:sku])
+      li.save
+    end
+  end
+
 
 
 

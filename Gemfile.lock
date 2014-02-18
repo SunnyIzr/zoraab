@@ -1,3 +1,14 @@
+GIT
+  remote: git://github.com/alexdowad/ruby-mws.git
+  revision: 09f1cc5d87c6d15d089725b762a21893ec417a02
+  branch: update_inventory
+  specs:
+    ruby-mws (0.0.3)
+      builder
+      hashie
+      httparty
+      rash
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -65,6 +76,7 @@ GEM
     foundation-rails (5.1.1.0)
       railties (>= 3.1.0)
       sass (>= 3.2.0)
+    hashie (2.0.5)
     hike (1.2.3)
     httparty (0.12.0)
       json (~> 1.8)
@@ -135,6 +147,8 @@ GEM
       thor (>= 0.18.1, < 2.0)
     raindrops (0.12.0)
     rake (10.1.1)
+    rash (0.4.0)
+      hashie (~> 2.0.0)
     rest-client (1.6.7)
       mime-types (>= 1.16)
     roxml (3.3.1)
@@ -231,6 +245,7 @@ DEPENDENCIES
   rails (= 4.0.0)
   rails_12factor
   rspec-rails
+  ruby-mws!
   ruby_odata
   sass-rails (~> 4.0.0)
   shopify_api
