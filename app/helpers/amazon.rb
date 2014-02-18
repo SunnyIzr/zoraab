@@ -2,7 +2,11 @@ module Amazon
   extend self
 
   def get_orders(days_back)
-    $mws.orders.list_orders(:last_updated_after => Time.now-days_back.days)
+    $mws.orders.list_orders(:last_updated_after => Time.now-days_back.days, :order_status => 'Shipped').orders
+  end
+
+  def get_line_items(order_number)
+    $mws.orders.list_order_items(:amazon_order_id => order_number).order_items
   end
 
   def save_order(order)
@@ -25,7 +29,26 @@ module Amazon
     ao.billing_zip = order.shipping_address.postal_code
     ao.billing_country = order.shipping_address.country_code
     ao.amt = order.order_total.amount.to_f
+    lis = {}
+    ao.save
+    ao.set_order_line_items(parse_line_items(ao.order_number))
     ao.save
   end
+
+  def parse_line_items(order_number)
+    lis = []
+    res = get_line_items(order_number)
+    res.each do |li|
+      hash = {}
+      hash[:sku] = li.seller_sku
+      hash[:q] = li.quantity_shipped.to_i
+      hash[:rate] = li.item_price.amount.to_f
+      lis << hash
+    end
+    lis
+  end
+
+
+
 
 end
