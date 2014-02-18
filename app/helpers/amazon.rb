@@ -9,6 +9,10 @@ module Amazon
     $mws.orders.list_order_items(:amazon_order_id => order_number).order_items
   end
 
+  def order(order_number)
+    $mws.orders.get_order(:amazon_order_id => order_number).orders.first
+  end
+
   def save_order(order)
     ao = AmznOrder.new
     ao.order_number = order.amazon_order_id

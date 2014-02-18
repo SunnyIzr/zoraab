@@ -78,6 +78,10 @@ module Qb
       customer_ref = Quickbooks::Model::BaseReference.new(@cust.query("select * from Customer where DisplayName = 'Subscriptions'").entries[0].id)
       customer_ref.name = 'Subscriptions'
       return customer_ref
+    elsif order[:type] == 'Amazon'
+      customer_ref = Quickbooks::Model::BaseReference.new(@cust.query("select * from Customer where DisplayName = 'Amazon Orders'").entries[0].id)
+      customer_ref.name = 'Amazon Orders'
+      return customer_ref
     end
   end
 
@@ -111,6 +115,10 @@ module Qb
     elsif order[:gateway] == 'braintree'
       deposit_account_ref = Quickbooks::Model::BaseReference.new(@acc.query("select * from Account where Name = 'Braintree AR'").entries[0].id)
       deposit_account_ref.name = 'Braintree AR'
+      return deposit_account_ref
+    elsif order[:gateway] == 'amazon'
+      deposit_account_ref = Quickbooks::Model::BaseReference.new(@acc.query("select * from Account where Name = 'Amazon'").entries[0].id)
+      deposit_account_ref.name = 'Amazon'
       return deposit_account_ref
     else
       deposit_account_ref = Quickbooks::Model::BaseReference.new(@acc.query("select * from Account where Name = 'Shopify Payments AR'").entries[0].id)

@@ -12,6 +12,11 @@ module Shipstation
     end
   end
 
+  def get_order_by_order_number(order_number)
+    SHIPSTATION.Orders.filter("OrderNumber eq '" + order_number + "'")
+    SHIPSTATION.execute[0]
+  end
+
   def send_order(order)
     ss_order = create_order(order)
     SHIPSTATION.AddToOrders(ss_order)
