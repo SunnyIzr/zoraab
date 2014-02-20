@@ -1,5 +1,5 @@
 module Qb
-  # attr_reader :sr, :prod
+  attr_reader :sr, :prod
 
   extend self
 
