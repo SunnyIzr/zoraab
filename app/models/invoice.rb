@@ -10,6 +10,23 @@ class Invoice < ActiveRecord::Base
     end
   end
 
+  def set_line_items(data)
+    data.each do |li|
+      prod = Product.find_or_create_by(sku: li[:sku].downcase)
+      line_item = self.line_items.new(q: li[:q], rate: li[:price])
+      line_item.product = prod
+      line_item.save
+    end
+    self.calc_total
+    self.save
+  end
+
+  def calc_total
+    self.total = (self.line_items.map { |li| li.q*li.rate }.inject(:+)).round(2)
+  end
+
+
+
   def qb
     {
       number: self.po_number,
@@ -28,6 +45,10 @@ class Invoice < ActiveRecord::Base
       ary << {sku: li.product.sku, price: li.rate.to_s, q: li.q}
     end
     ary
+  end
+
+  def save_to_qb
+    Qb.create_po(self.qb)
   end
 
 end

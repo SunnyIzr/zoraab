@@ -11,6 +11,18 @@ module Qb
     payment_method_service
   end
 
+  def product_exist?(sku)
+    product_service
+    return @prod.query("select * from Item where name = '"+sku+"'").entries.size > 0
+  end
+
+  def products_dont_exist?(ary_of_skus)
+    product_service
+    ary_of_skus.select do |sku|
+      !product_exist?(sku)
+    end
+  end
+
   def get_order(order_number)
     return @sr.query("select * from SalesReceipt where DocNumber = '"+order_number+"'").entries.first
   end
@@ -230,6 +242,7 @@ module Qb
   end
 
   def add_po_line_item(line)
+    p "Adding Item #{line[:sku]}"
     line_item = Quickbooks::Model::PurchaseLineItem.new
     line_item.amount = BigDecimal.new((line[:price].to_f*line[:q].to_f).to_s)
     line_item.detail_type = "ItemBasedExpenseLineDetail"
