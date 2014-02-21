@@ -209,21 +209,37 @@ module Qb
   def create_po(inv)
     po_service
     ven_service
+    product_service
     qb_po = new_po(inv)
-    return qb_po
+    @po.create(qb_po)
   end
 
   def new_po(inv)
     qb_po = Quickbooks::Model::PurchaseOrder.new
     qb_po.txn_date = inv[:created_at]
+    qb_po.due_date = inv[:created_at]
     qb_po.doc_number = inv[:number]
     v_ref = Quickbooks::Model::BaseReference.new(@ven.query("select * from Vendor where DisplayName = '"+"#{inv[:vendor]}"+"'").entries[0].id)
     v_ref.name = inv[:vendor]
     qb_po.vendor_ref = v_ref
     qb_po.total_amount = BigDecimal.new(inv[:total])
+    qb_po.line_items = []
+    inv[:line_items].each { |line| qb_po.line_items << add_po_line_item(line)}
     qb_po
   end
 
+  def add_po_line_item(line)
+    line_item = Quickbooks::Model::PurchaseLineItem.new
+    line_item.amount = BigDecimal.new((line[:price].to_f*line[:q].to_f).to_s)
+    line_item.detail_type = "ItemBasedExpenseLineDetail"
+    line_item.item_based_expense_line_detail = Quickbooks::Model::ItemBasedExpenseLineDetail.new
+    item_ref = Quickbooks::Model::BaseReference.new(@prod.query("select * from Item where Name = '#{line[:sku]}'").entries[0].id)
+    item_ref.name = line[:sku]
+    line_item.item_based_expense_line_detail.item_ref = item_ref
+    line_item.item_based_expense_line_detail.quantity = BigDecimal.new(line[:q].to_s)
+    line_item.item_based_expense_line_detail.unit_price = BigDecimal.new(line[:price].to_s)
+    line_item
+  end
 
   # example: {:vendor=>"Google Adwords", :amount=>500.0, :pmt_acct=>"Google Adwords", :date=>2013-12-31 00:00:00 -0500, :exp_acct=>"Online Advertising"}
 

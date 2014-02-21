@@ -27,6 +27,7 @@ class Invoice < ActiveRecord::Base
     self.line_items.each do |li|
       ary << {sku: li.product.sku, price: li.rate.to_s, q: li.q}
     end
+    ary
   end
 
 end
