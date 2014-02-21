@@ -1,5 +1,5 @@
 module Qb
-  # attr_reader :sr, :prod
+  attr_reader :sr, :prod, :po, :ven, :exp, :acc
 
   extend self
 
@@ -101,8 +101,8 @@ module Qb
 
   def deposit_to(order)
     if order[:gateway] == 'paypal'
-      deposit_account_ref = Quickbooks::Model::BaseReference.new(@acc.query("select * from Account where Name = 'Paypal AR'").entries[0].id)
-      deposit_account_ref.name = 'Paypal AR'
+      deposit_account_ref = Quickbooks::Model::BaseReference.new(@acc.query("select * from Account where Name = 'Paypal'").entries[0].id)
+      deposit_account_ref.name = 'Paypal'
       return deposit_account_ref
     elsif order[:gateway] == 'braintree'
       deposit_account_ref = Quickbooks::Model::BaseReference.new(@acc.query("select * from Account where Name = 'Braintree AR'").entries[0].id)
@@ -201,6 +201,60 @@ module Qb
     @sr.delete_by_query_string(qbo)
   end
 
+  def get_po(po_number)
+    po_service
+    return @po.query("select * from PurchaseOrder where DocNumber = '"+po_number+"'").entries.first
+  end
+
+  def create_po(inv)
+    po_service
+    ven_service
+    qb_po = new_po(inv)
+    return qb_po
+  end
+
+  def new_po(inv)
+    qb_po = Quickbooks::Model::PurchaseOrder.new
+    qb_po.txn_date = inv[:created_at]
+    qb_po.doc_number = inv[:number]
+    v_ref = Quickbooks::Model::BaseReference.new(@ven.query("select * from Vendor where DisplayName = '"+"#{inv[:vendor]}"+"'").entries[0].id)
+    v_ref.name = inv[:vendor]
+    qb_po.vendor_ref = v_ref
+    qb_po.total_amount = BigDecimal.new(inv[:total])
+    qb_po
+  end
+
+
+  # example: {:vendor=>"Google Adwords", :amount=>500.0, :pmt_acct=>"Google Adwords", :date=>2013-12-31 00:00:00 -0500, :exp_acct=>"Online Advertising"}
+
+  def create_exp(exp)
+    exp_service
+    ven_service
+    acct_service
+    qb_exp = new_exp(exp)
+    @exp.create(qb_exp)
+  end
+
+  def new_exp(exp)
+    qb_exp = Quickbooks::Model::Purchase.new
+    qb_exp.txn_date = exp[:date]
+    qb_exp.account_ref = Quickbooks::Model::BaseReference.new(@acc.query("select * from Account where Name = '"+exp[:pmt_acct]+"'").entries[0].id)
+    qb_exp.total_amount = BigDecimal.new(exp[:amount].to_s)
+    qb_exp.payment_type = 'CreditCard'
+    entity_ref = Quickbooks::Model::BaseReference.new(@ven.query("select * from Vendor where DisplayName = '"+"#{exp[:vendor]}"+"'").entries[0].id)
+    entity_ref.name = exp[:vendor]
+    qb_exp.entity_ref = entity_ref
+    line = Quickbooks::Model::PurchaseLineItem.new
+    line.amount = BigDecimal.new(exp[:amount].to_s)
+    line.detail_type = "AccountBasedExpenseLineDetail"
+    line.account_based_expense_line_detail = Quickbooks::Model::AccountBasedExpenseLineDetail.new
+    line.account_based_expense_line_detail.account_ref = Quickbooks::Model::BaseReference.new(@acc.query("select * from Account where Name = '"+exp[:exp_acct]+"'").entries[0].id)
+    line.account_based_expense_line_detail.account_ref.name = exp[:exp_acct]
+    qb_exp.line_items = [line]
+
+    return qb_exp
+  end
+
   private
   def sales_receipt_service
     oauth_client = OAuth::AccessToken.new($qb_oauth_consumer, ENV['QB_TOKEN'] , ENV['QB_TOKEN_SECRET'])
@@ -235,6 +289,27 @@ module Qb
     @acc = Quickbooks::Service::Account.new
     @acc.access_token = oauth_client
     @acc.company_id = ENV['QB_RID']
+  end
+
+  def po_service
+    oauth_client = OAuth::AccessToken.new($qb_oauth_consumer, ENV['QB_TOKEN'] , ENV['QB_TOKEN_SECRET'])
+    @po = Quickbooks::Service::PurchaseOrder.new
+    @po.access_token = oauth_client
+    @po.company_id = ENV['QB_RID']
+  end
+
+  def ven_service
+    oauth_client = OAuth::AccessToken.new($qb_oauth_consumer, ENV['QB_TOKEN'] , ENV['QB_TOKEN_SECRET'])
+    @ven = Quickbooks::Service::Vendor.new
+    @ven.access_token = oauth_client
+    @ven.company_id = ENV['QB_RID']
+  end
+
+  def exp_service
+    oauth_client = OAuth::AccessToken.new($qb_oauth_consumer, ENV['QB_TOKEN'] , ENV['QB_TOKEN_SECRET'])
+    @exp = Quickbooks::Service::Purchase.new
+    @exp.access_token = oauth_client
+    @exp.company_id = ENV['QB_RID']
   end
 
 

@@ -1,5 +1,5 @@
 class Order < ActiveRecord::Base
-  has_many :line_items
+  has_many :line_items, as: :line_itemable
   validates_uniqueness_of :order_number
   self.inheritance_column = :type
 
