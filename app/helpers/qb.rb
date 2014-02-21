@@ -1,5 +1,5 @@
 module Qb
-  attr_reader :sr, :prod
+  attr_reader :sr, :prod, :po, :ven
 
   extend self
 
@@ -201,6 +201,29 @@ module Qb
     @sr.delete_by_query_string(qbo)
   end
 
+  def get_po(po_number)
+    po_service
+    return @po.query("select * from PurchaseOrder where DocNumber = '"+po_number+"'").entries.first
+  end
+
+  def create_po(inv)
+    po_service
+    ven_service
+    qb_po = new_po(inv)
+    return qb_po
+  end
+
+  def new_po(inv)
+    qb_po = Quickbooks::Model::PurchaseOrder.new
+    qb_po.txn_date = inv[:created_at]
+    qb_po.doc_number = inv[:number]
+    v_ref = Quickbooks::Model::BaseReference.new(@ven.query("select * from Vendor where DisplayName = '"+"#{inv[:vendor]}"+"'").entries[0].id)
+    v_ref.name = inv[:vendor]
+    qb_po.vendor_ref = v_ref
+    qb_po.total_amount = BigDecimal.new(inv[:total])
+    qb_po
+  end
+
   private
   def sales_receipt_service
     oauth_client = OAuth::AccessToken.new($qb_oauth_consumer, ENV['QB_TOKEN'] , ENV['QB_TOKEN_SECRET'])
@@ -235,6 +258,20 @@ module Qb
     @acc = Quickbooks::Service::Account.new
     @acc.access_token = oauth_client
     @acc.company_id = ENV['QB_RID']
+  end
+
+  def po_service
+    oauth_client = OAuth::AccessToken.new($qb_oauth_consumer, ENV['QB_TOKEN'] , ENV['QB_TOKEN_SECRET'])
+    @po = Quickbooks::Service::PurchaseOrder.new
+    @po.access_token = oauth_client
+    @po.company_id = ENV['QB_RID']
+  end
+
+  def ven_service
+    oauth_client = OAuth::AccessToken.new($qb_oauth_consumer, ENV['QB_TOKEN'] , ENV['QB_TOKEN_SECRET'])
+    @ven = Quickbooks::Service::Vendor.new
+    @ven.access_token = oauth_client
+    @ven.company_id = ENV['QB_RID']
   end
 
 
