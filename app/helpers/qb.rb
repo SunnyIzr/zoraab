@@ -1,5 +1,5 @@
 module Qb
-  attr_reader :sr, :prod, :po, :ven, :exp, :acc, :bill
+  attr_reader :sr, :prod, :po, :ven, :exp, :acc
 
   extend self
 
@@ -326,13 +326,6 @@ module Qb
     @exp = Quickbooks::Service::Purchase.new
     @exp.access_token = oauth_client
     @exp.company_id = ENV['QB_RID']
-  end
-
-  def bill_service
-    oauth_client = OAuth::AccessToken.new($qb_oauth_consumer, ENV['QB_TOKEN'] , ENV['QB_TOKEN_SECRET'])
-    @bill = Quickbooks::Service::Bill.new
-    @bill.access_token = oauth_client
-    @bill.company_id = ENV['QB_RID']
   end
 
 
