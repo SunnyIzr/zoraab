@@ -219,6 +219,7 @@ module Qb
     qb_po.txn_date = inv[:created_at]
     qb_po.due_date = inv[:created_at]
     qb_po.doc_number = inv[:number]
+    qb_po.po_status = 'Open'
     v_ref = Quickbooks::Model::BaseReference.new(@ven.query("select * from Vendor where DisplayName = '"+"#{inv[:vendor]}"+"'").entries[0].id)
     v_ref.name = inv[:vendor]
     qb_po.vendor_ref = v_ref
