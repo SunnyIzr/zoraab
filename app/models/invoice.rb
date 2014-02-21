@@ -10,4 +10,23 @@ class Invoice < ActiveRecord::Base
     end
   end
 
+  def qb
+    {
+      number: self.po_number,
+      created_at: self.created_at,
+      vendor: self.vendor,
+      total: self.total.to_s,
+      shipping: self.shipping.to_s,
+      discount: self.discount.to_s,
+      line_items: self.qb_line_items
+    }
+  end
+
+  def qb_line_items
+    ary = []
+    self.line_items.each do |li|
+      ary << {sku: li.product.sku, price: li.rate.to_s, q: li.q}
+    end
+  end
+
 end
