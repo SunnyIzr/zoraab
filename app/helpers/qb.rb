@@ -230,6 +230,7 @@ module Qb
   end
 
   def add_po_line_item(line)
+    p "Adding Item #{line[:sku]}"
     line_item = Quickbooks::Model::PurchaseLineItem.new
     line_item.amount = BigDecimal.new((line[:price].to_f*line[:q].to_f).to_s)
     line_item.detail_type = "ItemBasedExpenseLineDetail"
