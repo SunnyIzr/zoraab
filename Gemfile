@@ -53,7 +53,7 @@ gem 'rails_12factor', group: :production
 
 gem "will_paginate", "~> 3.0.5"
 
-gem 'quickbooks-ruby', "~>0.0.6"
+gem 'quickbooks-ruby', "~>0.0.8"
 
 gem 'oauth-plugin'
 

@@ -117,9 +117,9 @@ GEM
       rack (~> 1.2)
     pg (0.17.1)
     polyglot (0.3.3)
-    quickbooks-ruby (0.0.6)
+    quickbooks-ruby (0.0.8)
       activemodel
-      nokogiri (~> 1.6, >= 1.6.1)
+      nokogiri
       oauth
       roxml
     rack (1.5.2)
@@ -241,7 +241,7 @@ DEPENDENCIES
   jquery-rails
   oauth-plugin
   pg
-  quickbooks-ruby (~> 0.0.6)
+  quickbooks-ruby (~> 0.0.8)
   rails (= 4.0.0)
   rails_12factor
   rspec-rails
