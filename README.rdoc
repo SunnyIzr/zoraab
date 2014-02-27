@@ -1,28 +1,17 @@
 == README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Zoraab is an custom business application for the ECommerce store Zoraab.com. Zoraab.com is a boutique and subscription service that sells men's fashion socks.
 
-Things you may want to cover:
+In it's current state, this application does the following:
+* Creates subscription orders based on customer preferences
+* Looks up previous purchase history for a specific customer
+* Pulls Shopify and Subscription Orders and imports them into Accounting Software (Quickbooks Online)
+* Tracks Inventory based on Order Activity from Shopify and Amazon Marketplace
 
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
-
-
-Please feel free to use a different markup language if you do not plan to run
-<tt>rake doc:app</tt>.
+The following APIs are currently in use with this application:
+* Shopify
+* Chargify
+* Wufoo
+* Shipstation
+* Amazon SellerCentral
+* Quickbooks Online
