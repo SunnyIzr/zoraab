@@ -31,7 +31,7 @@
         <ul class="off-canvas-list">
           <li><label>ZORAAB</label></li>
           <li><a id ="shopify_sync" class='long-load' href="#">Sync Inventory</a></li>
-          <li><a href="#" data-reveal-id="myModal">Fulfill Future Subs</a></li>
+          <li><a href="/subs-upcoming/" data-reveal-id="myModal">Fulfill Future Subs</a></li>
           <li><a href="/orders/" class="long-load">All Orders</a></li>
           <li><a href="/subs/" class="long-load">All Subscribers</a></li>
           <li><a href="/batches">All Batches</a></li>
@@ -61,21 +61,6 @@
         <div id="ball"></div>
         <div id="ballShadow"></div>
       </div>
-    </div>
-
-    <div id="myModal" class= "reveal-modal" data-reveal>
-      <h2>How many days of subscriptions would you like to fill?</h2>
-          <%= form_tag("/batches/new", method: "get") do %>
-            <div class="row collapse">
-              <div class="small-10 columns">
-                <%= text_field_tag 'days'%>
-              </div>
-              <div class="small-2 columns">
-                <%= submit_tag("Go", class: 'button postfix long-load') %>
-              </div>
-            </div>
-          <% end %>
-      <a class="close-reveal-modal">&#215;</a>
     </div>
 
   </body>

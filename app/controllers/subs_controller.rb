@@ -42,6 +42,10 @@ class SubsController < ApplicationController
     end
   end
 
+  def index_upcoming
+
+  end
+
   def kitter
     @kitter_suggestions = Kitter.suggest_prod_ids(params['sub_id'])
     ksesh = KitterSession.find_or_create_by(sub_id: params['sub_id'].to_i)
