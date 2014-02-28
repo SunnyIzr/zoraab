@@ -1,4 +1,4 @@
 class DataSession < ActiveRecord::Base
-  serialize :data, Hash
+  serialize :data, Array
 
 end
