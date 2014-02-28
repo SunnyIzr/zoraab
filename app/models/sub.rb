@@ -38,29 +38,27 @@ class Sub < ActiveRecord::Base
     product_data
   end
 
-  def self.pull_subs_due(days)
-    subs = {}
-    cdata = retrieve_all_active_subs
-    all.each do |sub|
-      subs[sub.cid] = cdata[sub.cid] if sub.due?(days,cdata[sub.cid])
-    end
-    subs
-  end
+  # def self.pull_subs_due
+  #   subs = []
+  #   cdata = retrieve_all_active_subs
+  #   cdata.each do |cid,value|
 
-  def self.retrieve_all_active_subs
-    i = 0
-    current_page = [1]
-    subs = {}
-    while current_page.count > 0 do
-      i +=1
+  #     subs <<  if sub.due?(days,cdata[sub.cid])
+  #   end
+  #   subs
+  # end
+
+  def self.active
+    i = 1
+    subs = []
+    while true
       current_page = Chargify::Subscription.find(:all, params: {per_page: 200, page: i, state: 'active'})
-      if current_page.count > 0
-        current_page.each do |sub|
-          if sub.product.attributes['product_family'].attributes['name'] != 'Shipping for Fab'
-            subs[sub.id] = ChargifyResponse.parse(sub.attributes)
-          end
-        end
+      break if current_page.count == 0
+      current_page.each do |sub_response|
+        sub = Sub.find_by(cid: sub_response.id)
+        subs << sub if sub
       end
+      i +=1
     end
     subs
   end
