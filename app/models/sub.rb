@@ -55,16 +55,6 @@ class Sub < ActiveRecord::Base
     product_data
   end
 
-  # def self.pull_subs_due
-  #   subs = []
-  #   cdata = retrieve_all_active_subs
-  #   cdata.each do |cid,value|
-
-  #     subs <<  if sub.due?(days,cdata[sub.cid])
-  #   end
-  #   subs
-  # end
-
   def self.active
     i = 1
     subs = {}
@@ -94,7 +84,10 @@ class Sub < ActiveRecord::Base
 
   def self.due
     subs = os_renewals
-    active.each {|sub| subs<<sub}
+    subs.each { |ren| ren[1][:pmt_state] = 'Paid' }
+    active_subs = active
+    active_subs.each { |sub| sub[1][:pmt_state] = 'Pending' }
+    active_subs.each {|sub| subs<<sub}
     subs
   end
 
