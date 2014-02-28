@@ -12,6 +12,23 @@ class Sub < ActiveRecord::Base
     self.prefs << Wufoo.find_prefs(cid)
   end
 
+  def list_prefs
+    str = ''
+    self.prefs.each do |p|
+      case p.pref
+      when 'dress'
+        str += 'B'
+      when 'fashion'
+        str += 'F'
+      when 'fun'
+        str += 'W'
+      when 'casual'
+        str += 'C'
+      end
+    end
+    str
+  end
+
   def order_history
     prod_skus = []
     self.sub_orders.each do |sub_order|
@@ -38,45 +55,54 @@ class Sub < ActiveRecord::Base
     product_data
   end
 
-  def self.pull_subs_due(days)
+  def self.active
+    i = 1
     subs = {}
-    cdata = retrieve_all_active_subs
-    all.each do |sub|
-      subs[sub.cid] = cdata[sub.cid] if sub.due?(days,cdata[sub.cid])
-    end
-    subs
-  end
-
-  def self.retrieve_all_active_subs
-    i = 0
-    current_page = [1]
-    subs = {}
-    while current_page.count > 0 do
-      i +=1
+    while true
       current_page = Chargify::Subscription.find(:all, params: {per_page: 200, page: i, state: 'active'})
-      if current_page.count > 0
-        current_page.each do |sub|
-          if sub.product.attributes['product_family'].attributes['name'] != 'Shipping for Fab'
-            subs[sub.id] = ChargifyResponse.parse(sub.attributes)
-          end
+      break if current_page.count == 0
+      current_page.each do |sub_response|
+        sub = Sub.find_by(cid: sub_response.id)
+        if sub
+          subs[sub.id] = ChargifyResponse.parse(sub_response.attributes)
         end
       end
+      i +=1
+    end
+    subs.sort_by { |sub| sub[1][:next_pmt_date]}
+  end
+
+  def self.os_renewals
+    subs = {}
+    OutstandingRenewal.all.each do |oren|
+      sub = Sub.find_by(cid: oren.cid)
+      subs[sub.id] = ChargifyResponse.parse(sub.chargify)
+      subs[sub.id][:next_pmt_date] = oren.created_at
+      subs[sub.id][:trans_id] = oren.trans_id
+    end
+    subs.sort_by { |sub| sub[1][:next_pmt_date]}
+  end
+
+  def self.due
+    subs = os_renewals
+    subs.each { |ren| ren[1][:pmt_state] = 'Paid' }
+    active.each do |sub|
+      if !Sub.find(sub[0]).order_already_created?(sub[1][:next_pmt_date])
+        sub_data = sub
+        sub_data[1][:pmt_state] = 'Pending'
+        subs << sub_data
+      end
     end
     subs
   end
 
-  def due?(days,cdata)
-    return false if cdata.nil?
-    return cdata[:days_till_due]<= days && cdata[:status] == 'active' && self.not_exist?(cdata[:next_pmt_date])
-  end
-
-  def not_exist?(next_pmt_date)
+  def order_already_created?(next_pmt_date)
     self.sub_orders.each do |sub_order|
       if next_pmt_date == sub_order.created_at
-        return false
+        return true
       end
     end
-    return true
+    return false
   end
 
 end

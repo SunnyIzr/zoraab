@@ -1,0 +1,39 @@
+  <div class = "large-5 large-push-1 columns">
+    <h3> Upcoming Subscriptions </h3>
+  </div>
+  <%= form_tag("/batches/new", method: "get") do %>
+    <div class = "large-6 columns">
+      <%= submit_tag("Create Batch", class: 'button right') %>
+    </div>
+
+    <div class = "large-12 columns">
+      <table>
+        <thead>
+          <tr>
+            <th></th>
+            <th width='10%'> Sub ID </th>
+            <th width='25%'> Name </th>
+            <th width='30%'> Plan </th>
+            <th width='15%'> Next Pmt Date </th>
+            <th width='5%'> Prefs </th>
+            <th width='15%'> Status </th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @subs.each do |sub| %>
+            <tr>
+              <td>
+                <%= check_box_tag('subs[]', sub[0])%>
+              </td>
+              <td><a href="/subs/<%=sub[0]%>" target="_blank"><%=sub[1][:id]%></a></td>
+              <td><%=sub[1][:name]%></td>
+              <td><%=sub[1][:plan]%></td>
+              <td><%=sub[1][:next_pmt_date].strftime('%B %d')%></td>
+              <td><%=Sub.find(sub[0]).list_prefs%></td>
+              <td><%=sub[1][:pmt_state]%></td>
+            </tr>
+          <%end%>
+        </tbody>
+      </table>
+    </div>
+  <% end %>
