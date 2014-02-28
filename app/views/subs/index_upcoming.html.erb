@@ -1,0 +1,26 @@
+<div class = "row">
+  <div class = "large-12 columns">
+    <table>
+      <thead>
+        <tr>
+          <th></th>
+          <th> Sub ID </th>
+          <th> Name </th>
+          <th> Plan </th>
+          <th> Next Pmt Date </th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @subs.each do |sub| %>
+          <tr>
+            <td><input id="checkbox1" type="checkbox"></td>
+            <td><a href="/subs/<%=sub[0]%>" target="_blank"><%=sub[1][:id]%></a></td>
+            <td><%=sub[1][:name]%></td>
+            <td><%=sub[1][:plan]%></td>
+            <td><%=sub[1][:next_pmt_date].strftime('%B %d, %y')%></td>
+          </tr>
+        <%end%>
+      </tbody>
+    </table>
+  </div>
+</div>

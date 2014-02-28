@@ -30,6 +30,10 @@ class SubsController < ApplicationController
     @responses = @subs.map { |sub| ChargifyResponse.parse(sub.chargify) }
   end
 
+  def index_upcoming
+    @subs = Sub.active
+  end
+
   def search
   end
 
@@ -40,10 +44,6 @@ class SubsController < ApplicationController
     else
       render text: "Does Not Exist!"
     end
-  end
-
-  def index_upcoming
-
   end
 
   def kitter
