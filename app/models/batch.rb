@@ -7,12 +7,13 @@ class Batch < ActiveRecord::Base
     end
   end
 
-  def setup_new(days)
+  def setup_new(ary_of_subs)
     subs = []
     orders = []
-      Sub.pull_subs_due(days).each do |cid,sub|
-      subs << sub
-      orders << Sub.find_by(cid: sub[:id]).sub_orders.new
+    ary_of_subs.each do |sub_id|
+      sub = Sub.find(sub_id.to_i)
+      subs << DataSession.last.data.select { |sub| sub[0] == sub_id.to_i}.first[1]
+      orders << sub.sub_orders.new
     end
     {subs: subs, orders: orders}
   end

@@ -15,7 +15,7 @@ class BatchesController < ApplicationController
   def new
     Batch.destroy_empty_batches
     @batch = Batch.create
-    setup_batch = @batch.setup_new(params['days'].to_i)
+    setup_batch = @batch.setup_new(params['subs'])
     @subs = setup_batch[:subs]
     @orders = setup_batch[:orders]
   end
