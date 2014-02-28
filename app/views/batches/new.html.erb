@@ -39,10 +39,11 @@
   <table>
     <thead>
       <tr>
-        <th class="text-center">ID</th>
-        <th class="text-center">Date</th>
-        <th class="text-center">Selections</th>
-        <th width="50" class="text-center"></th>
+        <th width="5%" class="text-center">Sub</th>
+        <th width="2%" class="text-center">Date</th>
+        <th width="3%" class="text-center">Prefs</th>
+        <th width="85%" class="text-center">Selections</th>
+        <th width="5%" class="text-center"></th>
       </tr>
     </thead>
     <tbody>
@@ -51,13 +52,17 @@
           <td class="text-center">
               <a href="/subs/<%=Sub.find_by(cid: sub[:id]).id %>" target="_blank">
                 <%=sub[:id]%>
+                <%=sub[:name]%>
               </a>
           </td>
           <%= form_for @orders[index], remote: true, data: { subid: @orders[index].sub_id }, url: sub_orders_path(@orders[index].sub_id) do |f| %>
           <td class="text-center">
-            <%=sub[:next_pmt_date].strftime('%m/%d/%y')%>
+            <%=sub[:next_pmt_date].strftime('%m/%d')%>
             <%= hidden_field_tag 'created_at', sub[:next_pmt_date] , class: '' %>
             <%= hidden_field_tag 'batch_id', @batch.id , class: '' %>
+          </td>
+          <td>
+            <%=Sub.find_by(cid: sub[:id]).list_prefs%>
           </td>
           <td class="text-center">
             <div data-subid="<%= Sub.find_by(cid: sub[:id]).id %>" class="order-complete hide">
