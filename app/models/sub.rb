@@ -12,6 +12,23 @@ class Sub < ActiveRecord::Base
     self.prefs << Wufoo.find_prefs(cid)
   end
 
+  def list_prefs
+    str = ''
+    self.prefs.each do |p|
+      case p.pref
+      when 'dress'
+        str += 'B'
+      when 'fashion'
+        str += 'F'
+      when 'fun'
+        str += 'W'
+      when 'casual'
+        str += 'C'
+      end
+    end
+    str
+  end
+
   def order_history
     prod_skus = []
     self.sub_orders.each do |sub_order|
