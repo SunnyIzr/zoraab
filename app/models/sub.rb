@@ -65,6 +65,22 @@ class Sub < ActiveRecord::Base
     subs.sort_by { |sub| sub[1][:next_pmt_date]}
   end
 
+  def self.os_renewals
+    subs = {}
+    OutstandingRenewal.all.each do |oren|
+      sub = Sub.find_by(cid: oren.cid)
+      subs[sub.id] = ChargifyResponse.parse(sub.chargify)
+      subs[sub.id][:next_pmt_date] = oren.created_at
+    end
+    subs.sort_by { |sub| sub[1][:next_pmt_date]}
+  end
+
+  def self.due
+    subs = os_renewals
+    active.each {|sub| subs<<sub}
+    subs
+  end
+
   def due?(days,cdata)
     return false if cdata.nil?
     return cdata[:days_till_due]<= days && cdata[:status] == 'active' && self.not_exist?(cdata[:next_pmt_date])

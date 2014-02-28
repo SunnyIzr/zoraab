@@ -31,7 +31,7 @@ class SubsController < ApplicationController
   end
 
   def index_upcoming
-    @subs = Sub.active
+    @subs = Sub.due
   end
 
   def search
