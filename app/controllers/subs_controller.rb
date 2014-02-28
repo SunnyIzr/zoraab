@@ -31,7 +31,9 @@ class SubsController < ApplicationController
   end
 
   def index_upcoming
-    @subs = Sub.due
+    DataSession.destroy_all
+    DataSession.create(data: Sub.due)
+    @subs = DataSession.last.data
   end
 
   def search
