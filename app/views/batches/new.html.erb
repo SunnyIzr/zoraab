@@ -58,8 +58,9 @@
           <%= form_for @orders[index], remote: true, data: { subid: @orders[index].sub_id }, url: sub_orders_path(@orders[index].sub_id) do |f| %>
           <td class="text-center">
             <%=sub[:next_pmt_date].strftime('%m/%d')%>
-            <%= hidden_field_tag 'created_at', sub[:next_pmt_date] , class: '' %>
-            <%= hidden_field_tag 'batch_id', @batch.id , class: '' %>
+            <%= hidden_field_tag 'created_at', sub[:next_pmt_date] %>
+            <%= hidden_field_tag 'trans_id', sub[:trans_id] %>
+            <%= hidden_field_tag 'batch_id', @batch.id %>
           </td>
           <td>
             <%=Sub.find_by(cid: sub[:id]).list_prefs%>

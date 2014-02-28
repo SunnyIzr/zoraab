@@ -78,6 +78,7 @@ class Sub < ActiveRecord::Base
       sub = Sub.find_by(cid: oren.cid)
       subs[sub.id] = ChargifyResponse.parse(sub.chargify)
       subs[sub.id][:next_pmt_date] = oren.created_at
+      subs[sub.id][:trans_id] = oren.trans_id
     end
     subs.sort_by { |sub| sub[1][:next_pmt_date]}
   end
