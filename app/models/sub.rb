@@ -86,24 +86,23 @@ class Sub < ActiveRecord::Base
   def self.due
     subs = os_renewals
     subs.each { |ren| ren[1][:pmt_state] = 'Paid' }
-    active_subs = active
-    active_subs.each { |sub| sub[1][:pmt_state] = 'Pending' }
-    active_subs.each {|sub| subs<<sub}
+    active.each do |sub|
+      if !Sub.find(sub[0]).order_already_created?(sub[1][:next_pmt_date])
+        sub_data = sub
+        sub_data[1][:pmt_state] = 'Pending'
+        subs << sub_data
+      end
+    end
     subs
   end
 
-  def due?(days,cdata)
-    return false if cdata.nil?
-    return cdata[:days_till_due]<= days && cdata[:status] == 'active' && self.not_exist?(cdata[:next_pmt_date])
-  end
-
-  def not_exist?(next_pmt_date)
+  def order_already_created?(next_pmt_date)
     self.sub_orders.each do |sub_order|
       if next_pmt_date == sub_order.created_at
-        return false
+        return true
       end
     end
-    return true
+    return false
   end
 
 end
