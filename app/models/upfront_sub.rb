@@ -1,0 +1,2 @@
+class UpfrontSub < Sub
+end

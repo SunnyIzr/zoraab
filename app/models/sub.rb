@@ -3,6 +3,7 @@ class Sub < ActiveRecord::Base
   validates_uniqueness_of :cid
   has_and_belongs_to_many :prefs
   has_many :sub_orders
+  self.inheritance_column = :type
 
   def chargify
     Chargify::Subscription.find(cid).attributes
