@@ -50,17 +50,19 @@ class Sub < ActiveRecord::Base
 
   def self.active
     i = 1
-    subs = []
+    subs = {}
     while true
       current_page = Chargify::Subscription.find(:all, params: {per_page: 200, page: i, state: 'active'})
       break if current_page.count == 0
       current_page.each do |sub_response|
         sub = Sub.find_by(cid: sub_response.id)
-        subs << sub if sub
+        if sub
+          subs[sub.id] = ChargifyResponse.parse(sub_response.attributes)
+        end
       end
       i +=1
     end
-    subs
+    subs.sort_by { |sub| sub[1][:next_pmt_date]}
   end
 
   def due?(days,cdata)
