@@ -29,6 +29,7 @@ Zoraab::Application.routes.draw do
   post '/send-to-shipstation'=> 'orders#send_to_shipstation'
   get '/quickbooks' => 'quickbooks#index'
   get '/subs-upcoming/' => 'subs#index_upcoming'
+  get '/:sub_id/check-dupe/:sku' => 'subs#check_dupe'
 
 
   # The priority is based upon order of creation: first created -> highest priority.

@@ -68,8 +68,13 @@ class SubsController < ApplicationController
     render json: @product
   end
 
+  def check_dupe
+    @sub = Sub.find(params['sub_id'])
+    render json: @sub.dupe?(params['sku'])
+  end
+
   private
   def sub_params
-    params.permit(:cid,:trans_id,:upfront)
+    params.permit(:cid,:trans_id,:upfront,:sku)
   end
 end

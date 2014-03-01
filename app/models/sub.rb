@@ -40,6 +40,10 @@ class Sub < ActiveRecord::Base
     prod_skus
   end
 
+  def dupe?(sku)
+    order_history.include?(sku)
+  end
+
   def get_prod_data
     products = []
     self.sub_orders.each {|sub_order| products << sub_order.products }
