@@ -30,4 +30,7 @@ FactoryGirl.define do
   factory :batch do
   end
 
+  factory :data_session do
+  end
+
 end

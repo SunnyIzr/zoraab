@@ -19,6 +19,7 @@ describe Webhooks do
   it 'should create an outstanding renewal if the signup exists but there were no orders for that transaction' do
     sub.cid = 4403985
     sub.save
+    DataSession.create(data: Sub.due)
     Webhooks.chargify(payload)
 
     expect(OutstandingSignup.all).to eq([])
