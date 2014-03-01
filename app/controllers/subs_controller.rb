@@ -32,8 +32,7 @@ class SubsController < ApplicationController
 
   def index_upcoming
     DataSession.destroy_all
-    DataSession.create(data: Sub.due)
-    @subs = DataSession.last.data
+    @subs = Resque.enqueue(SubPuller)
   end
 
   def search
