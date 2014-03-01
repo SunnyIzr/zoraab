@@ -27,6 +27,7 @@ var OrdersController = {
       subId = $(this).parent().parent().parent().data('sub')
       pos = $(this).parent().parent().data('item')
       OrdersView.prevImg(subId,pos)
+      OrdersModel.checkDupe(subId,pos)
     })
   },
   nextProductButton: function() {
@@ -119,10 +120,22 @@ var OrdersModel = {
   prevRec: function(subId,pos) {
     this.displayedPos[subId][pos] -= 1
   },
+  checkDupe: function(subId,pos) {
+    sku = $($('div[data-sub="'+subId+'"] > div > div > input')[pos]).val()
+    path = '/'+subId+'/check-dupe/'+sku
+    $.getJSON(path, function(response) {
+      console.log(response)
+        if (response == true) {
+          OrdersView.dupedProduct(subId,pos)
+        }
+        else {
+          OrdersView.removeDupedProduct(subId,pos)
+        }
+      });
+  },
   sendToShipstation: function(orderId) {
     path = '/send-to-shipstation'
     $.post(path,{order_id: orderId}).done(function(data) {
-
       $('.loader').removeClass('loader-show')
       $('#ballWrapper').addClass('ballWrapper')
       OrdersView.displaySysMsg('Sent to Shipstation!')
