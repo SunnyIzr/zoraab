@@ -30,6 +30,7 @@ Zoraab::Application.routes.draw do
   get '/quickbooks' => 'quickbooks#index'
   get '/subs-upcoming/' => 'subs#index_upcoming'
   get '/:sub_id/check-dupe/:sku' => 'subs#check_dupe'
+  get '/render-upcoming-subs/' => 'data_sessions#show_last_sub_pull'
 
 
   # The priority is based upon order of creation: first created -> highest priority.
