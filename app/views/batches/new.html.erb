@@ -66,8 +66,11 @@
             <%=Sub.find_by(cid: sub[:id]).list_prefs%>
           </td>
           <td class="text-center">
-            <div data-subid="<%= Sub.find_by(cid: sub[:id]).id %>" class="order-complete hide">
-              <h5>Order Saved! <a href="/subs/<%=Sub.find_by(cid: sub[:id]).id%>/last-order" target="_blank"> Click Here for Order</a></h5>
+            <div data-subid="<%= Sub.find_by(cid: sub[:id]).id %>" class="order-save hide">
+              <img src='/assets/loader.gif' class='loading'>
+              <div class="order-complete hide">
+                <h5>Order Saved! <a href="/subs/<%=Sub.find_by(cid: sub[:id]).id%>/last-order" target="_blank"> Click Here for Order</a></h5>
+              </div>
             </div>
             <%= render partial: "orders/order_input", locals: {items: sub[:items], sub_id: Sub.find_by(cid: sub[:id]).id.to_s} %>
           </td>
@@ -87,7 +90,7 @@
                 <a href="#" data-subid="<%= Sub.find_by(cid: sub[:id]).id %>" class="button tiny unconfirm-order">
                   <i class="fa fa-minus-circle"></i>
                 </a>
-                <%= button_tag(type: "submit", class: "save-order button tiny") do %>
+                <%= button_tag(type: "submit", class: "save-order button tiny",data: {subid: Sub.find_by(cid: sub[:id]).id}) do %>
                   <i class='fa fa-floppy-o'></i>
                 <% end %>
                 <i class="fa fa-cloud-upload"></i><%= check_box_tag(:update_shopify) %>
