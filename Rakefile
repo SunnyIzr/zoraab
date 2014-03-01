@@ -79,7 +79,7 @@ task 'db:seed_orders' => :environment do
 end
 
 desc 'Refresh Current Subscriber Info'
-task 'db:refresh_subs' => :environment do
+task 'refresh_subs' => :environment do
     DataSession.destroy_all
     DataSession.create(data: Sub.due)
 end
