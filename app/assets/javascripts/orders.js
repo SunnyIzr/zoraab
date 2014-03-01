@@ -198,6 +198,12 @@ var OrdersView = {
     $('div[data-subid='+subId+'].order-save>.loading').hide()
     $('div[data-subid='+subId+'].order-save>.order-complete').show()
   },
+  dupedProduct: function(subId,pos) {
+    $($('div[data-sub="'+subId+'"] > div > .duped')[pos]).show()
+  },
+  removeDupedProduct: function(subId,pos) {
+    $($('div[data-sub="'+subId+'"] > div > .duped')[pos]).hide()
+  },
   displaySysMsg: function(msg) {
     $('.sys-msg').empty()
     $('.sys-msg').append('<h2>' + msg + '</h2>')
