@@ -78,4 +78,20 @@ task 'db:seed_orders' => :environment do
   end
 end
 
+desc 'Sync Shopify Inventory with Shopify'
+task 'sync_inv' => :environment do
+  Product.sync_to_shopify
+end
+
+desc 'Refresh Upfront Subs'
+task 'refresh_upfronts' => :environment do
+  UpfrontSub.refresh
+end
+
+desc 'Refresh Current Subscriber Info'
+task 'refresh_subs' => :environment do
+    DataSession.destroy_all
+    DataSession.create(data: Sub.due)
+end
+
 
