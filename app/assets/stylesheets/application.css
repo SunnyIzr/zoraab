@@ -124,9 +124,27 @@ td {
 .save-batch{
   display:none;
 }
-.preview-image img{
+.preview-image{
+  height:100px;
+}
+.duped {
+  background-color: red;
   height:100px;
   width:100px;
+  margin-left: 32px;
+  position:absolute;
+  display:block;
+  opacity:0.7;
+  display:none;
+}
+.preview-image img{
+  max-height:100px;
+  max-width:100px;
+  margin:0 auto;
+  display:block;
+}
+.loading {
+  padding-top:45px;
 }
 .past_due {
   background-color: #ff8585 !important;

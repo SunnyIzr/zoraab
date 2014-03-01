@@ -7,12 +7,14 @@ var OrdersController = {
     this.deleteOrderButton()
     this.confirmOrderButton()
     this.saveOrderButton()
+    this.saveOrderLoadButton()
     this.sendToShipstationButton();
   },
   genButton: function() {
     $('.generate-button').click(function(event){
       event.preventDefault();
       subId = $(this).attr('data-subid')
+      OrdersView.showAllLoaders(subId)
       OrdersModel.generateKitterRecs(subId)
       OrdersModel.addFirstRecsToPos(subId)
       OrdersView.inputFirstRecs(subId)
@@ -25,6 +27,7 @@ var OrdersController = {
       subId = $(this).parent().parent().parent().data('sub')
       pos = $(this).parent().parent().data('item')
       OrdersView.prevImg(subId,pos)
+      OrdersModel.checkDupe(subId,pos)
     })
   },
   nextProductButton: function() {
@@ -67,10 +70,15 @@ var OrdersController = {
       OrdersController.confirmOrderButton()
       OrdersView.unConfirmOrderFromBatch(subId)
     })
-  }
-  ,
+  },
+  saveOrderLoadButton: function() {
+    $('.save-order').click(function(event){
+      subId = $(this).data('subid')
+      OrdersView.showSaveLoader(subId)
+    })
+  },
   saveOrderButton: function() {
-    $(".new_order").on("ajax:success", function(e, data, status, xhr) {
+    $(".new_sub_order").on("ajax:success", function(e, data, status, xhr) {
       subId = $(this).data('subid')
       OrdersView.saveSingleOrder(subId)
     }).bind("ajax:error", function(e, xhr, status, error) {
@@ -112,10 +120,22 @@ var OrdersModel = {
   prevRec: function(subId,pos) {
     this.displayedPos[subId][pos] -= 1
   },
+  checkDupe: function(subId,pos) {
+    sku = $($('div[data-sub="'+subId+'"] > div > div > input')[pos]).val()
+    path = '/'+subId+'/check-dupe/'+sku
+    $.getJSON(path, function(response) {
+      console.log(response)
+        if (response == true) {
+          OrdersView.dupedProduct(subId,pos)
+        }
+        else {
+          OrdersView.removeDupedProduct(subId,pos)
+        }
+      });
+  },
   sendToShipstation: function(orderId) {
     path = '/send-to-shipstation'
     $.post(path,{order_id: orderId}).done(function(data) {
-
       $('.loader').removeClass('loader-show')
       $('#ballWrapper').addClass('ballWrapper')
       OrdersView.displaySysMsg('Sent to Shipstation!')
@@ -140,6 +160,20 @@ var OrdersView = {
       });
     })
   },
+  showAllLoaders: function(subId) {
+    inputTags = $('div[data-sub="'+subId+'"] > div > div > input')
+    $.each(inputTags, function(index,inputTag) {
+      OrdersView.showLoader(subId,index)
+    });
+  },
+  showLoader: function(subId,pos) {
+    imgTag = $($('div[data-sub="'+subId+'"] > div > .preview-image')[pos])
+    imgTag.html('<img src=/assets/loader.gif class=loading>')
+  },
+  showSaveLoader: function(subId) {
+    $('div[data-subid='+subId+'].vert-button-tray').hide()
+    $('div[data-subid='+subId+'].order-save').show().addClass('success-overlay')
+  },
   updateInputTag: function(subId,pos) {
     inputTag = $('div[data-sub="'+subId+'"] > div > div > input')[pos]
     path = '/next-kitter/' + subId + '/' + OrdersModel.displayedPos[subId][pos]
@@ -154,7 +188,7 @@ var OrdersView = {
     $.getJSON(ajaxLink,function(response) {
       imgTag = $($('div[data-sub="'+subId+'"] > div > .preview-image')[pos])
       imgTag.html('<img src='+response['small_pic']+'>')
-    },OrdersView.removeImg(subId,pos))
+    },OrdersView.showLoader(subId,pos))
   },
   removeImg: function(subId,pos) {
     imgTag = $($('div[data-sub="'+subId+'"] > div > .preview-image')[pos])
@@ -174,9 +208,14 @@ var OrdersView = {
     $('div[data-sub="'+subId+'"] > div > div > input').show()
   },
   saveSingleOrder: function(subId) {
-    $('div[data-subid='+subId+'].vert-button-tray').hide()
-    $('div[data-subid='+subId+'].order-complete').show().addClass('success-overlay')
-
+    $('div[data-subid='+subId+'].order-save>.loading').hide()
+    $('div[data-subid='+subId+'].order-save>.order-complete').show()
+  },
+  dupedProduct: function(subId,pos) {
+    $($('div[data-sub="'+subId+'"] > div > .duped')[pos]).show()
+  },
+  removeDupedProduct: function(subId,pos) {
+    $($('div[data-sub="'+subId+'"] > div > .duped')[pos]).hide()
   },
   displaySysMsg: function(msg) {
     $('.sys-msg').empty()
