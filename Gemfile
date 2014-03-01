@@ -58,6 +58,8 @@ gem 'quickbooks-ruby', "~>0.0.8"
 gem 'oauth-plugin'
 
 gem 'ruby-mws', :git => 'git://github.com/alexdowad/ruby-mws.git', :branch => 'update_inventory'
+
+gem 'resque', "~> 1.22.0"
 # Use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
 
