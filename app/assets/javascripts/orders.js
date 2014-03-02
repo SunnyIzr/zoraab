@@ -122,7 +122,7 @@ var OrdersModel = {
   },
   checkDupe: function(subId,pos) {
     sku = $($('div[data-sub="'+subId+'"] > div > div > input')[pos]).val()
-    path = '/'+subId+'/check-dupe/'+sku
+    path = '/'+subId+'/check-dupe/'+sku.toLowerCase()
     $.getJSON(path, function(response) {
       console.log(response)
         if (response == true) {
