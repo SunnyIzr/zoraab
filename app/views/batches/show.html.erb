@@ -11,8 +11,9 @@
         <th width='5%' class="text-center">Order</th>
         <th width='15%' class="text-center">Name</th>
         <th width='5%' class="text-center">Date</th>
-        <th width='70%' class="text-center">Selections</th>
-        <th width='5%'> </th>
+        <th width='65%' class="text-center">Selections</th>
+        <th width='5%'> Pmt </th>
+        <th width='5%'> Ship </th>
       </tr>
     </thead>
     <tbody>
@@ -31,11 +32,13 @@
               <div class="preview-image text-center">
                 <a href="<%=ENV['SITE']%>products/<%=product.sku%>" target="_blank">
                   <div><img src="<%=@product_data[product.sku][:small_pic]%>"></div>
-                  <div><%=product.sku%></div>
                 </a>
               </div>
             </div>
           <% end %>
+          </td>
+          <td>
+            <%=order.pmt_status%>
           </td>
           <td><a href="#" class="send-to-shipstation button tiny" data-orderid='<%=order.id%>' >Send to <br>ShipStation</a></td>
         </tr>

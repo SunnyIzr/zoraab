@@ -13,6 +13,14 @@
     pending_orders.sort_by! { |order| order.created_at }
   end
 
+  def pmt_status
+    if self.trans_id.nil?
+      return 'Pending'
+    else
+      return "Recvd"
+    end
+  end
+
   def set_order_number
     unless self.order_number
       digits = 4 - self.id.to_s.length
