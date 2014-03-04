@@ -21,6 +21,7 @@ class UpfrontSub < Sub
           sub_order = SubOrder.pending.select {|o| o.sub.cid == usub.cid }.first
           sub_order.trans_id = trans_id
           sub_order.save
+          Shipstation.send_order(sub_order)
         else
           oren = OutstandingRenewal.create(trans_id: trans_id.to_i, name: data[:name], plan: data[:plan], cid: usub.cid, amount: 0.0)
           oren.created_at = usub.next_due_date
