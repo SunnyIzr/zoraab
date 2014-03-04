@@ -286,57 +286,53 @@ module Qb
   end
 
   private
+  def oauth_client
+    OAuth::AccessToken.new($qb_oauth_consumer, ENV['QB_TOKEN'] , ENV['QB_TOKEN_SECRET'])
+  end
+
   def sales_receipt_service
-    oauth_client = OAuth::AccessToken.new($qb_oauth_consumer, ENV['QB_TOKEN'] , ENV['QB_TOKEN_SECRET'])
     @sr = Quickbooks::Service::SalesReceipt.new
     @sr.access_token = oauth_client
     @sr.company_id = ENV['QB_RID']
   end
 
   def payment_method_service
-    oauth_client = OAuth::AccessToken.new($qb_oauth_consumer, ENV['QB_TOKEN'] , ENV['QB_TOKEN_SECRET'])
     @pmt = Quickbooks::Service::PaymentMethod.new
     @pmt.access_token = oauth_client
     @pmt.company_id = ENV['QB_RID']
   end
 
   def customer_service
-    oauth_client = OAuth::AccessToken.new($qb_oauth_consumer, ENV['QB_TOKEN'] , ENV['QB_TOKEN_SECRET'])
     @cust = Quickbooks::Service::Customer.new
     @cust.access_token = oauth_client
     @cust.company_id = ENV['QB_RID']
   end
 
   def product_service
-    oauth_client = OAuth::AccessToken.new($qb_oauth_consumer, ENV['QB_TOKEN'] , ENV['QB_TOKEN_SECRET'])
     @prod = Quickbooks::Service::Item.new
     @prod.access_token = oauth_client
     @prod.company_id = ENV['QB_RID']
   end
 
   def acct_service
-    oauth_client = OAuth::AccessToken.new($qb_oauth_consumer, ENV['QB_TOKEN'] , ENV['QB_TOKEN_SECRET'])
     @acc = Quickbooks::Service::Account.new
     @acc.access_token = oauth_client
     @acc.company_id = ENV['QB_RID']
   end
 
   def po_service
-    oauth_client = OAuth::AccessToken.new($qb_oauth_consumer, ENV['QB_TOKEN'] , ENV['QB_TOKEN_SECRET'])
     @po = Quickbooks::Service::PurchaseOrder.new
     @po.access_token = oauth_client
     @po.company_id = ENV['QB_RID']
   end
 
   def ven_service
-    oauth_client = OAuth::AccessToken.new($qb_oauth_consumer, ENV['QB_TOKEN'] , ENV['QB_TOKEN_SECRET'])
     @ven = Quickbooks::Service::Vendor.new
     @ven.access_token = oauth_client
     @ven.company_id = ENV['QB_RID']
   end
 
   def exp_service
-    oauth_client = OAuth::AccessToken.new($qb_oauth_consumer, ENV['QB_TOKEN'] , ENV['QB_TOKEN_SECRET'])
     @exp = Quickbooks::Service::Purchase.new
     @exp.access_token = oauth_client
     @exp.company_id = ENV['QB_RID']
