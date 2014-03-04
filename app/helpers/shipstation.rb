@@ -18,15 +18,17 @@ module Shipstation
   end
 
   def send_order(order)
-    ss_order = create_order(order)
-    SHIPSTATION.AddToOrders(ss_order)
-    created_order = SHIPSTATION.save_changes
-    order.products.each do |product|
-      order_item = create_order_item(order,product,created_order[0])
-      SHIPSTATION.AddToOrderItems(order_item)
-      SHIPSTATION.save_changes
+    if get_order_by_order_number(order.order_number).nil?
+        ss_order = create_order(order)
+        SHIPSTATION.AddToOrders(ss_order)
+        created_order = SHIPSTATION.save_changes
+        order.products.each do |product|
+          order_item = create_order_item(order,product,created_order[0])
+          SHIPSTATION.AddToOrderItems(order_item)
+          SHIPSTATION.save_changes
+        end
+        created_order[0]
     end
-    created_order[0]
   end
 
   def create_order(order)
