@@ -40,7 +40,14 @@
           <td>
             <%=order.pmt_status%>
           </td>
-          <td><a href="#" class="send-to-shipstation button tiny" data-orderid='<%=order.id%>' >Send to <br>ShipStation</a></td>
+          <td>
+            <%=order.ship_state%>
+            <div <%=raw 'class="hide"' unless order.ship_state == 'Never Sent to Shipstation' && order.pmt_status == 'Recvd' %> >
+              <a href="#" class="send-to-shipstation button tiny" data-orderid='<%=order.id%>' >
+              Ship
+              </a>
+            </div>
+          </td>
         </tr>
       <%end%>
     </tbody>
