@@ -4,6 +4,7 @@ var BatchController = {
     this.confirmBatchBtn()
     this.saveBatchBtn()
     this.batchSendToShipStation()
+    this.sendAlltoShipStation()
 
   },
   generateBatchBtn: function() {
@@ -35,6 +36,12 @@ var BatchController = {
       orderId = $(this).data('orderid')
       BatchView.startLoaderforShipping(orderId)
       BatchModel.sendToShipstation(orderId)
+    })
+  },
+  sendAlltoShipStation: function() {
+    $('.send-all-to-shipstation').click(function(event) {
+      event.preventDefault();
+      $('.batch-send-to-shipstation:visible').click();
     })
   }
 }
