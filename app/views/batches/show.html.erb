@@ -40,13 +40,16 @@
           <td>
             <%=order.pmt_status%>
           </td>
-          <td>
-            <%=order.ship_state%>
-            <div <%=raw 'class="hide"' unless order.ship_state == 'Never Sent to Shipstation' && order.pmt_status == 'Recvd' %> >
-              <a href="#" class="send-to-shipstation button tiny" data-orderid='<%=order.id%>' >
-              Ship
-              </a>
+          <td class='ship' data-orderid='<%=order.id%>'>
+            <div class='ship-info'>
+              <p class='ship-status'><%=order.ship_state%></p>
+              <div <%=raw 'class="hide"' unless order.ship_state == 'Never Sent to Shipstation' && order.pmt_status == 'Recvd' %> >
+                <a href="#" class="batch-send-to-shipstation button tiny" data-orderid='<%=order.id%>' >
+                Ship
+                </a>
+              </div>
             </div>
+            <center><img src='/assets/loader.gif' class='ship-loader hide'></center>
           </td>
         </tr>
       <%end%>

@@ -68,6 +68,13 @@
 .loader-impt{
 }
 
+p.ship-status{
+  font-size:0.875rem;
+  margin-bottom: 0;
+}
+.ship-error{
+  color: red;
+}
 
 
 .sys-msg{
