@@ -41,12 +41,20 @@ var BatchController = {
   sendAlltoShipStation: function() {
     $('.send-all-to-shipstation').click(function(event) {
       event.preventDefault();
-      $('.batch-send-to-shipstation:visible').click();
+      orderBtns = $('.batch-send-to-shipstation:visible')
+      $.each(orderBtns,function(i,v) {
+        orderId = $(v).data('orderid')
+        BatchModel.ordersToBeSent.push(orderId)
+        BatchView.startLoaderforShipping(orderId)
+      })
+      BatchModel.runShipstationQueue()
     })
+
   }
 }
 
 var BatchModel = {
+  ordersToBeSent:[],
   sendToShipstation: function(orderId) {
     path = '/send-to-shipstation'
     $.post(path,{order_id: orderId}).done(function(data) {
@@ -54,6 +62,19 @@ var BatchModel = {
     }).fail(function(data) {
       BatchView.showUnsuccessfulShip(orderId)
     })
+  },
+  runShipstationQueue: function() {
+    if (BatchModel.ordersToBeSent.length > 0) {
+      orderId = BatchModel.ordersToBeSent.shift()
+      path = '/send-to-shipstation'
+      $.post(path,{order_id: orderId}).done(function(data) {
+        BatchView.showSuccessfulShip(orderId)
+      }).fail(function(data) {
+        BatchView.showUnsuccessfulShip(orderId)
+      }).always(function(data) {
+        BatchModel.runShipstationQueue()
+      })
+    }
   }
 }
 

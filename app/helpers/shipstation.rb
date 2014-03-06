@@ -18,7 +18,7 @@ module Shipstation
   end
 
   def send_order(order)
-    # if get_order_by_order_number(order.order_number).nil?
+    if get_order_by_order_number(order.order_number).nil?
         ss_order = create_order(order)
         SHIPSTATION.AddToOrders(ss_order)
         created_order = SHIPSTATION.save_changes
@@ -28,15 +28,15 @@ module Shipstation
           SHIPSTATION.save_changes
         end
         created_order[0]
-    # end
+    end
   end
 
   def create_order(order)
     shipstation_order = blank_order
     shipstation_order.OrderDate = order.created_at
     shipstation_order.PayDate = order.created_at
-    # shipstation_order.OrderNumber = order.order_number
-    shipstation_order.OrderNumber = 'TESTING!!!'
+    shipstation_order.OrderNumber = order.order_number
+    # shipstation_order.OrderNumber = 'TESTING!!!'
     shipstation_order.ShipName = order.name
     shipstation_order.ShipStreet1 = order.address
     shipstation_order.ShipStreet2 = order.address2
