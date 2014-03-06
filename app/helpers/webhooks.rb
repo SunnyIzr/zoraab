@@ -10,6 +10,10 @@ module Webhooks
           order.trans_id = payload['transaction']['id']
           order.amt = payload['transaction']['amount_in_cents'].to_f/100.0
           order.save
+          Shipstation.send_order(order)
+          ss_order = Shipstation.send_order(order)
+          order.ssid = ss_order.OrderID
+          order.save
           return
         end
       end
