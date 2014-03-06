@@ -23,6 +23,7 @@ class OrdersController < ApplicationController
     if @order.id != nil
       OutstandingSignup.refresh_outstanding_signups
       OutstandingRenewal.refresh_outstanding_renewals
+      DataSession.last.remove_order_due(@order)
       redirect_to order_path(@order.id)
     else
       render text: "FAIL!"
