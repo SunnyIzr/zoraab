@@ -3,6 +3,7 @@
   belongs_to :sub
   belongs_to :batch
   validates_presence_of :sub_id
+  validates_uniqueness_of :trans_id
   before_save :calc_fees, :set_gateway
 
   def self.pending

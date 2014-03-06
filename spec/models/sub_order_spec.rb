@@ -9,6 +9,7 @@ describe SubOrder do
   let (:sub) {FactoryGirl.create(:sub)}
 
   it {should validate_presence_of (:sub_id)}
+  it {should validate_uniqueness_of (:trans_id)}
   it {should belong_to (:sub)}
   it {should belong_to (:batch)}
 
