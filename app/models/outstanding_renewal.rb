@@ -2,6 +2,7 @@ class OutstandingRenewal < ActiveRecord::Base
   validates_uniqueness_of :trans_id
   validates_presence_of :trans_id
   validate :trans_not_exist?
+  after_save :check_dupe_trans
 
   def self.refresh_outstanding_renewals
     all.reverse.each do |signup|
@@ -10,6 +11,10 @@ class OutstandingRenewal < ActiveRecord::Base
         return
       end
     end
+  end
+
+  def check_dupe_trans
+    self.destroy if OutstandingRenewal.all.map { |oren| oren.trans_id }.count(self.trans_id) > 1
   end
 
   def trans_not_exist?
