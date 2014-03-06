@@ -59,7 +59,7 @@
     li.save
     ary_of_skus.each do |sku|
       li = self.line_items.new(q: 1, rate: 0.0)
-      li.product = Product.find_or_create_by(sku: sku)
+      li.product = Product.find_or_create_by(sku: sku.downcase)
       li.save
     end
   end
