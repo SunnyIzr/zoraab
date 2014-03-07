@@ -93,7 +93,6 @@
                 <%= button_tag(type: "submit", class: "save-order button tiny",data: {subid: Sub.find_by(cid: sub[:id]).id}) do %>
                   <i class='fa fa-floppy-o'></i>
                 <% end %>
-                <i class="fa fa-cloud-upload"></i><%= check_box_tag(:update_shopify) %>
               </div>
             </div>
             <% end %>

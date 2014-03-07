@@ -14,6 +14,7 @@ module Webhooks
           ss_order = Shipstation.send_order(order)
           order.ssid = ss_order.OrderID
           order.save
+          order.send_to_shopify
           return
         end
       end

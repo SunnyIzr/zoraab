@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140301002921) do
+ActiveRecord::Schema.define(version: 20140307003558) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -85,6 +85,7 @@ ActiveRecord::Schema.define(version: 20140301002921) do
     t.float    "shipping_charge",  default: 0.0
     t.float    "discount",         default: 0.0
     t.float    "fees",             default: 0.0
+    t.boolean  "post_to_shopify",  default: false
   end
 
   add_index "orders", ["batch_id"], name: "index_orders_on_batch_id", using: :btree
@@ -137,6 +138,11 @@ ActiveRecord::Schema.define(version: 20140301002921) do
     t.datetime "updated_at"
     t.integer  "q"
     t.boolean  "active",     default: true
+  end
+
+  create_table "products_subs", force: true do |t|
+    t.integer "product_id"
+    t.integer "sub_id"
   end
 
   create_table "subs", force: true do |t|

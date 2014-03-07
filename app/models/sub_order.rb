@@ -3,7 +3,7 @@
   belongs_to :sub
   belongs_to :batch
   validates_presence_of :sub_id
-  validates_uniqueness_of :trans_id
+  validates_uniqueness_of :trans_id, :allow_nil => true
   before_save :calc_fees, :set_gateway
 
   def self.pending
@@ -26,6 +26,17 @@
     unless self.order_number
       digits = 4 - self.id.to_s.length
       self.order_number = "ZK" + ("0"*digits) + self.id.to_s
+      self.save
+    end
+  end
+
+  def send_to_shopify
+    unless self.post_to_shopify
+      self.products.each do |product|
+        product.reduce_q
+        Shopify.reduce_shopify_inv(product.sku)
+      end
+      self.post_to_shopify = true
       self.save
     end
   end
@@ -59,12 +70,16 @@
     li.save
     ary_of_skus.each do |sku|
       li = self.line_items.new(q: 1, rate: 0.0)
-      li.product = Product.find_or_create_by(sku: sku)
+      li.product = Product.find_or_create_by(sku: sku.downcase)
       li.save
     end
   end
 
   def calc_fees
+    if self.amt.nil?
+      self.amt = 0.0
+      self.save
+    end
     if self.amt > 0.0
       fee = ( self.amt * 0.029 ) + 0.3
       self.fees = fee.round(2)

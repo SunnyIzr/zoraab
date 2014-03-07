@@ -15,12 +15,12 @@ class OrdersController < ApplicationController
   end
 
   def create
-    update_shopify if params[:commit] == "Save and Update Shopify" || params[:update_shopify] == '1'
     @order = SubOrder.new(order_params)
     @order.set_order_details
     @order.save
     @order.set_order_line_items(params[:item])
     if @order.id != nil
+      @order.send_to_shopify if params[:commit] == "Save and Update Shopify" || params[:update_shopify] == '1'
       OutstandingSignup.refresh_outstanding_signups
       OutstandingRenewal.refresh_outstanding_renewals
       DataSession.last.remove_order_due(@order)
@@ -30,14 +30,18 @@ class OrdersController < ApplicationController
     end
   end
 
-  def index
-    @orders = SubOrder.order('created_at DESC').paginate(:page => params[:page], :per_page => 20)
+  def send_to_shopify
+    @order = SubOrder.find(params[:order_id].to_i)
+    if @order.send_to_shopify
+      respond_to do |format|
+        msg = { :status => "ok", :message => "Success!" }
+        format.json  { render :json => msg }
+      end
+    end
   end
 
-  def update_shopify
-    params[:item].each do |sku|
-      Shopify.reduce_shopify_inv(sku)
-    end
+  def index
+    @orders = SubOrder.order('created_at DESC').paginate(:page => params[:page], :per_page => 20)
   end
 
   def send_to_shipstation

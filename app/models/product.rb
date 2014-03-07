@@ -45,4 +45,11 @@ class Product < ActiveRecord::Base
     filtered_list.sort_by! { |prod| prod.q }.reverse!
   end
 
+  def reduce_q
+    unless self.q.nil?
+      self.q += -1
+      self.save
+    end
+  end
+
 end
