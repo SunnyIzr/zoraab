@@ -1,11 +1,12 @@
 == README
 
-Zoraab is an custom business application for the ECommerce store Zoraab.com. Zoraab.com is a boutique and subscription service that sells men's fashion socks.
+Zoraab is a custom business application for the ECommerce store Zoraab.com. Zoraab.com is an online retailer that specializes in men's accessories. Zoraab.com has several sales channels across three platforms: Shopify, Amazon Marketplace and Chargify.
 
 In it's current state, this application does the following:
-* Creates subscription orders based on customer preferences
-* Looks up previous purchase history for a specific customer
-* Pulls Shopify and Subscription Orders and imports them into Accounting Software (Quickbooks Online)
+* Creates subscription orders based on transaction information in Chargify
+* Generates product suggestions based on customer preferences and customer purchase history
+* Update inventory levels in Shopify
+* Pulls Amazon, Shopify and Subscription Orders and imports them into current Accounting Software (Quickbooks Online)
 * Tracks Inventory based on Order Activity from Shopify and Amazon Marketplace
 
 The following APIs are currently in use with this application:
