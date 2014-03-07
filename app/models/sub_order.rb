@@ -3,7 +3,7 @@
   belongs_to :sub
   belongs_to :batch
   validates_presence_of :sub_id
-  validates_uniqueness_of :trans_id
+  validates_uniqueness_of :trans_id, :allow_nil => true
   before_save :calc_fees, :set_gateway
 
   def self.pending
@@ -34,7 +34,7 @@
     self.products.each do |product|
       Shopify.reduce_shopify_inv(product.sku)
     end
-    self.post_to_shopify == true
+    self.post_to_shopify = true
     self.save
   end
 
@@ -73,6 +73,10 @@
   end
 
   def calc_fees
+    if self.amt.nil?
+      self.amt = 0.0
+      self.save
+    end
     if self.amt > 0.0
       fee = ( self.amt * 0.029 ) + 0.3
       self.fees = fee.round(2)
