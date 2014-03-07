@@ -57,7 +57,7 @@ var BatchController = {
       event.preventDefault();
       orderId = $(this).data('orderid')
       BatchView.startLoaderforShopify(orderId)
-      BatchView.sendOrderToShopify(orderId)
+      BatchModel.sendOrderToShopify(orderId)
     })
   }
 }
@@ -86,7 +86,12 @@ var BatchModel = {
     }
   },
   sendOrderToShopify: function(orderId) {
-
+    path = '/send-to-shopify/' + orderId
+    $.post(path,{order_id: orderId}).done(function(data) {
+      BatchView.showSuccessfulShopify(orderId)
+    }).fail(function(data) {
+      BatchView.showUnsuccessfulShopify(orderId)
+    })
   }
 }
 
@@ -107,5 +112,13 @@ var BatchView = {
     $('td[data-orderid="'+orderId+'"].ship > center > img').hide()
     $('td[data-orderid="'+orderId+'"].ship > div').show()
     $('td[data-orderid="'+orderId+'"].ship > div > p').html('<span class=ship-error>Fail!</span>')
+  },
+  showSuccessfulShopify: function(orderId) {
+    $('td[data-orderid="'+orderId+'"].shopify').html('Sent')
+  },
+  showUnsuccessfulShopify: function(orderId) {
+    $('td[data-orderid="'+orderId+'"].shopify > center > img').hide()
+    $('td[data-orderid="'+orderId+'"].shopify > div').show()
+    $('td[data-orderid="'+orderId+'"].shopify > div > p').html('<span class=ship-error>Fail!</span>')
   }
 }
