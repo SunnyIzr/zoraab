@@ -30,6 +30,16 @@ class OrdersController < ApplicationController
     end
   end
 
+  def send_to_shopify
+    @order = SubOrder.find(params[:order_id].to_i)
+    if @order.send_to_shopify
+      respond_to do |format|
+        msg = { :status => "ok", :message => "Success!" }
+        format.json  { render :json => msg }
+      end
+    end
+  end
+
   def index
     @orders = SubOrder.order('created_at DESC').paginate(:page => params[:page], :per_page => 20)
   end
