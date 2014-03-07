@@ -30,6 +30,14 @@
     end
   end
 
+  def send_to_shopify
+    self.products.each do |product|
+      Shopify.reduce_shopify_inv(product.sku)
+    end
+    self.post_to_shopify == true
+    self.save
+  end
+
   def set_order_details
     response = ChargifyResponse.parse(self.sub.chargify)
 
