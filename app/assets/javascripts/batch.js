@@ -6,6 +6,7 @@ var BatchController = {
     this.batchSendToShipStation()
     this.sendAlltoShipStation()
     this.sendToShopifyBtn()
+    this.sendAlltoShopify()
 
   },
   generateBatchBtn: function() {
@@ -59,11 +60,25 @@ var BatchController = {
       BatchView.startLoaderforShopify(orderId)
       BatchModel.sendOrderToShopify(orderId)
     })
-  }
+  },
+  sendAlltoShopify: function() {
+    $('.send-all-to-shopify').click(function(event) {
+      event.preventDefault();
+      orderBtns = $('.send-to-shopify:visible')
+      $.each(orderBtns,function(i,v) {
+        orderId = $(v).data('orderid')
+        BatchModel.ordersToBeSentToShopify.push(orderId)
+        BatchView.startLoaderforShopify(orderId)
+      })
+      BatchModel.runShopifyQueue()
+    })
+
+  },
 }
 
 var BatchModel = {
   ordersToBeSent:[],
+  ordersToBeSentToShopify: [],
   sendToShipstation: function(orderId) {
     path = '/send-to-shipstation'
     $.post(path,{order_id: orderId}).done(function(data) {
@@ -92,6 +107,19 @@ var BatchModel = {
     }).fail(function(data) {
       BatchView.showUnsuccessfulShopify(orderId)
     })
+  },
+  runShopifyQueue: function() {
+    if (BatchModel.ordersToBeSentToShopify.length > 0) {
+      orderId = BatchModel.ordersToBeSentToShopify.shift()
+      path = '/send-to-shopify/' + orderId
+      $.post(path,{order_id: orderId}).done(function(data) {
+        BatchView.showSuccessfulShopify(orderId)
+      }).fail(function(data) {
+        BatchView.showUnsuccessfulShopify(orderId)
+      }).always(function(data) {
+        BatchModel.runShopifyQueue()
+      })
+    }
   }
 }
 
