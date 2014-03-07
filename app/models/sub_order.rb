@@ -33,6 +33,7 @@
   def send_to_shopify
     unless self.post_to_shopify
       self.products.each do |product|
+        product.reduce_q
         Shopify.reduce_shopify_inv(product.sku)
       end
       self.post_to_shopify = true
