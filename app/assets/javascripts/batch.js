@@ -5,6 +5,7 @@ var BatchController = {
     this.saveBatchBtn()
     this.batchSendToShipStation()
     this.sendAlltoShipStation()
+    this.sendToShopifyBtn()
 
   },
   generateBatchBtn: function() {
@@ -50,6 +51,14 @@ var BatchController = {
       BatchModel.runShipstationQueue()
     })
 
+  },
+  sendToShopifyBtn: function() {
+    $('.send-to-shopify').click(function(event) {
+      event.preventDefault();
+      orderId = $(this).data('orderid')
+      BatchView.startLoaderforShopify(orderId)
+      BatchView.sendOrderToShopify(orderId)
+    })
   }
 }
 
@@ -75,20 +84,28 @@ var BatchModel = {
         BatchModel.runShipstationQueue()
       })
     }
+  },
+  sendOrderToShopify: function(orderId) {
+
   }
 }
 
 var BatchView = {
   startLoaderforShipping: function(orderId) {
-    $('td[data-orderid="'+orderId+'"] > div').hide()
-    $('td[data-orderid="'+orderId+'"] > center > img').show()
+    $('td[data-orderid="'+orderId+'"].ship > div').hide()
+    $('td[data-orderid="'+orderId+'"].ship > center > img').show()
+  },
+  startLoaderforShopify: function(orderId) {
+    $('td[data-orderid="'+orderId+'"].shopify > div').hide()
+    $('td[data-orderid="'+orderId+'"].shopify > center > img').show()
+
   },
   showSuccessfulShip: function(orderId) {
-    $('td[data-orderid="'+orderId+'"]').html('Unshipped')
+    $('td[data-orderid="'+orderId+'"].ship').html('Unshipped')
   },
   showUnsuccessfulShip: function(orderId) {
-    $('td[data-orderid="'+orderId+'"] > center > img').hide()
-    $('td[data-orderid="'+orderId+'"] > div').show()
-    $('td[data-orderid="'+orderId+'"] > div > p').html('<span class=ship-error>Fail!</span>')
+    $('td[data-orderid="'+orderId+'"].ship > center > img').hide()
+    $('td[data-orderid="'+orderId+'"].ship > div').show()
+    $('td[data-orderid="'+orderId+'"].ship > div > p').html('<span class=ship-error>Fail!</span>')
   }
 }

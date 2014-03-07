@@ -76,6 +76,14 @@ p.ship-status{
   color: red;
 }
 
+p.shopify-status{
+  font-size:0.875rem;
+  margin-bottom: 0;
+}
+.shopify-error{
+  color: red;
+}
+
 
 .sys-msg{
   background-color: #e0ffc9;

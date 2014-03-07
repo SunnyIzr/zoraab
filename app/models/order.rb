@@ -13,6 +13,14 @@ class Order < ActiveRecord::Base
     products
   end
 
+  def sent_to_shopify?
+    if self.post_to_shopify == true
+      'Sent'
+    else
+      'Unsent'
+    end
+  end
+
   def get_prod_data
     self.products.map do |product|
       if product.active == true

@@ -14,9 +14,10 @@
         <th width='5%' class="text-center">Order</th>
         <th width='15%' class="text-center">Name</th>
         <th width='5%' class="text-center">Date</th>
-        <th width='65%' class="text-center">Selections</th>
+        <th width='60%' class="text-center">Selections</th>
         <th width='5%'> Pmt </th>
         <th width='5%'> Ship </th>
+        <th width='5%'> Sent to Shopify </th>
       </tr>
     </thead>
     <tbody>
@@ -53,6 +54,17 @@
               </div>
             </div>
             <center><img src='/assets/loader.gif' class='ship-loader hide'></center>
+          </td>
+          <td class='shopify' data-orderid='<%=order.id%>'>
+            <div class='shopify-info'>
+              <p class='shopify-status'><%=order.sent_to_shopify?%></p>
+              <div <%=raw 'class="hide"' if order.post_to_shopify %> >
+                <a href="#" class="send-to-shopify button tiny" data-orderid='<%=order.id%>' >
+                Send
+                </a>
+              </div>
+            </div>
+            <center><img src='/assets/loader.gif' class='shopify-loader hide'></center>
           </td>
         </tr>
       <%end%>
