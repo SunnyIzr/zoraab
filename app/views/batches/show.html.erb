@@ -61,7 +61,7 @@
           <td class='shopify' data-orderid='<%=order.id%>'>
             <div class='shopify-info'>
               <p class='shopify-status'><%=order.sent_to_shopify?%></p>
-              <div <%=raw 'class="hide"' if order.post_to_shopify %> >
+              <div <%=raw 'class="hide"' if order.post_to_shopify || order.pmt_status == 'Pending' %> >
                 <a href="#" class="send-to-shopify button tiny" data-orderid='<%=order.id%>' >
                 Send
                 </a>
