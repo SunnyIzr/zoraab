@@ -41,11 +41,11 @@ desc 'Seed db with Orders'
 task 'db:seed_orders' => :environment do
   CSV.foreach('seed-data/full-upload.csv', :headers=>true) do |row|
     if row[22] == nil
-      order = Order.find_by(order_number: row[2])
+      order = SubOrder.find_by(order_number: row[2])
       if order == nil
         p "*"*100
         puts "Creating a New Order for #{row[2]}"
-        order = Order.create(order_number: row[2])
+        order = SubOrder.new(order_number: row[2])
         order.sub = Sub.find_by(cid: row[0].to_i)
         order.created_at = Date.strptime(row[3], '%m/%d/%y')
         order.plan = row[4]
@@ -65,6 +65,10 @@ task 'db:seed_orders' => :environment do
         order.billing_zip = row[19]
         order.billing_country = row[20]
         order.trans_id = row[1].to_i
+        order.gateway = 'braintree'
+        order.post_to_shopify = true
+        order.ssid = 0
+        order.amt = 0.0
         order.save
       end
       product = Product.find_or_create_by(sku: row[13].downcase)
