@@ -74,7 +74,9 @@ task 'db:seed_orders' => :environment do
       product = Product.find_or_create_by(sku: row[13].downcase)
       if !order.products.include?(product)
         puts "Adding sku #{row[13].downcase} to order"
-        order.products << product
+        li = order.line_items.new(q:1, rate:0.0)
+        li.product = product
+        li.save
       end
 
     end
