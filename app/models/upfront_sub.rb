@@ -8,7 +8,7 @@ class UpfrontSub < Sub
   end
 
   def due?
-    self.next_due_date < Time.new
+    self.next_due_date < Time.new if self.active?
   end
 
   def self.refresh
