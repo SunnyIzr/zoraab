@@ -40,36 +40,36 @@ end
 desc 'Seed db with Orders'
 task 'db:seed_orders' => :environment do
   CSV.foreach('seed-data/full-upload.csv', :headers=>true) do |row|
-    if row[20] == nil
-      order = Order.find_by(order_number: row[1])
+    if row[22] == nil
+      order = Order.find_by(order_number: row[2])
       if order == nil
         p "*"*100
-        puts "Creating a New Order for #{row[1]}"
-        order = Order.create(order_number: row[1])
+        puts "Creating a New Order for #{row[2]}"
+        order = Order.create(order_number: row[2])
         order.sub = Sub.find_by(cid: row[0].to_i)
-        order.created_at = Date.strptime(row[2], '%m/%d/%y')
-        order.plan = row[3]
-        order.name = row[4]
-        order.email = row[5]
-        order.address = row[6]
-        order.address2 = row[7]
-        order.city = row[8]
-        order.state = row[9]
-        order.zip = row[10]
-        order.country = row[11]
-        order.billing_name = row[13]
-        order.billing_address = row[14]
-        order.billing_address2 = row[15]
-        order.billing_city = row[16]
-        order.billing_state = row[17]
-        order.billing_zip = row[18]
-        order.billing_country = row[19]
-        order.trans_id = 00000000
+        order.created_at = Date.strptime(row[3], '%m/%d/%y')
+        order.plan = row[4]
+        order.name = row[5]
+        order.email = row[6]
+        order.address = row[7]
+        order.address2 = row[8]
+        order.city = row[9]
+        order.state = row[10]
+        order.zip = row[11]
+        order.country = row[12]
+        order.billing_name = row[14]
+        order.billing_address = row[15]
+        order.billing_address2 = row[16]
+        order.billing_city = row[17]
+        order.billing_state = row[18]
+        order.billing_zip = row[19]
+        order.billing_country = row[20]
+        order.trans_id = row[1].to_i
         order.save
       end
-      product = Product.find_or_create_by(sku: row[12].downcase)
+      product = Product.find_or_create_by(sku: row[13].downcase)
       if !order.products.include?(product)
-        puts "Adding sku #{row[12].downcase} to order"
+        puts "Adding sku #{row[13].downcase} to order"
         order.products << product
       end
 
