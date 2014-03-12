@@ -33,7 +33,7 @@ gem 'chargify_api_ares'
 
 gem 'awesome_print'
 
-gem 'foundation-rails'
+gem 'foundation-rails', '~> 5.0.3'
 
 gem 'wuparty'
 
