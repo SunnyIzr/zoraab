@@ -11,6 +11,11 @@ class UpfrontSub < Sub
     self.next_due_date < Time.new if self.active?
   end
 
+  def get_term
+    self.term = self.chargify['product'].attributes['expiration_interval']
+    self.save
+  end
+
   def self.refresh
     all.each do |usub|
       if usub.due?
