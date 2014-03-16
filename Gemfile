@@ -71,6 +71,7 @@ gem 'ruby-mws', :git => 'git://github.com/alexdowad/ruby-mws.git', :branch => 'u
 # gem 'debugger', group: [:development, :test]
 
 group :test, :development do
+  gem 'rspec-mocks'
   gem 'rspec-rails'
   gem 'shoulda'
   gem 'dotenv-rails'

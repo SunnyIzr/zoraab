@@ -244,6 +244,7 @@ DEPENDENCIES
   quickbooks-ruby (~> 0.0.8)
   rails (= 4.0.0)
   rails_12factor
+  rspec-mocks
   rspec-rails
   ruby-mws!
   ruby_odata
