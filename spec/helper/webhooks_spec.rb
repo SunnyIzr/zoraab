@@ -5,6 +5,65 @@ describe Webhooks do
   let (:sub) {FactoryGirl.create(:sub)}
   let (:order) {FactoryGirl.create(:sub_order)}
 
+  it 'should indicate whether payload is referring to a new subscriber' do
+    expect(Webhooks.new_sub?(payload)).to eq(true)
+  end
+
+  it 'should create new outstanding signup' do
+    Webhooks.create_new_signup(payload)
+
+    expect(OutstandingRenewal.all).to eq([])
+    expect(OutstandingSignup.last.trans_id).to eq(48383911)
+    expect(OutstandingSignup.last.cid).to eq(4403985)
+    expect(OutstandingSignup.last.name).to eq('Smith')
+    expect(OutstandingSignup.last.plan).to eq('Sock Connoissseur (5 Pairs/Mo)')
+    expect(OutstandingSignup.last.amount).to eq(45.0)
+  end
+
+  it 'should indicate whether payload is referring to a subscriber who does NOT have a pending order outstanding' do
+    sub.cid = 4403985
+    sub.save
+    expect(Webhooks.no_pending_order?(payload)).to eq(true)
+  end
+
+  it 'should create new outstanding renewal' do
+    sub.cid = 4403985
+    sub.save
+    Webhooks.create_outstanding_renewal(payload)
+
+    expect(OutstandingSignup.all).to eq([])
+    expect(OutstandingRenewal.last.trans_id).to eq(48383911)
+    expect(OutstandingRenewal.last.cid).to eq(4403985)
+    expect(OutstandingRenewal.last.name).to eq('Smith')
+    expect(OutstandingRenewal.last.plan).to eq('Sock Connoissseur (5 Pairs/Mo)')
+    expect(OutstandingRenewal.last.amount).to eq(45.0)
+  end
+
+  it 'should retrun the pending order that corresponds with the payload' do
+    sub.cid = 4403985
+    sub.save
+    sub.sub_orders << order
+    sub.save
+    order.save
+
+    expect(Webhooks.pending_order(payload)).to eq(SubOrder.pending.first)
+  end
+
+  it 'should set trans_id and amt of the pending order that corresponds with the payload' do
+    sub.cid = 4403985
+    sub.save
+    sub.sub_orders << order
+    sub.save
+    order.save
+    Webhooks.save_order_attrs(payload)
+
+    expect(OutstandingSignup.all).to eq([])
+    expect(OutstandingRenewal.all).to eq([])
+    expect(SubOrder.pending).to eq([])
+    expect(Order.last.trans_id).to eq(48383911)
+    expect(Order.last.amt).to eq(45.0)
+  end
+
   it 'should create a new outstanding signup if the subscriber does not exist' do
     Webhooks.chargify(payload)
 
@@ -19,7 +78,6 @@ describe Webhooks do
   it 'should create an outstanding renewal if the signup exists but there were no orders for that transaction' do
     sub.cid = 4403985
     sub.save
-    DataSession.create(data: Sub.due)
     Webhooks.chargify(payload)
 
     expect(OutstandingSignup.all).to eq([])
@@ -28,19 +86,5 @@ describe Webhooks do
     expect(OutstandingRenewal.last.name).to eq('Smith')
     expect(OutstandingRenewal.last.plan).to eq('Sock Connoissseur (5 Pairs/Mo)')
     expect(OutstandingRenewal.last.amount).to eq(45.0)
-  end
-
-  it 'should set the trans_id and amt of the pending order if the order already exists' do
-    sub.cid = 4403985
-    sub.save
-    sub.sub_orders << order
-    sub.save
-    order.save
-    Webhooks.chargify(payload)
-
-    expect(OutstandingSignup.all).to eq([])
-    expect(OutstandingRenewal.all).to eq([])
-    expect(Order.last.trans_id).to eq(48383911)
-    expect(Order.last.amt).to eq(45.0)
   end
 end
