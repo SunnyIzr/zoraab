@@ -4,6 +4,8 @@
   <%= form_tag("/batches/new", method: "get") do %>
     <div class = "large-6 columns">
       <%= submit_tag("Create Batch", class: 'button right') %>
+      <div class='refresh-subs-loader right hide'><img src='/assets/loader.gif'></div>
+      <a href="#" class='button refresh-subs right'> Refresh Subs </a>
     </div>
 
     <div class = "large-12 columns">

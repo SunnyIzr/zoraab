@@ -96,8 +96,12 @@ end
 
 desc 'Refresh Current Subscriber Info'
 task 'refresh_subs' => :environment do
-    DataSession.destroy_all
-    DataSession.create(data: Sub.due)
+  DataSession.refresh
+end
+
+desc 'Destroy All Kitter Session Info'
+task 'destroy_kitter_sessions' => :environment do
+  KitterSession.destroy_all
 end
 
 

@@ -74,6 +74,14 @@ class SubsController < ApplicationController
     render json: @sub.dupe?(params['sku'])
   end
 
+  def refresh_subs
+    DataSession.refresh
+    respond_to do |format|
+        msg = { :status => "ok", :message => "Success!" }
+        format.json  { render :json => msg }
+    end
+  end
+
   private
   def sub_params
     params.permit(:cid,:trans_id,:upfront,:sku)

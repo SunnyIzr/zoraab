@@ -7,7 +7,7 @@ var BatchController = {
     this.sendAlltoShipStation()
     this.sendToShopifyBtn()
     this.sendAlltoShopify()
-
+    this.refreshSubsBtn()
   },
   generateBatchBtn: function() {
     $('.generate-batch').click(function(event) {
@@ -72,8 +72,14 @@ var BatchController = {
       })
       BatchModel.runShopifyQueue()
     })
-
   },
+  refreshSubsBtn: function() {
+    $('.refresh-subs').click(function(event) {
+      event.preventDefault();
+      BatchView.startLoaderforRefresh()
+      BatchModel.refreshSubs();
+    })
+  }
 }
 
 var BatchModel = {
@@ -120,6 +126,15 @@ var BatchModel = {
         BatchModel.runShopifyQueue()
       })
     }
+  },
+  refreshSubs: function(){
+    path = '/refresh_subs'
+    $.post(path).done(function(data) {
+      BatchView.completeLoaderforRefresh()
+    }).fail(function(data) {
+      BatchView.completeLoaderforRefresh()
+    })
+
   }
 }
 
@@ -148,5 +163,12 @@ var BatchView = {
     $('td[data-orderid="'+orderId+'"].shopify > center > img').hide()
     $('td[data-orderid="'+orderId+'"].shopify > div').show()
     $('td[data-orderid="'+orderId+'"].shopify > div > p').html('<span class=ship-error>Fail!</span>')
+  },
+  startLoaderforRefresh: function(){
+    $('.refresh-subs').hide()
+    $('.refresh-subs-loader').show()
+  },
+  completeLoaderforRefresh: function(){
+    $('.refresh-subs-loader').html('COMPLETE')
   }
 }
