@@ -99,4 +99,9 @@ task 'refresh_subs' => :environment do
   DataSession.refresh
 end
 
+desc 'Destroy All Kitter Session Info'
+task 'destroy_kitter_sessions' => :environment do
+  KitterSession.destroy_all
+end
+
 
