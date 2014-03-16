@@ -23,6 +23,7 @@ class OrdersController < ApplicationController
       @order.send_to_shopify if params[:commit] == "Save and Update Shopify" || params[:update_shopify] == '1'
       OutstandingSignup.refresh_outstanding_signups
       OutstandingRenewal.refresh_outstanding_renewals
+      DataSession.last.remove_order_due(@order)
       redirect_to order_path(@order.id)
     else
       render text: "FAIL!"
