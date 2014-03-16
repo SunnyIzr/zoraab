@@ -76,6 +76,10 @@ class SubsController < ApplicationController
 
   def refresh_subs
     DataSession.refresh
+    respond_to do |format|
+        msg = { :status => "ok", :message => "Success!" }
+        format.json  { render :json => msg }
+    end
   end
 
   private
