@@ -30,6 +30,7 @@ Zoraab::Application.routes.draw do
   get '/subs-upcoming/' => 'subs#index_upcoming'
   get '/:sub_id/check-dupe/:sku' => 'subs#check_dupe'
   post '/send-to-shopify/:order_id' => 'orders#send_to_shopify'
+  post '/refresh_subs' => 'subs#refresh_subs'
 
 
   # The priority is based upon order of creation: first created -> highest priority.
