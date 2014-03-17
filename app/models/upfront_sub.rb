@@ -24,7 +24,7 @@ class UpfrontSub < Sub
         trans_id = usub.cid.to_s + installment.to_s
         if SubOrder.pending.map {|o| o.sub.cid}.include?(usub.cid)
           sub_order = SubOrder.pending.select {|o| o.sub.cid == usub.cid }.first
-          sub_order.trans_id = trans_id
+          sub_order.trans_id = trans_id.to_i
           sub_order.save
           ss_order = Shipstation.send_order(sub_order)
           sub_order.ssid = ss_order.OrderID
