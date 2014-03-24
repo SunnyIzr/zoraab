@@ -1,0 +1,2 @@
+class UpfrontSubOrder < SubOrder
+end
