@@ -8,6 +8,11 @@ FactoryGirl.define do
     sub_id {1}
   end
 
+
+  factory :upfront_sub_order do
+    sub_id {1}
+  end
+
   factory :order do
   end
 
