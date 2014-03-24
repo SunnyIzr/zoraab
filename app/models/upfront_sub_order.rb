@@ -3,7 +3,11 @@ class UpfrontSubOrder < SubOrder
     self.sub.term
   end
   def single_installment
-    amt/upfront_term
+    if amt > 0.0
+      amt/upfront_term
+    else
+      self.sub.sub_orders.first.amt/upfront_term
+    end
   end
   def residual
     amt - single_installment
@@ -12,12 +16,22 @@ class UpfrontSubOrder < SubOrder
     li = self.line_items.new(q: 1, rate: single_installment)
     li.product = Product.find_or_create_by(sku: self.plan)
     li.save
-    li = self.line_items.new(q: 1, rate: residual)
-    li.product = Product.find_by(sku: 'Unearned Subscription Sales')
-    li.save
+    create_unearned_revenue_line
     ary_of_skus.each do |sku|
       li = self.line_items.new(q: 1, rate: 0.0)
       li.product = Product.find_or_create_by(sku: sku.downcase)
+      li.save
+    end
+  end
+
+  def create_unearned_revenue_line
+    if amt > 0.0
+      li = self.line_items.new(q: 1, rate: residual)
+      li.product = Product.find_by(sku: 'Unearned Subscription Sales')
+      li.save
+    else
+      li = self.line_items.new(q: 1, rate: -single_installment)
+      li.product = Product.find_by(sku: 'Unearned Subscription Sales')
       li.save
     end
   end
