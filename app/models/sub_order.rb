@@ -95,11 +95,15 @@
   end
 
   def qb_memo
-    self.trans_id.to_s
+    self.braintree_id.to_s
   end
 
   def qb_gift_card
     nil
+  end
+
+  def braintree_id
+    Chargify::Transaction.find(self.trans_id).attributes[:gateway_transaction_id]
   end
 
   def to_csv(prods)

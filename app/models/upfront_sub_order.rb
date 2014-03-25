@@ -35,4 +35,8 @@ class UpfrontSubOrder < SubOrder
       li.save
     end
   end
+
+  def braintree_id
+    'Recurring Upfront Order'
+  end
 end
