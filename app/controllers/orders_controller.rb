@@ -1,6 +1,6 @@
 class OrdersController < ApplicationController
   def show
-    @order = SubOrder.find(params[:id])
+    @order = Order.find(params[:id])
     @prods = @order.get_prod_data
     respond_to do |format|
       format.html
@@ -18,6 +18,12 @@ class OrdersController < ApplicationController
     @order = SubOrder.new(order_params)
     @order.set_order_details
     @order.save
+    if @order.sub.type == 'UpfrontSub'
+      @order.type = 'UpfrontSubOrder'
+      @order.save
+      id = @order.id
+      @order = UpfrontSubOrder.find(id)
+    end
     @order.set_order_line_items(params[:item])
     if @order.id != nil
       @order.send_to_shopify if params[:commit] == "Save and Update Shopify" || params[:update_shopify] == '1'

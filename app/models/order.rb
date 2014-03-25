@@ -6,7 +6,7 @@ class Order < ActiveRecord::Base
   def products
     products = []
     self.line_items.each do |li|
-      unless li.product.sku.include?('Sock ')
+      unless li.product.sku.include?('Sock ') || li.product.sku.include?('Unearned Subscription Sales')
         products << li.product
       end
     end
