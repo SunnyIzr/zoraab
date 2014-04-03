@@ -62,6 +62,10 @@ class OrdersController < ApplicationController
       order.save
     end
   end
+  
+  def add_line_item
+    render json: {html: render_to_string(partial: "orders/line_item_input", locals: {item: params[:item], sub_id: params[:sub_id]}) }
+  end
 
   private
   def order_params
