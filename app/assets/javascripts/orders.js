@@ -101,7 +101,8 @@ var OrdersController = {
   addNewItemToOrder: function() {
     $('.add-item').click(function(event) {
       event.preventDefault();
-      alert('yo')
+      subId = $(this).data('subid')
+      OrdersModel.getLineItemEl(subId)
     })
   }
 }
@@ -152,6 +153,17 @@ var OrdersModel = {
       OrdersView.displaySysMsg('Unable to Send!')
     })
 
+  },
+  getLineItemEl: function(subId) {
+    path = '/subs/add_line_item'
+    item = this.findNextItemNumber()
+    data = {sub_id: subId, item: item}
+    $.post(path, data, function(response) {
+      OrdersView.addNewLineItem(response.html)
+    })
+  },
+  findNextItemNumber: function() {
+    return $('.line_item').last().data('item') + 1
   }
 }
 
@@ -242,5 +254,8 @@ var OrdersView = {
     setTimeout(function() {
       $('.overlay').removeClass('overlay-impt')
     },1000)
+  },
+  addNewLineItem: function(html) {
+    $('.line_items').append(html)
   }
 }
