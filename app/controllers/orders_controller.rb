@@ -11,7 +11,7 @@ class OrdersController < ApplicationController
   def new
     @order = SubOrder.new(trans_id: params['trans_id'],amt: params['amt'])
     @sub = Sub.find(params[:sub_id])
-    @response = ChargifyResponse.parse(@sub.chargify)
+    @response = @sub.chargify
   end
 
   def create
@@ -61,6 +61,10 @@ class OrdersController < ApplicationController
       order.ssid = ss_order.OrderID
       order.save
     end
+  end
+  
+  def add_line_item
+    render json: {html: render_to_string(partial: "orders/line_item_input", locals: {item: params[:item], sub_id: params[:sub_id]}) }
   end
 
   private

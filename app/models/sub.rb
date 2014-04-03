@@ -6,7 +6,7 @@ class Sub < ActiveRecord::Base
   self.inheritance_column = :type
 
   def chargify
-    Chargify::Subscription.find(cid).attributes
+    ChargifyResponse.parse(Chargify::Subscription.find(cid).attributes)
   end
 
   def retrieve_wufoo_prefs
@@ -43,6 +43,13 @@ class Sub < ActiveRecord::Base
   def dupe?(sku)
     order_history.include?(sku)
   end
+  
+  def set_prefs(ary)
+    self.prefs.destroy_all
+    ary.each { |pref_id| self.prefs << Pref.find(pref_id)}
+    self.save
+    self.prefs
+  end
 
   def get_prod_data
     products = []
@@ -58,6 +65,15 @@ class Sub < ActiveRecord::Base
 
     end
     product_data
+  end
+  
+  def order_already_created?(next_pmt_date)
+    self.sub_orders.each do |sub_order|
+      if next_pmt_date == sub_order.created_at
+        return true
+      end
+    end
+    return false
   end
 
   def self.active
@@ -81,7 +97,7 @@ class Sub < ActiveRecord::Base
     subs = {}
     OutstandingRenewal.all.each do |oren|
       sub = Sub.find_by(cid: oren.cid)
-      subs[sub.id] = ChargifyResponse.parse(sub.chargify)
+      subs[sub.id] = sub.chargify
       subs[sub.id][:next_pmt_date] = oren.created_at
       subs[sub.id][:trans_id] = oren.trans_id
     end
@@ -99,15 +115,6 @@ class Sub < ActiveRecord::Base
       end
     end
     subs
-  end
-
-  def order_already_created?(next_pmt_date)
-    self.sub_orders.each do |sub_order|
-      if next_pmt_date == sub_order.created_at
-        return true
-      end
-    end
-    return false
   end
 
 end

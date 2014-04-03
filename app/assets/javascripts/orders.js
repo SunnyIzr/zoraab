@@ -9,6 +9,7 @@ var OrdersController = {
     this.saveOrderButton()
     this.saveOrderLoadButton()
     this.sendToShipstationButton();
+    this.addNewItemToOrder();
   },
   genButton: function() {
     $('.generate-button').click(function(event){
@@ -96,6 +97,13 @@ var OrdersController = {
       $('#ballWrapper').removeClass('ballWrapper')
       OrdersModel.sendToShipstation(orderId)
     })
+  },
+  addNewItemToOrder: function() {
+    $('.add-item').click(function(event) {
+      event.preventDefault();
+      subId = $(this).data('subid')
+      OrdersModel.getLineItemEl(subId)
+    })
   }
 }
 
@@ -145,6 +153,17 @@ var OrdersModel = {
       OrdersView.displaySysMsg('Unable to Send!')
     })
 
+  },
+  getLineItemEl: function(subId) {
+    path = '/subs/add_line_item'
+    item = this.findNextItemNumber()
+    data = {sub_id: subId, item: item}
+    $.post(path, data, function(response) {
+      OrdersView.addNewLineItem(response.html)
+    })
+  },
+  findNextItemNumber: function() {
+    return $('.line_item').last().data('item') + 1
   }
 }
 
@@ -235,5 +254,8 @@ var OrdersView = {
     setTimeout(function() {
       $('.overlay').removeClass('overlay-impt')
     },1000)
+  },
+  addNewLineItem: function(html) {
+    $('.line_items').append(html)
   }
 }

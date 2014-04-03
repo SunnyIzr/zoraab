@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe ChargifyResponse do
   let (:sub) { FactoryGirl.create(:sub)}
-  let (:response) {sub.chargify}
+  let (:response) {Chargify::Subscription.find(sub.cid).attributes}
 
    it "should display name" do
     expect(ChargifyResponse.name(response)).to eq('SunnyShip IsraniShip')

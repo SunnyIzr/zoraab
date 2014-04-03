@@ -1,22 +1,32 @@
 <div class="row">
   <div class="large-12 columns">
-    <h3> Search by Subscriber ID </h3>
+    <h3> Search by Subscribers </h3>
   </div>
 </div>
 <div class="row">
-    <div class="large-6 columns">
-      <%= form_tag("/search", method: "post") do %>
-        <div class="row collapse">
-          <div class="small-10 columns">
-            <%= text_field_tag 'cid'%>
-          </div>
-          <div class="small-2 columns">
-            <%= submit_tag("Search", class: 'button postfix') %>
-          </div>
+  <div class="large-8 columns">
+    <dl class="tabs" data-tab>
+      <dd class="active"><a href="#panel2-2">Search By ID</a></dd>
+    </dl>
+    
+    <div class="tabs-content">
+      <div class="content active" id="panel2-2">
+        <div class="">
+          <%= form_tag("/search", method: "post") do %>
+            <div class="row collapse">
+              <div class="">
+                <%= text_field_tag 'cid'%>
+              </div>
+              <div class="">
+                <%= submit_tag("Search", class: 'button postfix') %>
+              </div>
+            </div>
+          <% end %>
         </div>
-      <% end %>
-
+      </div>
     </div>
+  </div>
+  
 </div>
 
 

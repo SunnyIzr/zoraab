@@ -1,7 +1,7 @@
 
 <div class="row">
   <div class="large-4 columns">
-    <h4> Subscription - <%=@sub.cid%></h4>
+    <h4> Subscription - <%=@sub.cid%></h4>    
   </div>
   <div class="large-5 columns button-bar">
     <ul class="button-group radius round">
@@ -54,9 +54,31 @@
 </div>
 
 <div class="row">
-  <div class="large-12 columns">
+  <div class="large-4 columns">
   <%= link_to "Create Order", new_sub_order_path(@sub),class: 'button' %>
   </div>
+  
+  <div class="large-8 columns">    
+    <dl class="accordion" data-accordion>
+      <dd>
+        <a href="#panel1">Change Preferences</a>
+        <div id="panel1" class="content">
+          
+          <dl class="tabs" data-tab>
+            <%= form_for @sub, url: change_prefs_path(@sub) do |f| %>
+              <% Pref.all.each do |pref| %>
+                <%= check_box_tag('prefs[]', pref.id, @sub.prefs.include?(pref)) %>
+                <%= label_tag(pref.pref, pref.pref) %>
+              <% end %>
+              <%= submit_tag('Change', class: 'button') %>
+            <% end %>
+          </dl>
+          
+        </div>
+      </dd>
+    </dl>
+  </div>
+  
 </div>
 
 <div class="row">
@@ -87,4 +109,5 @@
     </table>
   </div>
 </div>
+
 

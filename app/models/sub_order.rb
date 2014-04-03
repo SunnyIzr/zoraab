@@ -42,7 +42,7 @@
   end
 
   def set_order_details
-    response = ChargifyResponse.parse(self.sub.chargify)
+    response = self.sub.chargify
 
     self.name = response[:name]
     self.email = response[:email]

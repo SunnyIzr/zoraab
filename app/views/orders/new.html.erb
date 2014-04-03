@@ -70,7 +70,7 @@
               <%= hidden_field_tag 'trans_id', @order.trans_id %>
               <%= hidden_field_tag 'amt', @order.amt %>
 
-    <%= render partial: "order_input", locals: {items: @response[:items], sub_id: @sub.id.to_s} %>
+        <%= render partial: "orders/order_input", locals: {items: @response[:items], sub_id: @sub.id.to_s} %>
             </td>
           </tr>
         <tbody>
@@ -78,9 +78,8 @@
       <a href="#" data-subid="<%= @sub.id%>" class="generate-button button ungen">Generate<a>
       <%= submit_tag("Save", class: 'button long-load') %>
       <%= submit_tag("Save and Update Shopify", class: 'button long-load') %>
+      <a href="#" data-subid="<%= @sub.id%>" class="add-item button"> Add Item </a>
     <% end %>
-  </div>
-  <div class="large-7 columns left">
   </div>
   </div>
 </div>
