@@ -81,6 +81,13 @@ class SubsController < ApplicationController
         format.json  { render :json => msg }
     end
   end
+  
+  def change_prefs
+    @sub = Sub.find(params[:sub_id])
+    @sub.set_prefs(params[:prefs])
+
+    redirect_to sub_path(@sub.id)
+  end
 
   private
   def sub_params
