@@ -35,6 +35,13 @@ class OrdersController < ApplicationController
       render text: "FAIL!"
     end
   end
+  
+  def destroy
+    @order = Order.find(params[:id])
+    @sub = @order.sub
+    @order.destroy
+    redirect_to sub_path(@sub)
+  end
 
   def send_to_shopify
     @order = SubOrder.find(params[:order_id].to_i)
