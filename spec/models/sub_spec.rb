@@ -162,7 +162,7 @@ describe Sub do
     sub1.prefs << [pref1,pref2]
     sub1.save
     
-    sub1.set_prefs(['fun','fashion'])
+    sub1.set_prefs([pref3.id,pref4.id])
     
     expect(sub1.prefs).to eq([pref3,pref4])
     

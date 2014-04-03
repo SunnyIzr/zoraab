@@ -46,7 +46,7 @@ class Sub < ActiveRecord::Base
   
   def set_prefs(ary)
     self.prefs.destroy_all
-    ary.each { |pref| self.prefs << Pref.find_by(pref: pref)}
+    ary.each { |pref_id| self.prefs << Pref.find(pref_id)}
     self.save
     self.prefs
   end
