@@ -32,6 +32,7 @@ Zoraab::Application.routes.draw do
   post '/send-to-shopify/:order_id' => 'orders#send_to_shopify'
   post '/refresh_subs' => 'subs#refresh_subs'
   patch '/:sub_id/change_prefs' => 'subs#change_prefs', as: :change_prefs
+  post '/subs/add_line_item' => 'orders#add_line_item', as: :add_line_item
 
 
   # The priority is based upon order of creation: first created -> highest priority.
