@@ -33,7 +33,10 @@
                   <input type="hidden" name="trans_id" value="<%=signup.trans_id%>">
                   <input type="hidden" name="upfront" value="<%=signup.plan.include?('Upfront')%>">
                   <input type="hidden" name="amt" value="<%=signup.amount%>">
-              <td><%=signup.amount%><input type="submit" value="Create" class="button tiny long-load"></td>
+              <td><%=signup.amount%>
+                <input type="submit" value="Create" class="button tiny long-load">
+                <%= link_to 'Delete', destroy_outstanding_signup_path(signup), data: {confirm: 'Are absolutely sure you want to delete?'}, class: 'button tiny' %>
+              </td>
             </form>
           </tr>
         <% end %>
@@ -57,7 +60,10 @@
               <td><%=renewal.created_at.strftime('%m/%d')%></td>
               <td><a href="https://zoraab.chargify.com/subscriptions/<%=renewal.cid%>" target="_blank"><%=renewal.cid%></a></td>
               <td><a href='/subs/<%=Sub.find_by(cid: renewal.cid).id%>' target="_blank"><%=renewal.name%></a></td>
-              <td><%=renewal.amount%><a href="/subs/<%=Sub.find_by(cid: renewal.cid).id%>/orders/new?trans_id=<%=renewal.trans_id%>&amp;amt=<%=renewal.amount%>" class="button tiny">Create</a></td>
+              <td><%=renewal.amount%>
+                <a href="/subs/<%=Sub.find_by(cid: renewal.cid).id%>/orders/new?trans_id=<%=renewal.trans_id%>&amp;amt=<%=renewal.amount%>" class="button tiny">Create</a>
+                <%= link_to 'Delete', destroy_outstanding_renewal_path(renewal), data: {confirm: 'Are absolutely sure you want to delete?'}, class: 'button tiny' %>
+              </td>
             </tr>
         <% end %>
       </tbody>
