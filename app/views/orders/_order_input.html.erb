@@ -1,4 +1,4 @@
-<div data-sub="<%=sub_id%>">
+<div class='line_items' data-sub="<%=sub_id%>">
   <% items.times do |item| %>
     <%= render partial: "orders/line_item_input", locals: {item: item, sub_id: sub_id} %>
   <%end%>
