@@ -19,7 +19,7 @@ class UpfrontSub < Sub
   def self.refresh
     all.each do |usub|
       if usub.due?
-        data = ChargifyResponse.parse(usub.chargify)
+        data = usub.chargify
         installment = usub.sub_orders.where.not(trans_id: nil).size + 1
         trans_id = usub.cid.to_s + installment.to_s
         if SubOrder.pending.map {|o| o.sub.cid}.include?(usub.cid)

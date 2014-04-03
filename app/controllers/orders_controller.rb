@@ -11,7 +11,7 @@ class OrdersController < ApplicationController
   def new
     @order = SubOrder.new(trans_id: params['trans_id'],amt: params['amt'])
     @sub = Sub.find(params[:sub_id])
-    @response = ChargifyResponse.parse(@sub.chargify)
+    @response = @sub.chargify
   end
 
   def create

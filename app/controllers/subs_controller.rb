@@ -24,13 +24,13 @@ class SubsController < ApplicationController
 
   def show
     @sub = Sub.find(params[:id])
-    @response = ChargifyResponse.parse(@sub.chargify)
+    @response = @sub.chargify
     @order_prod_data = @sub.get_prod_data
   end
 
   def index
     @subs = Sub.paginate(:page => params[:page], :per_page => 10)
-    @responses = @subs.map { |sub| ChargifyResponse.parse(sub.chargify) }
+    @responses = @subs.map { |sub| sub.chargify }
   end
 
   def index_upcoming
