@@ -33,6 +33,8 @@ Zoraab::Application.routes.draw do
   post '/refresh_subs' => 'subs#refresh_subs'
   patch '/:sub_id/change_prefs' => 'subs#change_prefs', as: :change_prefs
   post '/subs/add_line_item' => 'orders#add_line_item', as: :add_line_item
+  get '/outstanding_renewals/:id/destroy' => 'welcome#destroy_oren', as: :destroy_outstanding_renewal
+  get '/outstanding_signups/:id/destroy' => 'welcome#destroy_osign', as: :destroy_outstanding_signup
 
 
   # The priority is based upon order of creation: first created -> highest priority.
