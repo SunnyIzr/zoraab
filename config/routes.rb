@@ -4,7 +4,7 @@ Zoraab::Application.routes.draw do
   resources :subs, only: [:new, :create, :show, :index] do
     resources :orders, only:[:new, :create]
   end
-  resources :orders, only: [:show, :index]
+  resources :orders, only: [:show, :index, :destroy]
 
   resources :batches, only: [:new, :create, :show, :index]
 
