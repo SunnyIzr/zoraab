@@ -31,6 +31,7 @@ Zoraab::Application.routes.draw do
   get '/:sub_id/check-dupe/:sku' => 'subs#check_dupe'
   post '/send-to-shopify/:order_id' => 'orders#send_to_shopify'
   post '/refresh_subs' => 'subs#refresh_subs'
+  patch '/:sub_id/change_prefs' => 'subs#change_prefs', as: :change_prefs
 
 
   # The priority is based upon order of creation: first created -> highest priority.
