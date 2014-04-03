@@ -9,6 +9,7 @@ var OrdersController = {
     this.saveOrderButton()
     this.saveOrderLoadButton()
     this.sendToShipstationButton();
+    this.addNewItemToOrder();
   },
   genButton: function() {
     $('.generate-button').click(function(event){
@@ -95,6 +96,12 @@ var OrdersController = {
       $('.loader').addClass('loader-impt')
       $('#ballWrapper').removeClass('ballWrapper')
       OrdersModel.sendToShipstation(orderId)
+    })
+  },
+  addNewItemToOrder: function() {
+    $('.add-item').click(function(event) {
+      event.preventDefault();
+      alert('yo')
     })
   }
 }
