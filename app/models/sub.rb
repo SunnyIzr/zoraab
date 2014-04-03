@@ -43,6 +43,13 @@ class Sub < ActiveRecord::Base
   def dupe?(sku)
     order_history.include?(sku)
   end
+  
+  def set_prefs(ary)
+    self.prefs.destroy_all
+    ary.each { |pref| self.prefs << Pref.find_by(pref: pref)}
+    self.save
+    self.prefs
+  end
 
   def get_prod_data
     products = []

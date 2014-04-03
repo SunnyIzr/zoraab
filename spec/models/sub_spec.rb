@@ -151,4 +151,21 @@ describe Sub do
     expect(sub.order_already_created?(Time.new(2014,1,1))).to eq(true)
   end
   
+  it 'should set new prefs given a set of pref strings' do
+    pref1.save
+    pref2.pref = 'casual'
+    pref2.save
+    pref3.pref = 'fun'
+    pref3.save
+    pref4.pref = 'fashion'
+    pref4.save
+    sub1.prefs << [pref1,pref2]
+    sub1.save
+    
+    sub1.set_prefs(['fun','fashion'])
+    
+    expect(sub1.prefs).to eq([pref3,pref4])
+    
+  end
+  
 end
