@@ -70,6 +70,7 @@
 </div>
 <div class="row">
   <div class="large-5 columns left">
+    <%= link_to 'Delete',  { action: :destroy, id: @order.id }, method: :delete, data: { confirm: 'Are you absolutely sure you want to delete?'}, class: 'button' %>
     <%= link_to'Export',order_path(format: 'csv'), class: 'button' %>
     <a class="send-to-shipstation button" href="#" data-orderid='<%=@order.id%>' > Send to ShipStation </a>
   </div>
