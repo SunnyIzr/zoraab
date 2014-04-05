@@ -217,6 +217,11 @@ module Qb
     po_service
     return @po.query("select * from PurchaseOrder where DocNumber = '"+po_number+"'").entries.first
   end
+  
+  def po_exist?(po_number)
+    po_service
+    return @po.query("select * from PurchaseOrder where DocNumber = '"+po_number+"'").entries.first.present?
+  end
 
   def create_po(inv)
     po_service
