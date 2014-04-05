@@ -24,8 +24,10 @@ class Invoice < ActiveRecord::Base
   def calc_total
     self.total = (self.line_items.map { |li| li.q*li.rate }.inject(:+)).round(2)
   end
-
-
+  
+  def total_q
+    self.line_items.pluck(:q).sum
+  end
 
   def qb
     {
@@ -49,6 +51,10 @@ class Invoice < ActiveRecord::Base
 
   def save_to_qb
     Qb.create_po(self.qb)
+  end
+  
+  def sent_to_qb?
+    Qb.po_exist?(self.po_number)
   end
 
 end
