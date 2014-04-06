@@ -37,7 +37,8 @@ Zoraab::Application.routes.draw do
   post '/subs/add_line_item' => 'orders#add_line_item', as: :add_line_item
   get '/outstanding_renewals/:id/destroy' => 'welcome#destroy_oren', as: :destroy_outstanding_renewal
   get '/outstanding_signups/:id/destroy' => 'welcome#destroy_osign', as: :destroy_outstanding_signup
-
+  post '/check-product' => 'invoices#check_product'
+  get '/invoices/:id/send-to-qb' => 'invoices#save_to_qb', as: :save_invoice_to_qb
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
