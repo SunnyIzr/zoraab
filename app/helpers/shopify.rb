@@ -56,7 +56,7 @@ module Shopify
       page += 1
       collection = ShopifyAPI::Product.find(:all, :params => {:limit =>250, :page=> page})
       collection_size = collection.size
-      skus << collection.map{ |product| product.handle }
+      skus << collection.map{ |product| product.variants.first.sku.downcase }
     end
     skus.flatten
   end
