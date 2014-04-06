@@ -26,11 +26,18 @@ class InvoicesController < ApplicationController
     else
       render text: 'fail!'
     end
-    
-    
-    
   end
+
+  def check_product
+      render json: Qb.product_exist?(params[:sku])
+  end 
   
+  def save_to_qb
+    @invoice = Invoice.find(params[:id])
+    @invoice.save_to_qb
+    redirect_to invoice_path(@invoice)
+  end
+   
   private
   def invoice_params
     params.permit(:invoice).permit(:created_at,:vendor)
