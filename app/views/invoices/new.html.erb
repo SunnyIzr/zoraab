@@ -1,0 +1,53 @@
+<div class="row">
+  <div class="large-4 columns">
+    <h4>Create New Invoice</h4>
+  </div>
+</div>
+<%= form_for @invoice do |f| %>
+  <div class="row">
+    <div class="large-6 columns">
+        <%= label_tag(:created_at, 'Date') %>
+        <%= f.date_field(:created_at) %>
+        
+        <%= label_tag(:vendor, 'Vendor') %>
+        <%= f.select(:vendor,Vendor.all) %>
+        
+        <%= label_tag(:shipping, 'Shipping') %>
+        <%= f.number_field(:shipping, value: 0.0, class: 'invoice_shipping') %>
+    </div>
+    <div class = 'large-6 columns'>
+      <label> Total </label>
+      <h3 id='invoice-total'> $0.00 <h3>
+      <a id='calc-total' href="#" class='button'> Calculate </a>
+      <%= submit_tag('Create Invoice', class: 'button') %> 
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="large-8 columns">
+      <table style="width:100%">
+        <thead>
+          <tr>
+            <th> SKU </th>
+            <th> Price </th>
+            <th> Quantity </th>
+            <th> Total </th>
+            <th> </th>
+          </tr>
+        </thead>
+        <tbody>
+          <% 3.times do %>
+            <tr>
+              <td class='sku'> <%= text_field_tag 'skus[]' %> </td>
+              <td class='rate'> <%= number_field_tag 'rates[]', 0.0, step: 'any' %> </td>
+              <td class='q'> <%= number_field_tag 'qs[]', 0 %> </td>
+              <td class='total'> $0.00 </td>
+              <td> <a href="#" class="calc-line-item button tiny"> <i class="fa fa-refresh"></i> </a> </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  
+<% end %>
