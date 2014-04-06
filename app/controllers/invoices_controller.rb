@@ -2,7 +2,7 @@ class InvoicesController < ApplicationController
 
   def show
     @invoice = Invoice.find(params[:id])
-    @shopify_skus = Shopify.all_products
+    @shopify_skus = []
   end
 
   def index
@@ -29,8 +29,13 @@ class InvoicesController < ApplicationController
   end
 
   def check_product
-      render json: Qb.product_exist?(params[:sku])
-  end 
+    render json: Qb.product_exist?(params[:sku])
+  end
+  
+  def check_all_products
+    @invoice = Invoice.find(params[:id])
+    render json: @invoice.items_not_in_qb
+  end
   
   def save_to_qb
     @invoice = Invoice.find(params[:id])

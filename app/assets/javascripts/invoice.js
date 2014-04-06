@@ -4,6 +4,7 @@ var InvoiceController = {
     this.calcTotal()
     this.removeLineItem()
     this.checkItem()
+    this.checkItems()
   },
   calcLineItem: function() {
     $(document).on('click', '.calc-line-item', function(event) {
@@ -36,6 +37,14 @@ var InvoiceController = {
       sku = $(el).parent().parent().find('.sku > input').val()
       InvoiceModel.checkItem(sku,el)
     })
+  },
+  checkItems: function() {
+    $(document).on('click', '#check-qb-for-products', function(event) {
+      event.preventDefault();
+      InvoiceView.startLoader()
+      invoiceId = $(this).data('invoiceid')
+      missingSkus = InvoiceModel.checkItems(invoiceId)
+    })
   }
 }
 
@@ -62,7 +71,17 @@ var InvoiceModel = {
           InvoiceView.itemNotExists(el)
         }
       });
-    }
+    },
+  checkItems: function(invoiceId) {
+    $.post('/check-all-products', {id: invoiceId}, function(missingSkus) {
+      if (missingSkus.length > 0 ){
+        InvoiceView.itemsDontAllExist(missingSkus)
+      }
+      else {
+        InvoiceView.itemsAllExist()
+      }
+    })
+  }
 }
 var InvoiceView = {
   calcLineItem: function(total,el) {
@@ -76,6 +95,26 @@ var InvoiceView = {
   },
   itemNotExists: function(el) {
     el.css('background-color','#fca1a3')
+  },
+  startLoader: function() {
+    $('.check-qb').html("<img src='/assets/loader.gif'>")
+  },
+  hideLoader: function() {
+    $('.check-qb > img').hide()
+  },
+  itemsAllExist: function() {
+    this.hideLoader()
+    $('.check-qb').html('All Products on QBO')
+    $('.send-to-qb').show()
+  },
+  itemsDontAllExist: function(missingSkus){
+    this.hideLoader()
+    $('.check-qb').append('Missing Skus:')
+    $.each(missingSkus, function(e,value) {
+      el = '<li>' + value + '</li>'
+      $('.check-qb').append(el)
+    })
   }
+  
 
 }
