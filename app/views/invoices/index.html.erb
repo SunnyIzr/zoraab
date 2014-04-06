@@ -1,0 +1,32 @@
+<div class="row">
+  <div class="large-12 columns">
+    <h4>Invoices</h4>
+  </div>
+</div>
+<div class="row">
+  <div class="large-12 columns">
+  <%= will_paginate @invoices %>
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Date</th>
+          <th>Vendor</th>
+          <th>Quantity</th>
+          <th>Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @invoices.each do |invoice| %>
+        <tr>
+          <td> <%= link_to invoice.po_number, invoice_path(invoice) %> </td>
+          <td> <%= invoice.created_at.strftime('%m/%d/%y') %> </td>
+          <td> <%= invoice.vendor %> </td>
+          <td> <%= invoice.total_q %> </td>
+          <td> <%= Money.amt(invoice.total) %> </td>
+        </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
