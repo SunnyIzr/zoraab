@@ -1,6 +1,8 @@
 class Invoice < ActiveRecord::Base
   has_many :line_items, as: :line_itemable
   after_save :set_po_number
+  accepts_nested_attributes_for :line_items
+
 
   def set_po_number
     unless self.po_number
@@ -10,10 +12,12 @@ class Invoice < ActiveRecord::Base
     end
   end
 
-  def set_line_items(data)
-    data.each do |li|
-      prod = Product.find_or_create_by(sku: li[:sku].downcase)
-      line_item = self.line_items.new(q: li[:q], rate: li[:price])
+  def set_line_items(skus,rates,qs)
+    skus.each_with_index do |sku,i|
+      rate = rates[i].to_f
+      q = qs[i].to_f
+      prod = Product.find_or_create_by(sku: sku.downcase)
+      line_item = self.line_items.new(q: q, rate: rate)
       line_item.product = prod
       line_item.save
     end
