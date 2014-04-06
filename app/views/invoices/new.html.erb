@@ -10,7 +10,7 @@
         <%= f.date_field(:created_at) %>
         
         <%= label_tag(:vendor, 'Vendor') %>
-        <%= f.select(:vendor,Vendor.all) %>
+        <%= f.select(:vendor,Vendor.all.keys) %>
         
         <%= label_tag(:shipping, 'Shipping') %>
         <%= f.number_field(:shipping, value: 0.0, step: 'any', class: 'invoice_shipping') %>
@@ -24,11 +24,11 @@
   </div>
 
   <div class="row">
-    <div class="large-8 columns">
+    <div class="large-10 columns">
       <table style="width:100%">
         <thead>
           <tr>
-            <th> SKU </th>
+            <th width="300"> SKU </th>
             <th> Price </th>
             <th> Quantity </th>
             <th> Total </th>

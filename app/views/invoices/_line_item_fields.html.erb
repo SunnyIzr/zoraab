@@ -1,5 +1,5 @@
 <tr>
-  <td class='sku'> <%= text_field_tag 'skus[]' %> </td>
+  <td class='sku'> <%= text_field_tag 'skus[]', Vendor.all.first.last + '_' %> </td>
   <td class='rate'> <%= number_field_tag 'rates[]', 0.0, step: 'any' %> </td>
   <td class='q'> <%= number_field_tag 'qs[]', 0 %> </td>
   <td class='total'> $0.00 </td>

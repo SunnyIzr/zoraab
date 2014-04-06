@@ -42,6 +42,10 @@ class InvoicesController < ApplicationController
     @invoice.save_to_qb
     redirect_to invoice_path(@invoice)
   end
+  
+  def vendors
+    render json: Vendor.all
+  end
    
   private
   def invoice_params

@@ -5,6 +5,7 @@ var InvoiceController = {
     this.removeLineItem()
     this.checkItem()
     this.checkItems()
+    this.inputPrefix()
   },
   calcLineItem: function() {
     $(document).on('click', '.calc-line-item', function(event) {
@@ -45,10 +46,17 @@ var InvoiceController = {
       invoiceId = $(this).data('invoiceid')
       missingSkus = InvoiceModel.checkItems(invoiceId)
     })
+  },
+  inputPrefix: function() {
+    $(document).on('change','#invoice_vendor', function(event) {
+      vendor = $('#invoice_vendor').val()
+      InvoiceModel.getPrefix(vendor)
+    })
   }
 }
 
 var InvoiceModel = {
+  currentPrefix: 'FT_',
   calcLineItem: function(rate,q){
     total = rate * q
     return total
@@ -80,6 +88,13 @@ var InvoiceModel = {
       else {
         InvoiceView.itemsAllExist()
       }
+    })
+  },
+  getPrefix: function(vendor) {
+    $.get('/vendors', function(response) {
+      prefix = response[vendor]
+      InvoiceModel.currentPrefix = prefix+'_'
+      InvoiceView.changePrefixes()
     })
   }
 }
@@ -114,6 +129,9 @@ var InvoiceView = {
       el = '<li>' + value + '</li>'
       $('.check-qb').append(el)
     })
+  },
+  changePrefixes: function() {
+    $('.sku > input').val(InvoiceModel.currentPrefix)
   }
   
 

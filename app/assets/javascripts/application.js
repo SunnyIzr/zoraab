@@ -25,6 +25,8 @@ function remove_fields(link) {
 function add_fields(link, association, content) {
   var new_id = new Date().getTime();
   var regexp = new RegExp("new_" + association, "g")
-  $('tbody').before(content.replace(regexp, new_id));
+  currentPrefix = InvoiceModel.currentPrefix
+  newContent = content.replace('FT_',currentPrefix)
+  $('tbody').before(newContent.replace(regexp, new_id));
   ;
 }
