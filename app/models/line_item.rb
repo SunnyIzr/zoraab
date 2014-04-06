@@ -4,4 +4,8 @@ class LineItem < ActiveRecord::Base
   validates_presence_of :product_id
   validates_presence_of :rate
   validates_presence_of :q
+  
+  def total
+    (self.rate * self.q).round(2)
+  end
 end

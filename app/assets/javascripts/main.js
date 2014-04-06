@@ -7,6 +7,7 @@ $(document).ready(function() {
     OrdersController.init()
     BatchController.init()
     DashboardController.init()
+    InvoiceController.init()
 
   });
 

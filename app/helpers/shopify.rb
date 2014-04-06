@@ -47,6 +47,19 @@ module Shopify
     end
     products
   end
+  
+  def all_products
+    skus = []
+    collection_size = 1
+    page = 0
+    while collection_size > 0
+      page += 1
+      collection = ShopifyAPI::Product.find(:all, :params => {:limit =>250, :page=> page})
+      collection_size = collection.size
+      skus << collection.map{ |product| product.variants.first.sku.downcase }
+    end
+    skus.flatten
+  end
 
   def published?(prod)
     !!prod.attributes['published_at']

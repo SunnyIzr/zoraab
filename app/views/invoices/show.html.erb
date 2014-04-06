@@ -1,0 +1,59 @@
+<div class="row">
+  <div class="large-8 columns">
+    
+  </div>
+  <div class="large-4 columns">
+    
+  </div>
+</div>
+
+<div class="row">
+  <div class="large-6 columns">
+    <table style="width:100%">
+      <thead>
+        <tr>
+          <th>SKU</th>
+          <th>Rate</th>
+          <th>Quantity</th>
+          <th>Total</th>
+          <th>Shopify?</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @invoice.line_items.each do |line_item| %>
+          <tr>
+            <td> <%= line_item.product.sku %> </td>
+            <td> <%= Money.amt(line_item.rate) %> </td>
+            <td> <%= line_item.q %> </td>
+            <td> <%= Money.amt(line_item.total) %> </td>
+            <td class=<%= 'not-uploaded' unless @shopify_skus.include?(line_item.product.sku) %>> 
+              <%= Bool.yesno(@shopify_skus.include?(line_item.product.sku)) %> 
+            </td>
+          </tr>
+        <% end %>
+        <tr>
+          <td> <strong> Total </strong> </td>
+          <td> </td>
+          <td> <%= @invoice.total_q %> </td>
+          <td> <%= Money.amt(@invoice.total) %> </td>
+        </tr>
+        
+    </table>
+  </div>
+  
+  <div class="large-6 columns">
+    <h6> <strong> Vendor: </strong> <%= @invoice.vendor %></h6>
+    <h6> <strong> Total: </strong> <%= Money.amt(@invoice.total) %></h6>
+    <h6><strong>Number:</strong> <%= @invoice.po_number %></h6>
+    <h6><strong>Date:</strong> <%= @invoice.created_at.strftime('%a %d %b %Y') %></h6>
+    <h6><strong>Sent to QB:</strong> <%= @invoice.sent_to_qb? %></h6>
+    <% unless @invoice.sent_to_qb? %>
+      <div class=' check-qb'>
+        <a href='#' id='check-qb-for-products' data-invoiceid=<%=@invoice.id%> class='button'> Check QBO </a>
+      </div>
+      <div class='hide send-to-qb'>
+        <%= link_to 'Send to QBO', save_invoice_to_qb_path(@invoice), class: 'button ' %>
+      </div>
+    <% end %>
+  </div>
+</div>
