@@ -3,6 +3,10 @@ class Product < ActiveRecord::Base
   validates_uniqueness_of :sku
   has_and_belongs_to_many :prefs
 
+  def exists_in_qb?
+    Qb.product_exist?(self.sku)
+  end
+  
   def self.sync_to_shopify
     shopify_products = Shopify.retrieve_shopify_products
     update_active(shopify_products)

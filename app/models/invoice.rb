@@ -61,6 +61,12 @@ class Invoice < ActiveRecord::Base
     Qb.po_exist?(self.po_number)
   end
   
+  def items_not_in_qb
+    ids = self.line_items.pluck(:product_id)
+    products = ids.select { |id| !Product.find(id).exists_in_qb? }
+    products.map { |id| Product.find(id).sku }
+  end
+  
   def allocate_shipping
     cost_per_unit = self.shipping / self.total_q
     self.line_items.each do |line_item|
