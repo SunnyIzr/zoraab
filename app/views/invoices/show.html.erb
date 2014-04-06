@@ -41,6 +41,6 @@
     <h6> <strong> Total: </strong> <%= Money.amt(@invoice.total) %></h6>
     <h6><strong>Number:</strong> <%= @invoice.po_number %></h6>
     <h6><strong>Date:</strong> <%= @invoice.created_at.strftime('%a %d %b %Y') %></h6>
-    <h6><strong>Sent to QB:</strong> <%= @invoice.sent_to_qb?s %></h6>
+    <h6><strong>Sent to QB:</strong> <%= @invoice.sent_to_qb? %></h6>
   </div>
 </div>
