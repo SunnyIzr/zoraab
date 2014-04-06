@@ -68,6 +68,7 @@ class Invoice < ActiveRecord::Base
     end
     self.shipping = 0
     self.calc_total
+    self.save
   end
 
 end
