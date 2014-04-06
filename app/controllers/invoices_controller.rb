@@ -18,10 +18,11 @@ class InvoicesController < ApplicationController
     skus = params[:skus]
     rates = params[:rates]
     qs = params[:qs]
-    @invoice = Invoice.new(vendor: params[:invoice][:vendor],created_at: params[:invoice][:created_at], shipping:params[:invoice][:shipping])
+    @invoice = Invoice.new(vendor: params[:invoice][:vendor],created_at: params[:invoice][:created_at], shipping:params[:invoice][:shipping], discount:params[:invoice][:discount])
     if @invoice.save
       @invoice.set_line_items(skus,rates,qs)
       @invoice.allocate_shipping
+      @invoice.allocate_discount
       redirect_to invoice_path(@invoice)
     else
       render text: 'fail!'
@@ -49,6 +50,6 @@ class InvoicesController < ApplicationController
    
   private
   def invoice_params
-    params.permit(:invoice).permit(:created_at,:vendor,:shipping)
+    params.permit(:invoice).permit(:created_at,:vendor,:shipping,:discount)
   end
 end

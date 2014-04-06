@@ -64,7 +64,9 @@ var InvoiceModel = {
   calcTotal: function() {
     total = 0
     shipping = parseFloat($('#invoice_shipping').val())
+    discount = parseFloat($('#invoice_discount').val())
     total += shipping
+    total -= discount
     $.map( $('.total'), function(n) {
       total += parseFloat($(n).html().slice(1))
     });

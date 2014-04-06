@@ -76,5 +76,15 @@ class Invoice < ActiveRecord::Base
     self.calc_total
     self.save
   end
+  
+  def allocate_discount
+    discount_per_unit = self.discount / self.total_q
+    self.line_items.each do |line_item|
+      line_item.rate -= discount_per_unit
+    end
+    self.discount = 0
+    self.calc_total
+    self.save
+  end
 
 end
