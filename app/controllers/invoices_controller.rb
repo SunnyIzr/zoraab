@@ -2,7 +2,7 @@ class InvoicesController < ApplicationController
 
   def show
     @invoice = Invoice.find(params[:id])
-    @shopify_skus = []
+    @shopify_skus = Shopify.all_products
   end
 
   def index
