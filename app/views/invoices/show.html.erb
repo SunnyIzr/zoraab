@@ -33,6 +33,7 @@
           <td> <%= @invoice.total_q %> </td>
           <td> <%= Money.amt(@invoice.total) %> </td>
         </tr>
+        
     </table>
   </div>
   
@@ -42,5 +43,8 @@
     <h6><strong>Number:</strong> <%= @invoice.po_number %></h6>
     <h6><strong>Date:</strong> <%= @invoice.created_at.strftime('%a %d %b %Y') %></h6>
     <h6><strong>Sent to QB:</strong> <%= @invoice.sent_to_qb? %></h6>
+    <% unless @invoice.sent_to_qb? %>
+      <%= link_to 'Send to QBO', save_invoice_to_qb_path(@invoice), class: 'button' %>
+    <% end %>
   </div>
 </div>
