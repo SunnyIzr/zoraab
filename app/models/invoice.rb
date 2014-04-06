@@ -1,7 +1,7 @@
 class Invoice < ActiveRecord::Base
   has_many :line_items, as: :line_itemable
   after_save :set_po_number
-  accepts_nested_attributes_for :line_items
+  accepts_nested_attributes_for :line_items, allow_destroy: true
 
 
   def set_po_number
@@ -48,7 +48,7 @@ class Invoice < ActiveRecord::Base
   def qb_line_items
     ary = []
     self.line_items.each do |li|
-      ary << {sku: li.product.sku, price: li.rate.to_s, q: li.q}
+      ary << {sku: li.product.sku, price: li.rate.to_s, q: li.q.to_s}
     end
     ary
   end
