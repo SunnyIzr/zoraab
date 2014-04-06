@@ -33,18 +33,17 @@
             <th> Quantity </th>
             <th> Total </th>
             <th> </th>
+            <th> </th>
+            <th> </th>
           </tr>
         </thead>
         <tbody>
+          <%= link_to_add_fields "Add LineItem", f, :line_items %>
           <% 3.times do %>
-            <tr>
-              <td class='sku'> <%= text_field_tag 'skus[]' %> </td>
-              <td class='rate'> <%= number_field_tag 'rates[]', 0.0, step: 'any' %> </td>
-              <td class='q'> <%= number_field_tag 'qs[]', 0 %> </td>
-              <td class='total'> $0.00 </td>
-              <td> <a href="#" class="calc-line-item button tiny"> <i class="fa fa-refresh"></i> </a> </td>
-            </tr>
+            <%= render partial: "line_item_fields" %>
           <% end %>
+          <td>
+        </td>
         </tbody>
       </table>
     </div>

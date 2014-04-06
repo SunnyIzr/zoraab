@@ -1,0 +1,21 @@
+<tr>
+  <td class='sku'> <%= text_field_tag 'skus[]' %> </td>
+  <td class='rate'> <%= number_field_tag 'rates[]', 0.0, step: 'any' %> </td>
+  <td class='q'> <%= number_field_tag 'qs[]', 0 %> </td>
+  <td class='total'> $0.00 </td>
+  <td> 
+    <a href="#" class="calc-line-item button tiny"> 
+      <i class="fa fa-refresh"></i> 
+    </a> 
+  </td>
+  <td>
+    <a href="#" class="remove-line-item button tiny"> 
+      <i class="fa fa-trash-o"></i> 
+    </a> 
+  </td>
+  <td>
+    <a href="#" class="check-item button tiny"> 
+      <i class="fa fa-check"></i> 
+    </a> 
+  </td>
+</tr>
