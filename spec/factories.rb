@@ -37,5 +37,8 @@ FactoryGirl.define do
 
   factory :data_session do
   end
+  
+  factory :invoice do
+  end
 
 end

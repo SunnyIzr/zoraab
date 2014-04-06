@@ -60,5 +60,14 @@ class Invoice < ActiveRecord::Base
   def sent_to_qb?
     Qb.po_exist?(self.po_number)
   end
+  
+  def allocate_shipping
+    cost_per_unit = self.shipping / self.total_q
+    self.line_items.each do |line_item|
+      line_item.rate += cost_per_unit
+    end
+    self.shipping = 0
+    self.calc_total
+  end
 
 end
