@@ -12,7 +12,7 @@ class UpfrontSub < Sub
   end
 
   def get_term
-    self.term = self.chargify['product'].attributes['expiration_interval']
+    self.term = Chargify::Subscription.find(self.cid).attributes['product'].attributes['expiration_interval']
     self.save
   end
 
