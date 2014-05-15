@@ -5,7 +5,7 @@ class SubsController < ApplicationController
 
   def create
     @sub = Sub.new(sub_params)
-    @sub.retrieve_wufoo_prefs
+    @sub.get_prefs
     if @sub.save
       redirect_to sub_path(@sub.id)
     else

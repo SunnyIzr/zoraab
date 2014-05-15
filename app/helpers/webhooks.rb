@@ -21,7 +21,7 @@ module Webhooks
   end
 
   def create_new_signup(payload)
-    OutstandingSignup.create(trans_id: payload['transaction']['id'], cid: payload['subscription']['id'], name: payload['subscription']['customer']['last_name'], plan: payload['subscription']['product']['name'], amount: (payload['transaction']['amount_in_cents'].to_f/100.0))
+    OutstandingSignup.create(trans_id: payload['transaction']['id'], cid: payload['subscription']['id'], name: payload['subscription']['customer']['last_name'], plan: payload['subscription']['product']['name'], amount: (payload['transaction']['amount_in_cents'].to_f/100.0), users_ref: payload['subscription']['customer']['reference'].to_i)
   end
 
   def no_pending_order?(payload)
