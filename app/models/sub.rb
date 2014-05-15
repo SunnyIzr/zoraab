@@ -9,7 +9,8 @@ class Sub < ActiveRecord::Base
     ChargifyResponse.parse(Chargify::Subscription.find(cid).attributes)
   end
 
-  def get_prefs(entry_id)
+  def get_prefs
+    entry_id = OutstandingSignup.find_by(cid: self.cid).users_ref
     self.prefs << ZoraabUsers.get_prefs(entry_id)
   end
 
