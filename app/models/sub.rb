@@ -9,8 +9,8 @@ class Sub < ActiveRecord::Base
     ChargifyResponse.parse(Chargify::Subscription.find(cid).attributes)
   end
 
-  def retrieve_wufoo_prefs
-    self.prefs << Wufoo.find_prefs(cid)
+  def get_prefs(entry_id)
+    self.prefs << ZoraabUsers.get_prefs(entry_id)
   end
 
   def list_prefs
