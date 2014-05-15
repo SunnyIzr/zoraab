@@ -11,7 +11,7 @@ describe Qb do
   it 'should create a sub_order with all the relevant details' do
     sub_order1.plan = 'Sock Dabbler (2 Pairs/Mo)'
     sub_order1.amt = 39.0
-    sub_order1.trans_id = 12345
+    sub_order1.trans_id = 48837466
     sub_order1.sub = sub
     sub_order1.set_order_details
     sub_order1.save

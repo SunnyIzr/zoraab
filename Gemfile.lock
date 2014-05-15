@@ -1,4 +1,14 @@
 GIT
+  remote: git://github.com/SunnyIzr/quickbooks-ruby.git
+  revision: 141059e9b88bd0872bde6e808067d93a95a8ab5d
+  specs:
+    quickbooks-ruby (0.1.1)
+      activemodel
+      nokogiri
+      oauth
+      roxml
+
+GIT
   remote: git://github.com/alexdowad/ruby-mws.git
   revision: 09f1cc5d87c6d15d089725b762a21893ec417a02
   branch: update_inventory
@@ -42,7 +52,6 @@ GEM
       tzinfo (~> 0.3.37)
     addressable (2.3.6)
     arel (4.0.2)
-    atomic (1.1.16)
     awesome_print (1.2.0)
     builder (3.1.4)
     chargify_api_ares (1.0.4)
@@ -116,11 +125,6 @@ GEM
       rack (~> 1.2)
     pg (0.17.1)
     polyglot (0.3.4)
-    quickbooks-ruby (0.0.8)
-      activemodel
-      nokogiri
-      oauth
-      roxml
     rack (1.5.2)
     rack-test (0.6.2)
       rack (>= 1.0)
@@ -171,12 +175,12 @@ GEM
       i18n (~> 0.6.0)
       nokogiri (>= 1.4.2)
       rest-client (>= 1.5.1)
-    sass (3.2.18)
-    sass-rails (4.0.2)
+    sass (3.2.19)
+    sass-rails (4.0.3)
       railties (>= 4.0.0, < 5.0)
       sass (~> 3.2.0)
       sprockets (~> 2.8, <= 2.11.0)
-      sprockets-rails (~> 2.0.0)
+      sprockets-rails (~> 2.0)
     shopify_api (3.2.1)
       activeresource (>= 3.0.0)
       thor (>= 0.14.4)
@@ -205,8 +209,7 @@ GEM
       eventmachine (>= 1.0.0)
       rack (>= 1.0.0)
     thor (0.19.1)
-    thread_safe (0.3.1)
-      atomic (>= 1.1.7, < 2)
+    thread_safe (0.3.2)
     tilt (1.4.1)
     treetop (1.4.15)
       polyglot
@@ -240,7 +243,7 @@ DEPENDENCIES
   jquery-rails
   oauth-plugin
   pg
-  quickbooks-ruby (~> 0.0.8)
+  quickbooks-ruby!
   rails (= 4.0.0)
   rails_12factor
   rspec-mocks

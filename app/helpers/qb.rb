@@ -15,6 +15,20 @@ module Qb
     product_service
     return @prod.query("select * from Item where name = '"+sku+"'").entries.size > 0
   end
+  
+  def product(sku)
+    product_service
+    @prod.query("select * from Item where name = '"+sku+"'").entries.first
+  end
+  
+  def delete_product(sku)
+    prod = product(sku)
+    @prod.delete(prod)
+  end
+  
+  def change_sku(old_sku, new_sku)
+    prod = product(sku)
+  end
 
   def products_dont_exist?(ary_of_skus)
     product_service

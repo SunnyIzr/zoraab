@@ -204,8 +204,10 @@ module Shopify
     puts "Getting #{shopify_orders.size} Shopify Orders"
     shopify_orders.each_with_index do |o,i|
       puts "Getting Order #{i}/#{shopify_orders.size}"
-      orders << order(o)
-      sleep(1)
+      unless o.name == '5-1001'
+        orders << order(o)
+        sleep(1)
+      end
     end
     orders.reverse!
   end
