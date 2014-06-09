@@ -86,7 +86,7 @@ module Shipstation
     order.ConfirmationCost=BigDecimal(0)
     order.HoldUntil=nil
     order.RequestedShippingService=nil
-    order.WarehouseID=5295
+    order.WarehouseID=17208
     order.CustomsContents=nil
     order.NonDelivery=nil
     order.ResidentialIndicator="R"
