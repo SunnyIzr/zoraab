@@ -56,7 +56,7 @@ module Shipstation
     order = SHIP::Order.new
     order.OrderID=nil
     order.SellerID=103618
-    order.StoreID=16357
+    order.StoreID=22975
     order.MarketplaceID=0
     order.OrderStatusID=2
     order.CustomerID=nil
