@@ -68,7 +68,7 @@ module ChargifyResponse
   end
 
   def billing_address(response)
-    {   :name => billing(response)['first_name'] + ' ' + billing(response)['last_name'],
+    {   :name => billing(response)['first_name'].to_s + ' ' + billing(response)['last_name'].to_s,
         :address => billing(response)['billing_address'],
         :address2 => billing(response)['billing_address_2'],
         :city => billing(response)['billing_city'],
