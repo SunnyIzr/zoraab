@@ -5,6 +5,7 @@ var InvoiceController = {
     this.removeLineItem()
     this.checkItem()
     this.checkItems()
+    this.createItems()
     this.inputPrefix()
   },
   calcLineItem: function() {
@@ -45,6 +46,14 @@ var InvoiceController = {
       InvoiceView.startLoader()
       invoiceId = $(this).data('invoiceid')
       missingSkus = InvoiceModel.checkItems(invoiceId)
+    })
+  },
+  createItems: function() {
+    $(document).on('click', '#create-qb-products', function(event) {
+      event.preventDefault();
+      InvoiceView.startLoader()
+      invoiceId = $(this).data('invoiceid')
+      InvoiceModel.createItems(invoiceId)
     })
   },
   inputPrefix: function() {
@@ -92,6 +101,14 @@ var InvoiceModel = {
       }
     })
   },
+  createItems: function(invoiceId) {
+    $.post('/create-all-products', {id: invoiceId}, function(response) {
+    }).done(function() {
+      console.log('done!!')
+      missingSkus = []
+      InvoiceView.itemsDontAllExist(missingSkus,invoiceId)
+    })
+  },
   getPrefix: function(vendor) {
     $.get('/vendors', function(response) {
       prefix = response[vendor]
@@ -126,7 +143,7 @@ var InvoiceView = {
   },
   itemsDontAllExist: function(missingSkus,invoiceId){
     this.hideLoader()
-    $('.check-qb').append("<a href='#' id='check-qb-for-products' data-invoiceid='"+ invoiceId + "' class='button'> Check QBO </a><br>")
+    $('.check-qb').append("<a href='#' id='create-qb-products' data-invoiceid='"+ invoiceId + "' class='button'> Create QBO Products </a><br><a href='#' id='check-qb-for-products' data-invoiceid='"+ invoiceId + "' class='button'> Check QBO </a><br>")
     $('.check-qb').append('Missing Skus:')
     $.each(missingSkus, function(e,value) {
       el = '<li>' + value + '</li>'
