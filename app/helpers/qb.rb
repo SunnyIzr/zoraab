@@ -303,6 +303,23 @@ module Qb
 
     return qb_exp
   end
+  
+  def create_product(sku)
+    qb_product = new_product(sku)
+    @prod.create(qb_product)
+  end
+  
+  def new_product(sku)
+    qbp = Quickbooks::Model::Item.new
+    qbp.name = sku
+    qbp.track_quantity_on_hand = true
+    qbp.quantity_on_hand = BigDecimal.new('0.0')
+    qbp.inv_start_date = Date.new(2014,1,1)
+    qbp.asset_account_ref = Quickbooks::Model::BaseReference.new(145)
+    qbp.income_account_ref = Quickbooks::Model::BaseReference.new(241)
+    qbp.expense_account_ref = Quickbooks::Model::BaseReference.new(172)
+    qbp
+  end
 
   private
   def oauth_client
