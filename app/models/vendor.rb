@@ -1,6 +1,7 @@
 class Vendor
   def self.all
     {
+      'Ashi Dashi' => 'AD',
       'Foot Traffic' => 'FT',
       'K.Bell' => 'KB',
       'Ozone' => 'Oz',

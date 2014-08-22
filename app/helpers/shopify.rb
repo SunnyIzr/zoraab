@@ -1,5 +1,6 @@
 module Shopify
-  BRANDS = [  "Foot Traffic",
+  BRANDS = [  "Ashi Dashi",
+              "Foot Traffic",
               "Hot Sox",
               "Happy Socks",
               "Mint Socks",
