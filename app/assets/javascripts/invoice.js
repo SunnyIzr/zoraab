@@ -85,7 +85,7 @@ var InvoiceModel = {
   checkItems: function(invoiceId) {
     $.post('/check-all-products', {id: invoiceId}, function(missingSkus) {
       if (missingSkus.length > 0 ){
-        InvoiceView.itemsDontAllExist(missingSkus)
+        InvoiceView.itemsDontAllExist(missingSkus,invoiceId)
       }
       else {
         InvoiceView.itemsAllExist()
@@ -124,8 +124,9 @@ var InvoiceView = {
     $('.check-qb').html('All Products on QBO')
     $('.send-to-qb').show()
   },
-  itemsDontAllExist: function(missingSkus){
+  itemsDontAllExist: function(missingSkus,invoiceId){
     this.hideLoader()
+    $('.check-qb').append("<a href='#' id='check-qb-for-products' data-invoiceid='"+ invoiceId + "' class='button'> Check QBO </a><br>")
     $('.check-qb').append('Missing Skus:')
     $.each(missingSkus, function(e,value) {
       el = '<li>' + value + '</li>'
