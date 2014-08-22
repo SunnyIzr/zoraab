@@ -38,6 +38,15 @@ class InvoicesController < ApplicationController
     render json: @invoice.items_not_in_qb
   end
   
+  def create_all_products
+    @invoice = Invoice.find(params[:id])
+    @invoice.create_items_in_qb_for_missing_skus
+    respond_to do |format|
+      msg = { :status => "ok", :message => "Success!" }
+      format.json  { render :json => msg }
+    end
+  end
+  
   def save_to_qb
     @invoice = Invoice.find(params[:id])
     @invoice.save_to_qb

@@ -67,6 +67,13 @@ class Invoice < ActiveRecord::Base
     products.map { |id| Product.find(id).sku }
   end
   
+  def create_items_in_qb_for_missing_skus
+    missing = self.items_not_in_qb
+    missing.each do |sku|
+      Qb.create_product(sku)
+    end
+  end
+  
   def allocate_shipping
     cost_per_unit = self.shipping / self.total_q
     self.line_items.each do |line_item|

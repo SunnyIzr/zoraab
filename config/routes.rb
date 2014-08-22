@@ -40,6 +40,7 @@ Zoraab::Application.routes.draw do
   post '/check-product' => 'invoices#check_product'
   get '/invoices/:id/send-to-qb' => 'invoices#save_to_qb', as: :save_invoice_to_qb
   post '/check-all-products' => 'invoices#check_all_products'
+  post '/create-all-products' => 'invoices#create_all_products'
   get '/vendors' => 'invoices#vendors'
 
   # The priority is based upon order of creation: first created -> highest priority.
