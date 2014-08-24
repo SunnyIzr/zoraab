@@ -36,7 +36,7 @@ var InvoiceController = {
     $(document).on('click','.check-item', function(event) {
       event.preventDefault();
       el = $(this).parent().parent()
-      sku = $(el).parent().parent().find('.sku > input').val()
+      sku = $(this).parent().parent().find('.sku > input').val()
       InvoiceModel.checkItem(sku,el)
     })
   },
