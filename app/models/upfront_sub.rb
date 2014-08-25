@@ -18,6 +18,7 @@ class UpfrontSub < Sub
 
   def self.refresh
     all.each do |usub|
+        p usub.id
       if usub.due?
         data = usub.chargify
         installment = usub.sub_orders.where.not(trans_id: nil).size + 1
