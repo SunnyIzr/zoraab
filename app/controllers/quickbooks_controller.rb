@@ -29,10 +29,23 @@ class QuickbooksController < ApplicationController
   
   def upload_to_shopify
     order = params[:order]
-    Qb.create_order(order)
-    xrespond_to do |format|
-      msg = { :status => "ok", :message => "Success!" }
-      format.json  { render :json => msg }
+    missing = Qb.missing_products(order)
+    if Qb.order_exists(order[:number])
+      respond_to do |format|
+        msg = { :status => "ok", :message => 'Already Exists!' }
+        format.json  { render :json => msg }
+      end
+    elsif missing.size > 0
+      respond_to do |format|
+        msg = { :status => "ok", :message => 'Missing Products:' + missing.to_json }
+        format.json  { render :json => msg }
+      end
+    else
+      Qb.create_order(order)
+      respond_to do |format|
+        msg = { :status => "ok", :message => "Success!" }
+        format.json  { render :json => msg }
+      end
     end
   end
 

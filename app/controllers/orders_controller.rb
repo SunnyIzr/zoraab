@@ -78,6 +78,8 @@ class OrdersController < ApplicationController
     start_date = Date.strptime(params[:start_date])
     end_date = Date.strptime(params[:end_date]) + 1.day
     orders = Shopify.get_range(start_date,end_date)
+    Qb.init
+    orders.select! { |order| Qb.get_order(order[:number]).nil? }
     hash = {}
     orders.each do |order|
       hash[order[:number]] = order

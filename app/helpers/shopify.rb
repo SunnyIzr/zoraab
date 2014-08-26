@@ -106,7 +106,7 @@ module Shopify
       billing_address: billing_address(order),
       shipping_address: shipping_address(order),
       line_items: order.line_items.map {|item| {
-        sku: item.sku,
+        sku: ShopifyAPI::Product.find(item.product_id).handle,
         price: item.price,
         q: item.quantity } }
     }

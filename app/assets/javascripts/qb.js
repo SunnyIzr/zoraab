@@ -20,6 +20,7 @@ var QbController = {
     $('.upload-to-qb').click(function(e){
       e.preventDefault();
       orders = $.map($('form').serializeArray(),function(v,i){return v.value})
+      QbView.loadingOrders(orders)
       $.each(orders,function(k,v){
         QbModel.sendOrderToQb(QbModel.orders[v])
       })
@@ -38,7 +39,10 @@ var QbModel = {
   orders: null,
   sendOrderToQb: function(order){
     $.post('/upload-order-to-qb',{order: order},function(res){
-      console.log(res)
+    }).success(function(res){
+      $('#'+order.number+' .status').html(res.message)
+      }).error(function(res){
+      $('#'+order.number+' .status').html('Fail')
     })
   }
 }
@@ -53,13 +57,18 @@ var QbView = {
     string = order.created_at
     order.created_at = new Date(string)
     d = order.created_at
-    el = '<tr></tr>'
+    el = '<tr id="'+order.number+'"></tr>'
     el = $(el).append('<td><input id="orders_" name="orders[]" type="checkbox" value="'+order.number+'"></td>')
     el = el.append('<td>'+order.number+'</td>')
-    el = el.append('<td>'+d.getMonth()+'/'+d.getDate()+'/'+d.getFullYear()+'</td>')
+    el = el.append('<td>'+(d.getMonth()+1)+'/'+d.getDate()+'/'+d.getFullYear()+'</td>')
     el = el.append('<td>'+order.billing_address.name.capitalize()+'</td>')
     el = el.append('<td>$'+order.total+'</td>')
-    el = el.append('<td></td>')
+    el = el.append('<td class="status"></td>')
     $('tbody').append(el)
+  },
+  loadingOrders: function(orders){
+    $.each(orders, function(k,v){
+      $('#'+v+' .status').html("<img src='/assets/loader.gif' class='loader-order'>")
+    })
   }
 }

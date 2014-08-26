@@ -40,6 +40,17 @@ module Qb
   def get_order(order_number)
     return @sr.query("select * from SalesReceipt where DocNumber = '"+order_number+"'").entries.first
   end
+  
+  def order_exists(order_number)
+    sales_receipt_service
+    return @sr.query("select * from SalesReceipt where DocNumber = '"+order_number+"'").entries.size > 0
+  end
+  
+  def missing_products(order)
+    missing = []
+    skus = order[:line_items].map{|i,li| li[:sku]}
+    skus.select { |sku| !Qb.product_exist?(sku) }
+  end
 
   def create_order(order)
     init
