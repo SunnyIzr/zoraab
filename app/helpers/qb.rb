@@ -104,7 +104,7 @@ module Qb
   end
 
   def create_line_items(order)
-    items = order[:line_items].map do |line|
+    items = order[:line_items].map do |key,line|
       if item_exist?(line[:sku])
         add_line_item(line)
       else

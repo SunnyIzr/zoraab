@@ -1,0 +1,47 @@
+<div class='shopify-query-interface'>
+  <div class='row'>
+    <div class='large-12 columns'>
+      <div class='large-6 columns'>
+        <%= label_tag(:start_date, 'Start Date') %>
+        <%= date_field_tag(:start_date) %>
+      </div>
+      <div class='large-6 columns'>
+        <%= label_tag(:end_date, 'End Date') %>
+        <%= date_field_tag(:end_date) %>
+      </div>
+    </div>
+  </div>
+  <div class='row'>
+    <div class='large-12 columns'>
+      <div class='large-6 columns'>
+        <a id='calc-total' href="#" class='pull-orders button'> Pull Orders </a>
+      </div>
+      <div class='large-6 columns'>
+        <a id='calc-total' href="#" class='upload-to-qb button'> Upload to QB </a>
+      </div>
+    </div>
+  </div>
+</div>
+  <form>
+    <div class = "shopify-orders large-12 columns">
+      <table>
+        <thead>
+          <tr>
+            <th width='5%'> </th>
+            <th width='15.5%'> Order ID </th>
+            <th width='15.5%'> Date </th>
+            <th width='15.5%'> Customer </th>
+            <th width='15.5%'> Total </th>
+            <th width='33%'> Status </th>
+          </tr>
+        </thead>
+        <tbody>
+        </tbody>
+      </table>
+    </div>
+  </form>
+  
+    
+    <center>
+      <img src='/assets/loader.gif' class='hide loading'>
+    </center>

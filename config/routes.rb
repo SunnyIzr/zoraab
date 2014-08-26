@@ -17,6 +17,9 @@ Zoraab::Application.routes.draw do
     end
   end
 
+  post '/shopify-orders' => 'orders#shopify_orders'
+  post '/upload-order-to-qb' => 'quickbooks#upload_to_shopify'
+  get '/upload-shopify-orders' => 'quickbooks#upload_shopify_orders'
   get '/search' => 'subs#search'
   post '/search/' => 'subs#show_by_cid'
   get '/search/:cid' => 'subs#show_by_cid'

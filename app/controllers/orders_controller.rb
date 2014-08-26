@@ -73,6 +73,17 @@ class OrdersController < ApplicationController
   def add_line_item
     render json: {html: render_to_string(partial: "orders/line_item_input", locals: {item: params[:item], sub_id: params[:sub_id]}) }
   end
+  
+  def shopify_orders
+    start_date = Date.strptime(params[:start_date])
+    end_date = Date.strptime(params[:end_date]) + 1.day
+    orders = Shopify.get_range(start_date,end_date)
+    hash = {}
+    orders.each do |order|
+      hash[order[:number]] = order
+    end
+    render json: hash.to_json
+  end
 
   private
   def order_params

@@ -8,6 +8,7 @@ $(document).ready(function() {
     BatchController.init()
     DashboardController.init()
     InvoiceController.init()
+    QbController.init()
 
   });
 

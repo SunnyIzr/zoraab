@@ -23,6 +23,18 @@ class QuickbooksController < ApplicationController
     session[:realm_id] = params['realmId']
     redirect_to quickbooks_url, notice: "Your QuickBooks account has been successfully linked."
   end
+  
+  def upload_shopify_orders
+  end
+  
+  def upload_to_shopify
+    order = params[:order]
+    Qb.create_order(order)
+    xrespond_to do |format|
+      msg = { :status => "ok", :message => "Success!" }
+      format.json  { render :json => msg }
+    end
+  end
 
   private
     def set_qb_service
