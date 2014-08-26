@@ -207,7 +207,7 @@ module Shopify
       puts "Getting Order #{i}/#{shopify_orders.size}"
       unless o.name == '5-1001'
         orders << order(o)
-        sleep(1)
+        sleep(2)
       end
     end
     orders.reverse!

@@ -6,6 +6,7 @@ var QbController = {
   init: function(){
     this.pullOrderBtn()
     this.uploadToQbBtn()
+    this.checkAllBox()
     
   },
   pullOrderBtn: function(){
@@ -24,6 +25,19 @@ var QbController = {
       $.each(orders,function(k,v){
         QbModel.sendOrderToQb(QbModel.orders[v])
       })
+    })
+  },
+  checkAllBox: function(){
+    $('#all_orders').click(function(e){
+      if(this.checked){
+        $.each($('input[name="orders[]"]'),function(k,v){
+          this.checked = true
+        })
+      }else{
+        $.each($('input[name="orders[]"]'),function(k,v){
+          this.checked = false
+        })
+      }
     })
   }
 }
