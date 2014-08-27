@@ -4,6 +4,7 @@ class Vendor
       'Ashi Dashi' => 'AD',
       'Foot Traffic' => 'FT',
       'K.Bell' => 'KB',
+      'Jonathan Adler' => 'JA',
       'Kissera' => 'K',
       'May28th' => 'MTH',
       'Ozone' => 'Oz',
