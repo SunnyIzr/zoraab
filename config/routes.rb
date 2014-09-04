@@ -17,6 +17,7 @@ Zoraab::Application.routes.draw do
     end
   end
 
+  get '/braintree-recs/disb-rec' => 'braintree_recs#disb_rec'
   post '/shopify-orders' => 'orders#shopify_orders'
   post '/upload-order-to-qb' => 'quickbooks#upload_to_shopify'
   get '/upload-shopify-orders' => 'quickbooks#upload_shopify_orders'
