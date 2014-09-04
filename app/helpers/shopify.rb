@@ -97,19 +97,28 @@ module Shopify
       created_at: order.created_at,
       email: order.email,
       gateway: order.gateway,
-      shipping_total: shipping_total(order),
-      gift_card_redemption: gift_card_redemption(order),
       total: order.total_price,
-      fees: calc_fees(order),
       discount: order.total_discounts,
       memo: '',
+      shipping_total: shipping_total(order),
       billing_address: billing_address(order),
       shipping_address: shipping_address(order),
+      gift_card_redemption: gift_card_redemption(order),
+      fees: calc_fees(order),
       line_items: order.line_items.map {|item| {
-        sku: ShopifyAPI::Product.find(item.product_id).handle,
+        sku: check_for_missing(item),
         price: item.price,
         q: item.quantity } }
     }
+  end
+  
+  def check_for_missing(item)
+    missing = {'US_UNST12-002-2' => 'us_12-002-2', 'hs_bd01-68' => 'hs_bd01-068'}
+    if missing.keys.include?(item.sku)
+      missing[item.sku]
+    else
+      ShopifyAPI::Product.find(item.product_id).handle
+    end
   end
   
   def billing_address(order)
@@ -182,7 +191,7 @@ module Shopify
       fee = (pmt_amt * 0.0225).round(3) + 0.3
       return {'Shopify Payments Fee' => fee.round(2).to_s}
     else
-      return nil
+      return {'Shopify Payments Fee' => '0.0' }
     end
 
   end
@@ -202,19 +211,21 @@ module Shopify
   def get_range(start_date,end_date)
     orders = []
     shopify_orders = ShopifyAPI::Order.find(:all, :params => {'created_at_max' => end_date, 'created_at_min' => start_date,:limit =>250})
+    shopify_transactions = ShopifyAPI::Transaction.find(:all, :params => {'created_at_max' => end_date, 'created_at_min' => start_date,:limit =>250})
     puts "Getting #{shopify_orders.size} Shopify Orders"
     shopify_orders.each_with_index do |o,i|
       puts "Getting Order #{i}/#{shopify_orders.size}"
-      unless o.name == '5-1001'
-        orders << order(o)
-        sleep(2)
-      end
+      orders << order(o)
     end
     orders.reverse!
   end
 
   def remove_zero_orders(orders)
     orders.select {|o| o if o[:total].to_f > 0.0}
+  end
+  
+  def nil_product_id?(order)
+    order.line_items.map { |li| li.product_id }.include?(nil)
   end
 
 end
