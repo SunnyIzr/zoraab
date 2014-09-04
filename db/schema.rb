@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140904142036) do
+ActiveRecord::Schema.define(version: 20140904175252) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -25,6 +25,7 @@ ActiveRecord::Schema.define(version: 20140904142036) do
     t.date "rec_date"
     t.text "braintree_transactions"
     t.text "grouped_transactions"
+    t.text "bofa_data"
   end
 
   create_table "data_sessions", force: true do |t|

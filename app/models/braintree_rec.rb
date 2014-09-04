@@ -1,10 +1,17 @@
 class BraintreeRec < ActiveRecord::Base
   serialize :braintree_transactions, Array
   serialize :grouped_transactions, Array
+  serialize :bofa_data, Array
   
-  def import_csv(file)
+  def import_braintree(file)
     CSV.foreach(file, headers: true) do |row|
       self.braintree_transactions << {trans_id: row[0], disb_date: Date.strptime(row[8],'%m/%d/%y'), amt: row[12].to_f }
+    end
+    self.save
+  end
+  def import_bofa(file)
+    CSV.foreach(file, headers: true) do |row|
+      self.bofa_data << {disb_date: Date.strptime(row[0], '%m/%d/%Y'), amt: row[1].to_f }
     end
     self.save
   end
