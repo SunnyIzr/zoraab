@@ -69,8 +69,7 @@ var QbView = {
   },
   appendOrder: function(order){
     string = order.created_at
-    order.created_at = new Date(string)
-    d = order.created_at
+    d = new Date(string)
     el = '<tr id="'+order.number+'"></tr>'
     el = $(el).append('<td><input id="orders_" name="orders[]" type="checkbox" value="'+order.number+'"></td>')
     el = el.append('<td>'+order.number+'</td>')
