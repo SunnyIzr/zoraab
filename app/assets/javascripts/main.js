@@ -9,6 +9,7 @@ $(document).ready(function() {
     DashboardController.init()
     InvoiceController.init()
     QbController.init()
+    BraintreeRecController.init()
 
   });
 
