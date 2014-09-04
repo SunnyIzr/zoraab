@@ -115,7 +115,7 @@ module Qb
   end
 
   def create_line_items(order)
-    items = order[:line_items].map do |key,line|
+    items = order[:line_items].map do |k, line|
       if item_exist?(line[:sku])
         add_line_item(line)
       else
@@ -173,8 +173,8 @@ module Qb
     line_item = Quickbooks::Model::Line.new
     line_item.detail_type = 'SalesItemLineDetail'
     line_item.sales_item_line_detail = Quickbooks::Model::SalesItemLineDetail.new
-    item_ref = Quickbooks::Model::BaseReference.new(@prod.query("select * from Item where Name = 'Gift Card'").entries[0].id)
-    item_ref.name = 'Gift Card'
+    item_ref = Quickbooks::Model::BaseReference.new(@prod.query("select * from Item where Name = 'gift-card'").entries[0].id)
+    item_ref.name = 'gift-card'
     line_item.sales_item_line_detail.item_ref = item_ref
     line_item.sales_item_line_detail.unit_price = BigDecimal.new('-'+order[:gift_card_redemption].to_s)
     line_item.sales_item_line_detail.quantity = BigDecimal.new(1)
