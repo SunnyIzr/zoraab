@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140515014748) do
+ActiveRecord::Schema.define(version: 20140904142036) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -19,6 +19,12 @@ ActiveRecord::Schema.define(version: 20140515014748) do
   create_table "batches", force: true do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "braintree_recs", force: true do |t|
+    t.date "rec_date"
+    t.text "braintree_transactions"
+    t.text "grouped_transactions"
   end
 
   create_table "data_sessions", force: true do |t|
@@ -139,6 +145,11 @@ ActiveRecord::Schema.define(version: 20140515014748) do
     t.datetime "updated_at"
     t.integer  "q"
     t.boolean  "active",     default: true
+  end
+
+  create_table "products_subs", force: true do |t|
+    t.integer "product_id"
+    t.integer "sub_id"
   end
 
   create_table "subs", force: true do |t|
