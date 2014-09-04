@@ -77,9 +77,19 @@ class OrdersController < ApplicationController
   def shopify_orders
     start_date = Date.strptime(params[:start_date])
     end_date = Date.strptime(params[:end_date]) + 1.day
-    orders = Shopify.get_range(start_date,end_date)
+    shop_orders = ShopifyAPI::Order.find(:all, :params => {'created_at_max' => end_date, 'created_at_min' => start_date,:limit =>250})
     Qb.init
-    orders.select! { |order| Qb.get_order(order[:number]).nil? }
+    existing_qbo_orders = Qb.sr.query("select * from SalesReceipt where TxnDate >= '#{start_date.strftime}' AND TxnDate <= '#{end_date.strftime}'", per_page: 1000).entries
+    existing_qbo_orders.map! { |qbo| qbo.doc_number }    
+    shop_orders = shop_orders.select{ |order| !existing_qbo_orders.include?(order.name) }
+    orders = []
+    puts "Getting #{shop_orders.size} Shopify Orders"
+    shop_orders.each_with_index do |o,i|
+      puts "Getting Order #{i+1}/#{shop_orders.size}"
+      p o.name
+      orders << Shopify.order(o)
+      sleep(2)
+    end
     hash = {}
     orders.each do |order|
       hash[order[:number]] = order
