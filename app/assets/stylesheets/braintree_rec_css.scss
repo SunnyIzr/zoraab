@@ -12,11 +12,24 @@
   position: fixed !important;
   top: 75px;
   width: 31% !important;
+  .button{
+    width: 100%;
+  }
   table{
     tr{
       td{
       }
     }
+  }
+}
+
+.trans-modal{
+  table{
+    width: 65%;
+    text-align: center;
+  }
+  th{
+    text-align: center;
   }
 }
 

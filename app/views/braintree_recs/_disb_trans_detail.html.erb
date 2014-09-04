@@ -1,0 +1,27 @@
+<div id="<%='modal' + index.to_s %>" class="trans-modal reveal-modal" data-reveal>
+  <center>
+    <table>
+      <thead>
+        <tr>
+          <th width='33%'>Trans ID</th>
+          <th width='33%'>Amt</th>
+          <th width='33%'>Net Amt</th>        
+        </tr>
+      </thead>
+      <tbody>
+        <% orders.each do |order| %>
+        <tr>
+          <td><%= order[:trans_id] %></td>
+          <td><%= order[:amt] %></td>
+          <td><%= order[:net_amt] %></td>
+        </tr>
+        <% end %>
+        <tr>
+          <td><strong> Total </strong></td>
+          <td><%= orders.map{ |o| o[:amt] }.sum.round(2) %></td>
+          <td><%= orders.map{ |o| o[:net_amt] }.sum.round(2) %></td>
+        </tr>
+      </tbody>
+    </table>
+  </center>
+</div>

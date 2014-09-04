@@ -8,10 +8,11 @@
 <div class='disb-rec'>
     <div class="large-5 columns">
       <label> Braintree Transactions </label>
+      <form action='/braintree-recs/trans-rec/<%=@braintree_rec.id%>' method="get">
       <table>
         <thead>
           <tr>
-            <th width='5%'><input id="all_orders" name="all_orders" type="checkbox"> </th>
+            <th width='5%'><input id="all_braintree" type="checkbox"> </th>
             <th width='27.5%'> Date </th>
             <th width='17.5%'> Trans </th>
             <th width='22.5%'> Gross Total </th>
@@ -20,11 +21,14 @@
           </tr>
         </thead>
         <tbody>
-          <% @braintree_rec.grouped_transactions.reverse.each do |date| %>
+          <% @braintree_rec.grouped_transactions.each_with_index do |date,i| %>
           <tr>
-            <td><input name="bt_disb" type="checkbox"></td>
+            <td><input name="bt_disb[]" value='<%= i %>'type="checkbox"></td>
             <td><%= date[:disb_date] %></td>
-            <td><%= date[:orders].size %></td>
+            <td><a href=<%='#modal' + i.to_s %> data-reveal-id=<%='modal' + i.to_s %>>
+              <%= date[:orders].size %>
+              </a>
+            </td>
             <td><%= Money.amt(date[:orders].map { |order| order[:amt] }.sum) %></td>
             <td class='net-amt'><%= date[:orders].map { |order| order[:net_amt] }.sum.round(2) %></td>
             <td><%= date[:recd] %></td>
@@ -32,21 +36,26 @@
           <% end %>
         </tbody>
       </table>
+      
+      <% @braintree_rec.grouped_transactions.each_with_index do |date,i| %>
+        <%= render 'disb_trans_detail', orders: date[:orders], index: i %> 
+      <% end %>
+      
     </div>
     <div class="large-3 columns">
       <label> BofA Disbursements </label>
       <table>
         <thead>
           <tr>
-            <th width='5%'><input id="all_orders" name="all_orders" type="checkbox"> </th>
+            <th width='5%'><input id="all_bofa" type="checkbox"> </th>
             <th width='40%'> Date </th>
             <th width='70%'> Net Total </th>
           </tr>
         </thead>
         <tbody>
-          <% @braintree_rec.bofa_data.each do |date| %>
+          <% @braintree_rec.bofa_data.each_with_index do |date,i| %>
           <tr>
-            <td><input name="bofa_disb" type="checkbox"></td>
+            <td><input name="bofa_disb[]" value='<%= i %>' type="checkbox"></td>
             <td><%= date[:disb_date] %></td>
             <td class='net-amt'><%= date[:amt] %></td>
           </tr>
@@ -83,6 +92,9 @@
               </td>
             </tr>
           </table>
+          <%= submit_tag 'Mark Selected as Reconciled', class: 'mark-as-recd button' %>
+          <%= submit_tag 'Reconcile Transactions', class: 'button' %>
+      </form>
         </center>
       </div>
     </div>

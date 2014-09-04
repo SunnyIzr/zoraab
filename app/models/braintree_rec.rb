@@ -7,12 +7,14 @@ class BraintreeRec < ActiveRecord::Base
     CSV.foreach(file, headers: true) do |row|
       self.braintree_transactions << {trans_id: row[0], disb_date: Date.strptime(row[8],'%m/%d/%y'), amt: row[12].to_f }
     end
+    self.braintree_transactions.sort_by!{ |trans| trans[:disb_date] }
     self.save
   end
   def import_bofa(file)
     CSV.foreach(file, headers: true) do |row|
       self.bofa_data << {disb_date: Date.strptime(row[0], '%m/%d/%Y'), amt: row[1].to_f }
     end
+    self.bofa_data.sort_by!{|date| date[:disb_date]}
     self.save
   end
   
@@ -30,6 +32,21 @@ class BraintreeRec < ActiveRecord::Base
       end
       self.grouped_transactions << {disb_date: date, recd: false, orders: orders}
     end
+    self.grouped_transactions.sort_by!{ |date| date[:disb_date] }
+    self.save
+  end
+  
+  def update_transactions(bt_disb,bofa_disb)
+    grouped_transactions = []
+    bt_disb.each do |index|
+      grouped_transactions << self.grouped_transactions[index.to_i]
+    end
+    self.grouped_transactions = grouped_transactions
+    bofa_data = []
+    bofa_disb.each do |index|
+      bofa_data << self.bofa_data[index.to_i]
+    end
+    self.bofa_data = bofa_data
     self.save
   end
   

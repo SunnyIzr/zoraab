@@ -17,8 +17,10 @@ Zoraab::Application.routes.draw do
       get :oauth_callback
     end
   end
-
+  
+  get '/braintree-recs/trans-rec/:id' => 'braintree_recs#trans_rec', as: :trans_rec 
   get '/braintree-recs/disb-rec/:id' => 'braintree_recs#disb_rec', as: :disb_rec
+  post '/braintree-recs/disb-rec/:id' => 'braintree_recs#mark_items_as_recd'
   get '/braintree-recs/upload' => 'braintree_recs#upload_braintree'
   post '/shopify-orders' => 'orders#shopify_orders'
   post '/upload-order-to-qb' => 'quickbooks#upload_to_shopify'
