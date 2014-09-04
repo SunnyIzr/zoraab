@@ -1,1 +1,68 @@
-hello world
+<div class='disb-rec-interface'>
+  <div class='row'>
+    <div class='large-12 columns'>
+      <div class='large-6 columns'>
+        <%= label_tag(:start_date, 'Start Date') %>
+        <%= date_field_tag(:start_date) %>
+      </div>
+      <div class='large-6 columns'>
+        <%= label_tag(:end_date, 'End Date') %>
+        <%= date_field_tag(:end_date) %>
+      </div>
+    </div>
+  </div>
+  <div class='row'>
+    <div class='large-12 columns'>
+      <div class='large-12 columns'>
+        <a class='button'> Pull BofA Disbursements </a>
+      </div>
+    </div>
+  </div>
+</div>
+<div class='disb-rec'>
+    <div class="large-6 columns">
+      <label> Braintree Transactions </label>
+      <table>
+        <thead>
+          <tr>
+            <th width='5%'><input id="all_orders" name="all_orders" type="checkbox"> </th>
+            <th width='22.5%'> Date </th>
+            <th width='22.5%'> Transactions </th>
+            <th width='22.5%'> Gross Total </th>
+            <th width='22.5%'> Net Total </th>
+            <th width='10%'> Rec'd </th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @braintree_rec.grouped_transactions.each do |date| %>
+          <tr>
+            <td></td>
+            <td><%= date[:disb_date] %></td>
+            <td><%= date[:orders].size %></td>
+            <td><%= Money.amt(date[:orders].map { |order| order[:amt] }.sum) %></td>
+            <td><%= Money.amt(date[:orders].map { |order| order[:net_amt] }.sum.round(2)) %></td>
+            <td><%= date[:recd] %></td>
+          </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+    <div class="large-6 columns">
+      <label> BofA Disbursements </label>
+      <table>
+        <thead>
+          <tr>
+            <th width='5%'><input id="all_orders" name="all_orders" type="checkbox"> </th>
+            <th width='30%'> Date </th>
+            <th width='70%'> Net Total </th>
+          </tr>
+        </thead>
+        <tbody>
+        </tbody>
+      </table>
+    </div>
+  </div>
+    
+    <center>
+      <img src='/assets/loader.gif' class='hide loading'>
+    </center>
