@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140904175252) do
+ActiveRecord::Schema.define(version: 20140904222006) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -93,9 +93,11 @@ ActiveRecord::Schema.define(version: 20140904175252) do
     t.float    "discount",         default: 0.0
     t.float    "fees",             default: 0.0
     t.boolean  "post_to_shopify",  default: false
+    t.integer  "braintree_rec_id"
   end
 
   add_index "orders", ["batch_id"], name: "index_orders_on_batch_id", using: :btree
+  add_index "orders", ["braintree_rec_id"], name: "index_orders_on_braintree_rec_id", using: :btree
   add_index "orders", ["sub_id"], name: "index_orders_on_sub_id", using: :btree
 
   create_table "orders_products", force: true do |t|

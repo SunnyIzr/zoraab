@@ -2,6 +2,7 @@
   after_save :set_order_number
   belongs_to :sub
   belongs_to :batch
+  belongs_to :braintree_rec
   validates_presence_of :sub_id
   validates_uniqueness_of :trans_id, :allow_nil => true
   before_save :calc_fees, :set_gateway

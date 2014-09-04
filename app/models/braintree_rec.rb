@@ -2,6 +2,7 @@ class BraintreeRec < ActiveRecord::Base
   serialize :braintree_transactions, Array
   serialize :grouped_transactions, Array
   serialize :bofa_data, Array
+  has_many :sub_orders
   
   def import_braintree(file)
     CSV.foreach(file, headers: true) do |row|
