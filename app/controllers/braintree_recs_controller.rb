@@ -64,7 +64,7 @@ class BraintreeRecsController < ApplicationController
     
   def upload
     @braintree_rec = BraintreeRec.find(params[:id])
-    @orders = @braintree_rec.sub_orders
+    @orders = @braintree_rec.sub_orders.sort_by{ |order| order.order_number }
   end
   private
   def braintree_rec_params
