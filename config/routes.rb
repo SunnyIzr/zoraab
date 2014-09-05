@@ -20,6 +20,8 @@ Zoraab::Application.routes.draw do
   
   get '/braintree-recs/trans-rec/:id' => 'braintree_recs#trans_rec', as: :trans_rec 
   get '/braintree-recs/disb-rec/:id' => 'braintree_recs#disb_rec', as: :disb_rec
+  post '/braintree-recs/reconcile/:id' => 'braintree_recs#reconcile'
+  get 'braintree-rec/upload/:id' => 'braintree_recs#upload', as: :upload_sub_orders
   post '/braintree-recs/disb-rec/:id' => 'braintree_recs#mark_items_as_recd'
   get '/braintree-recs/upload' => 'braintree_recs#upload_braintree'
   post '/shopify-orders' => 'orders#shopify_orders'

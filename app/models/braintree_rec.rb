@@ -65,4 +65,16 @@ class BraintreeRec < ActiveRecord::Base
   def disb_diff
     self.total_bt_disb - self.total_bofa_disb
   end
+  
+  def reconcile_orders(order_ids)
+    order_ids.each do |id|
+      order = SubOrder.find(id.to_i)
+      self.sub_orders << order
+    end
+    self.save
+  end
+  
+  def captured_amt
+    self.sub_orders.map{ |order| order.net_amt }.sum
+  end
 end

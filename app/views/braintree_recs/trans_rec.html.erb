@@ -7,12 +7,12 @@
 </div>
 <div class='disb-rec'>
     <div class="large-8 columns">
-      <label> Transactions Reconciliation </label>
-      <form>
+      <label> Matched Transactions: Zoraab <> Braintree </label>
+      <form action='/braintree-recs/reconcile/<%=@braintree_rec.id%>' method="post">
       <table>
         <thead>
           <tr>
-            <th width='3%'><input id="all_braintree" type="checkbox"> </th>
+            <th width='3%'><input id="all_trans" type="checkbox"> </th>
             <th width='10.7%'> Trans Id </th>
             <th width='10.7%'> Order </th>
             <th width='10.7%'> Date </th>
@@ -25,13 +25,13 @@
           </tr>
         </thead>
         <tbody>
-          <% @trans_ids.each_with_index do |trans_id,i| %>
+          <% @matched_orders.each_with_index do |trans_id,i| %>
           <% sub_order = SubOrder.find_by(gateway_id: trans_id) %>
           <% bt_trans = @bt_orders.select{ |order| order[:trans_id] == trans_id }[0] %>
           <% zor_net_amt = sub_order ? sub_order.net_amt.to_f : 0.0 %>
           <% bt_net_amt = bt_trans ? bt_trans[:net_amt].to_f : 0.0 %>
           <tr>
-            <td><input name="bt_trans[]" value='<%= i %>'type="checkbox"></td>
+            <td><input name="bt_trans[]" value='<%= sub_order.id if sub_order %>'type="checkbox"></td>
             <td><%= trans_id %></td>
             <td><%= sub_order.order_number if sub_order %></td>
             <td><%= sub_order.created_at.strftime('%m-%d-%y') if sub_order %></td>
@@ -41,6 +41,56 @@
             <td class='bt-net-amt'><%= bt_trans[:net_amt] if bt_trans %></td>
             <td class='net-amt'><%= sub_order.net_amt if sub_order %></td>
             <td><%= (bt_net_amt - zor_net_amt).round(2) %></td>
+          </tr>
+          <% end %>
+        </tbody>
+      </table>
+      <label> Braintree Transactions without Orders </label>
+      <table>
+        <thead>
+          <tr>
+            <th width='3%'></th>
+            <th width='10.7%'> Trans Id </th>
+            <th width='10.7%'> Disb Date </th>
+            <th width='10.7%'> BT Gross </th>
+            <th width='10.7%'> BT Net </th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @missing_bt_orders.each_with_index do |trans_id,i| %>
+          <% bt_trans = @bt_orders.select{ |order| order[:trans_id] == trans_id }[0] %>
+          <tr>
+            <td><input type="checkbox"></td>
+            <td><%= trans_id %></td>
+            <td><%= bt_trans[:disb_date].strftime('%m-%d-%y') if bt_trans %></td>
+            <td><%= bt_trans[:amt] if bt_trans %></td>
+            <td class='bt-net-amt'><%= bt_trans[:net_amt] if bt_trans %></td>
+          </tr>
+          <% end %>
+        </tbody>
+      </table>
+      <label> Unreconciled Sub Orders </label>
+      <table>
+        <thead>
+          <tr>
+            <th width='3%'></th>
+            <th width='10.7%'> Trans Id </th>
+            <th width='10.7%'> Order </th>
+            <th width='10.7%'> Date </th>
+            <th width='10.7%'> Zor Gross </th>
+            <th width='10.7%'> Zor Net </th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @matched_orders.each_with_index do |trans_id,i| %>
+          <% sub_order = SubOrder.find_by(gateway_id: trans_id) %>
+          <tr>
+            <td><input type="checkbox"></td>
+            <td><%= trans_id %></td>
+            <td><%= sub_order.order_number if sub_order %></td>
+            <td><%= sub_order.created_at.strftime('%m-%d-%y') if sub_order %></td>
+            <td><%= sub_order.amt if sub_order %></td>
+            <td class='net-amt'><%= sub_order.net_amt if sub_order %></td>
           </tr>
           <% end %>
         </tbody>

@@ -36,6 +36,33 @@ class BraintreeRecsController < ApplicationController
     @trans_ids = @bt_orders.map { |order| order[:trans_id] } + @sub_orders.map { |order| order.gateway_id }
     @trans_ids.flatten!
     @trans_ids = @trans_ids.uniq
+    @matched_orders = []
+    @missing_bt_orders = []
+    @bt_orders.map{|order| order[:trans_id] }.each do |trans_id|
+    if SubOrder.find_by(gateway_id: trans_id).present?
+      @matched_orders << trans_id
+    else
+      @missing_bt_orders << trans_id
+    end
+    end
+    @extra_sub_orders = []
+    @sub_orders.each do |order|
+      unless @matched_orders.include?(order.gateway_id)
+        @extra_sub_orders << order
+      end
+    end
+  end
+  
+  def reconcile
+    @braintree_rec = BraintreeRec.find(params[:id])
+    reconciled_orders = params[:bt_trans]
+    @braintree_rec.reconcile_orders(reconciled_orders)
+    redirect_to upload_sub_orders_path
+  end
+    
+  def upload
+    @braintree_rec = BraintreeRec.find(params[:id])
+    @orders = @braintree_rec.sub_orders
   end
   private
   def braintree_rec_params

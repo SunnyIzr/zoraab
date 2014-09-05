@@ -1,0 +1,66 @@
+<div class='shopify-query-interface'>
+  <div class='row'>
+    <div class='large-12 columns'>
+     <div class='large-12 columns'>
+      <div class=' columns panel callout radius'>
+        <center>
+          <table style='width:75%'>
+            <tr>
+              <td width='40%'>
+              <h4>BofA Disbs</h4>
+              </td>
+              <td>
+              <h4>$<span class='rec-bofa-disb'><%= @braintree_rec.total_bofa_disb %></span></h4>
+              </td>
+            </tr>
+            <tr>
+              <td>
+              <h4>Captured</h4>
+              </td>
+              <td>
+              <h4>$<span class='rec-captured'><%= @braintree_rec.captured_amt.round(2) %></span></h4>
+              </td>
+            </tr>
+            <tr>
+              <td>
+              <h4>Total Break</h4>
+              </td>
+              <td>
+              <h4>$<span class='rec-unadj-break'><span>-<%= @braintree_rec.total_bofa_disb %></span></h4>
+              </td>
+            </tr>
+          </table>
+        </center>
+      </div>
+    </div>
+    </div>
+  </div>
+</div>
+  <form>
+    <div class = "shopify-orders large-12 columns">
+      <table>
+        <thead>
+          <tr>
+            <th width='5%'> <input id="all_orders" name="all_orders" type="checkbox"> </th>
+            <th width='15.5%'> Order ID </th>
+            <th width='15.5%'> Date </th>
+            <th width='15.5%'> Customer </th>
+            <th width='15.5%'> Total </th>
+            <th width='33%'> Status </th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @orders.each do |order| %>
+          <tr>
+            <td><%=  %></td>
+            <td><%= order.order_number %></td>
+            <td><%= order.created_at.strftime('%m/%d/%y') %></td>
+            <td><%= order.billing_name %></td>
+            <td><%= order.net_amt %></td>
+            <td></td>
+          </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </form>

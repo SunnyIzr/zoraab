@@ -5,6 +5,7 @@ var BraintreeRecController = {
     this.checkAllBraintree()
     this.checkAllBofa()
     this.markAllRecd()
+    this.checkAllTrans()
     this.btTransCheckBox()
   },
   braintreeDisbCheckBox: function(){
@@ -15,6 +16,21 @@ var BraintreeRecController = {
   bofaDisbCheckBox: function(){
     $('input[name="bofa_disb[]"]').change(function(){
       BraintreeRecModel.addSubtractBofaAmts(this)
+    })
+  },  
+  checkAllTrans: function(){
+    $('#all_trans').change(function(e){
+      if(this.checked){
+        $.each($('input[name="bt_trans[]"]'),function(k,v){
+          this.checked = true
+          BraintreeTransRecModel.addSubtractNetAmts(this)
+        })
+      }else{
+        $.each($('input[name="bt_trans[]"]'),function(k,v){
+          this.checked = false
+          BraintreeTransRecModel.addSubtractNetAmts(this)
+        })
+      }
     })
   },
   checkAllBraintree: function(){
