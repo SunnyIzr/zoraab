@@ -47,6 +47,8 @@ class BraintreeRecsController < ApplicationController
     end
     @extra_sub_orders = []
     @sub_orders.each do |order|
+      p order.gateway_id
+      p @matched_orders.include?(order.gateway_id)
       unless @matched_orders.include?(order.gateway_id)
         @extra_sub_orders << order
       end

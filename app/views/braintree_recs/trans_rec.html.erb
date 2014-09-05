@@ -82,11 +82,10 @@
           </tr>
         </thead>
         <tbody>
-          <% @matched_orders.each_with_index do |trans_id,i| %>
-          <% sub_order = SubOrder.find_by(gateway_id: trans_id) %>
+          <% @extra_sub_orders.each_with_index do |sub_order,i| %>
           <tr>
             <td><input type="checkbox"></td>
-            <td><%= trans_id %></td>
+            <td><%= sub_order.gateway_id %></td>
             <td><%= sub_order.order_number if sub_order %></td>
             <td><%= sub_order.created_at.strftime('%m-%d-%y') if sub_order %></td>
             <td><%= sub_order.amt if sub_order %></td>
