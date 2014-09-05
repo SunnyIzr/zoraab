@@ -37,6 +37,10 @@ class UpfrontSubOrder < SubOrder
   end
 
   def braintree_id
-    'Recurring Upfront Order'
+    if self.amt > 0.0
+      Chargify::Transaction.find(self.trans_id).attributes[:gateway_transaction_id]
+    else
+      'Recurring Upfront Order'
+    end
   end
 end
