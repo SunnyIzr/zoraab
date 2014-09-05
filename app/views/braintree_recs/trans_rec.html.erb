@@ -87,7 +87,23 @@
               <h4>Unallocated</h4>
               </td>
               <td>
-              <h4>$<span class='rec-unallocated'>-<%= @braintree_rec.total_bt_disb%></span></h4>
+              <h4>$<span class='rec-unallocated'>-<%= @braintree_rec.total_bt_disb %></span></h4>
+              </td>
+            </tr>
+            <tr>
+              <td>
+              <h4>Total Break</h4>
+              </td>
+              <td>
+              <h4>$<span class='rec-total-break'>-<%= @braintree_rec.total_bt_disb %></span></h4>
+              </td>
+            </tr>
+            <tr>
+              <td>
+              <h4>Unadj Break</h4>
+              </td>
+              <td>
+              <h4>$<span class='rec-unadj-break'><span>-<%= @braintree_rec.total_bofa_disb %></span></h4>
               </td>
             </tr>
           </table>

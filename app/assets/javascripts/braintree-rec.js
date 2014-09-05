@@ -118,6 +118,12 @@ var BraintreeTransRecModel = {
   unallocAmt: function(){
     return parseFloat($('.rec-unallocated').html())  
   },
+  totalBreak: function(){
+    return parseFloat($('.rec-total-break').html())  
+  },
+  unadjBreak: function(){
+    return parseFloat($('.rec-unadj-break').html())  
+  },
   addSubtractNetAmts: function(el){
     if(el.checked){
        amt = parseFloat($(el).parent().parent().find('.net-amt').html())
@@ -147,6 +153,14 @@ var BraintreeTransRecModel = {
     amt = BraintreeTransRecModel.bofaDisbAmt() + BraintreeTransRecModel.prevVarAmt()
     amt = (BraintreeTransRecModel.capturedAmt() + BraintreeTransRecModel.missingAmt() ) - amt
     $('.rec-unallocated').html(amt.toFixed(2))
+    
+    amt = BraintreeTransRecModel.bofaDisbAmt() + BraintreeTransRecModel.prevVarAmt()
+    amt = (BraintreeTransRecModel.capturedAmt()) - amt
+    $('.rec-total-break').html(amt.toFixed(2))
+    
+    amt = BraintreeTransRecModel.bofaDisbAmt()
+    amt = (BraintreeTransRecModel.capturedAmt()) - amt
+    $('.rec-unadj-break').html(amt.toFixed(2))
   }
 }
 
