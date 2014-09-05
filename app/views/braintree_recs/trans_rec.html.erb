@@ -14,7 +14,7 @@
           <tr>
             <th width='3%'><input id="all_braintree" type="checkbox"> </th>
             <th width='10.7%'> Trans Id </th>
-            <th width='10.7%'> Name </th>
+            <th width='10.7%'> Order </th>
             <th width='10.7%'> Date </th>
             <th width='10.7%'> Disb Date </th>
             <th width='10.7%'> BT Gross </th>
@@ -33,7 +33,7 @@
           <tr>
             <td><input name="bt_trans[]" value='<%= i %>'type="checkbox"></td>
             <td><%= trans_id %></td>
-            <td><%= sub_order.billing_name if sub_order %></td>
+            <td><%= sub_order.order_number if sub_order %></td>
             <td><%= sub_order.created_at.strftime('%m-%d-%y') if sub_order %></td>
             <td><%= bt_trans[:disb_date].strftime('%m-%d-%y') if bt_trans %></td>
             <td><%= bt_trans[:amt] if bt_trans %></td>
