@@ -26,7 +26,7 @@
               <h4>Total Break</h4>
               </td>
               <td>
-              <h4>$<span class='rec-unadj-break'><span>-<%= @braintree_rec.total_bofa_disb %></span></h4>
+              <h4>$<span class='rec-unadj-break'><span><%= (@braintree_rec.total_bofa_disb - @braintree_rec.captured_amt).round(2) %></span></h4>
               </td>
             </tr>
           </table>
