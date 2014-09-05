@@ -25,11 +25,8 @@ class BraintreeRec < ActiveRecord::Base
       orders = []
       trans = self.braintree_transactions.select { |transaction| transaction[:disb_date] == date }
       trans.each do |tran|
-        hash = {}
-        hash[:trans_id] = tran[:trans_id]
-        hash[:amt] = tran[:amt]
-        hash[:net_amt] = calc_net_amt(tran[:amt])
-        orders << hash
+        tran[:net_amt] = calc_net_amt(tran[:amt])
+        orders << tran
       end
       self.grouped_transactions << {disb_date: date, recd: false, orders: orders}
     end
@@ -55,5 +52,17 @@ class BraintreeRec < ActiveRecord::Base
     fee = (amt * 0.029) + 0.30
     amt -= fee
     amt.round(2)
+  end
+  
+  def total_bofa_disb
+    self.bofa_data.map{ |day| day[:amt] }.sum.round(2)
+  end
+  
+  def total_bt_disb
+    self.grouped_transactions.map{ |date| date[:orders] }.flatten.map{ |order| order[:net_amt]}.sum.round(2)
+  end
+  
+  def disb_diff
+    self.total_bt_disb - self.total_bofa_disb
   end
 end

@@ -5,6 +5,7 @@ var BraintreeRecController = {
     this.checkAllBraintree()
     this.checkAllBofa()
     this.markAllRecd()
+    this.btTransCheckBox()
   },
   braintreeDisbCheckBox: function(){
     $('input[name="bt_disb[]"]').change(function(){
@@ -54,6 +55,11 @@ var BraintreeRecController = {
         console.log(res)
       },'json')
     })
+  },
+  btTransCheckBox: function(){
+    $('input[name="bt_trans[]"]').change(function(){
+      BraintreeTransRecModel.addSubtractNetAmts(this)
+    })
   }
 }
 
@@ -93,6 +99,54 @@ var BraintreeRecModel = {
        $('.braintree-total').html(amt.toFixed(2))
        BraintreeRecModel.calcCheck()
     }
+  }
+}
+
+var BraintreeTransRecModel = {
+  bofaDisbAmt: function(){
+    return parseFloat($('.rec-bofa-disb').html())  
+  },
+  prevVarAmt: function(){
+    return parseFloat($('.rec-prev-var').html())  
+  },
+  capturedAmt: function(){
+    return parseFloat($('.rec-captured').html())  
+  },
+  missingAmt: function(){
+    return parseFloat($('.rec-missing').html())  
+  },
+  unallocAmt: function(){
+    return parseFloat($('.rec-unallocated').html())  
+  },
+  addSubtractNetAmts: function(el){
+    if(el.checked){
+       amt = parseFloat($(el).parent().parent().find('.net-amt').html())
+       amt += BraintreeTransRecModel.capturedAmt()
+       if (isNaN(amt)) {
+        missingAmt = parseFloat($(el).parent().parent().find('.bt-net-amt').html())
+        missingAmt += BraintreeTransRecModel.missingAmt()
+        $('.rec-missing').html(missingAmt.toFixed(2))
+       }else{
+        $('.rec-captured').html(amt.toFixed(2))
+       }
+       BraintreeTransRecModel.calcUnallocated()
+    }else{
+       amt = parseFloat($(el).parent().parent().find('.net-amt').html())
+       amt = BraintreeTransRecModel.capturedAmt() - amt
+       if (isNaN(amt)){
+         missingAmt = parseFloat($(el).parent().parent().find('.bt-net-amt').html())
+         missingAmt = BraintreeTransRecModel.missingAmt() - missingAmt
+         $('.rec-missing').html(missingAmt.toFixed(2))
+       }else{
+       $('.rec-captured').html(amt.toFixed(2))
+       }
+       BraintreeTransRecModel.calcUnallocated()
+    }
+  },
+  calcUnallocated: function(){
+    amt = BraintreeTransRecModel.bofaDisbAmt() + BraintreeTransRecModel.prevVarAmt()
+    amt = (BraintreeTransRecModel.capturedAmt() + BraintreeTransRecModel.missingAmt() ) - amt
+    $('.rec-unallocated').html(amt.toFixed(2))
   }
 }
 

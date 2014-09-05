@@ -26,8 +26,16 @@ class BraintreeRecsController < ApplicationController
   end
   def trans_rec
     @braintree_rec = BraintreeRec.find(params[:id])
-    @braintree_rec.update_transactions(params[:bt_disb],params[:bofa_disb])
-    redirect_to disb_rec_path(@braintree_rec)
+    if params[:bt_disb] && params[:bofa_disb]
+      @braintree_rec.update_transactions(params[:bt_disb],params[:bofa_disb])
+    end
+    start_date = Date.parse('2014-1-15')
+    end_date = Date.parse('2014-3-15')
+    @bt_orders = @braintree_rec.grouped_transactions.map { |date| date[:orders] }.flatten
+    @sub_orders = SubOrder.where(created_at: start_date..end_date,braintree_rec_id: nil).select{ |so| so.amt > 0 && so.trans_id != nil}.sort_by!{ |so| so.created_at}
+    @trans_ids = @bt_orders.map { |order| order[:trans_id] } + @sub_orders.map { |order| order.gateway_id }
+    @trans_ids.flatten!
+    @trans_ids = @trans_ids.uniq
   end
   private
   def braintree_rec_params

@@ -1,0 +1,103 @@
+<div class='disb-rec-interface'>
+  <div class='row'>
+    <center>
+
+    </center>
+  </div>
+</div>
+<div class='disb-rec'>
+    <div class="large-8 columns">
+      <label> Transactions Reconciliation </label>
+      <form>
+      <table>
+        <thead>
+          <tr>
+            <th width='3%'><input id="all_braintree" type="checkbox"> </th>
+            <th width='10.7%'> Trans Id </th>
+            <th width='10.7%'> Name </th>
+            <th width='10.7%'> Date </th>
+            <th width='10.7%'> Disb Date </th>
+            <th width='10.7%'> BT Gross </th>
+            <th width='10.7%'> Zor Gross </th>
+            <th width='10.7%'> BT Net </th>
+            <th width='10.7%'> Zor Net </th>
+            <th width='10.7%'> Diff </th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @trans_ids.each_with_index do |trans_id,i| %>
+          <% sub_order = SubOrder.find_by(gateway_id: trans_id) %>
+          <% bt_trans = @bt_orders.select{ |order| order[:trans_id] == trans_id }[0] %>
+          <% zor_net_amt = sub_order ? sub_order.net_amt.to_f : 0.0 %>
+          <% bt_net_amt = bt_trans ? bt_trans[:net_amt].to_f : 0.0 %>
+          <tr>
+            <td><input name="bt_trans[]" value='<%= i %>'type="checkbox"></td>
+            <td><%= trans_id %></td>
+            <td><%= sub_order.billing_name if sub_order %></td>
+            <td><%= sub_order.created_at.strftime('%m-%d-%y') if sub_order %></td>
+            <td><%= bt_trans[:disb_date].strftime('%m-%d-%y') if bt_trans %></td>
+            <td><%= bt_trans[:amt] if bt_trans %></td>
+            <td><%= sub_order.amt if sub_order %></td>
+            <td class='bt-net-amt'><%= bt_trans[:net_amt] if bt_trans %></td>
+            <td class='net-amt'><%= sub_order.net_amt if sub_order %></td>
+            <td><%= (bt_net_amt - zor_net_amt).round(2) %></td>
+          </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+    <div class='large-4 columns'>
+      <div class='rec-totals columns panel callout radius'>
+        <center>
+          <table>
+            <tr>
+              <td width='40%'>
+              <h4>BofA Disbs</h4>
+              </td>
+              <td>
+              <h4>$<span class='rec-bofa-disb'><%= @braintree_rec.total_bofa_disb %></span></h4>
+              </td>
+            </tr>
+            <tr>
+              <td>
+              <h4>Prev Var</h4>
+              </td>
+              <td>
+              <h4>$<span class='rec-prev-var'><%= @braintree_rec.disb_diff %></span></h4>
+              </td>
+            </tr>
+            <tr>
+              <td>
+              <h4>Captured</h4>
+              </td>
+              <td>
+              <h4>$<span class='rec-captured'>0.00</span></h4>
+              </td>
+            </tr>
+            <tr>
+              <td>
+              <h4>Missing</h4>
+              </td>
+              <td>
+              <h4>$<span class='rec-missing'>0.00</span></h4>
+              </td>
+            </tr>
+            <tr>
+              <td>
+              <h4>Unallocated</h4>
+              </td>
+              <td>
+              <h4>$<span class='rec-unallocated'>-<%= @braintree_rec.total_bt_disb%></span></h4>
+              </td>
+            </tr>
+          </table>
+          <%= submit_tag 'Submit Reconciliations', class: 'button' %>
+      </form>
+        </center>
+      </div>
+    </div>
+  </div>
+    
+    <center>
+      <img src='/assets/loader.gif' class='hide loading'>
+    </center>
