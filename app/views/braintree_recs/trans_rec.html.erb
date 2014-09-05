@@ -33,7 +33,7 @@
           <tr>
             <td><input name="bt_trans[]" value='<%= sub_order.id if sub_order %>'type="checkbox"></td>
             <td><%= trans_id %></td>
-            <td><%= sub_order.order_number if sub_order %></td>
+            <td><a href='/orders/<%= sub_order.id %>'><%= sub_order.order_number if sub_order %></a></td>
             <td><%= sub_order.created_at.strftime('%m-%d-%y') if sub_order %></td>
             <td><%= bt_trans[:disb_date].strftime('%m-%d-%y') if bt_trans %></td>
             <td><%= bt_trans[:amt] if bt_trans %></td>
@@ -86,7 +86,7 @@
           <tr>
             <td><input type="checkbox"></td>
             <td><%= sub_order.gateway_id %></td>
-            <td><%= sub_order.order_number if sub_order %></td>
+            <td><a href='/orders/<%= sub_order.id %>'><%= sub_order.order_number if sub_order %></a></td>
             <td><%= sub_order.created_at.strftime('%m-%d-%y') if sub_order %></td>
             <td><%= sub_order.amt if sub_order %></td>
             <td class='net-amt'><%= sub_order.net_amt if sub_order %></td>
@@ -112,7 +112,7 @@
               <h4>Prev Var</h4>
               </td>
               <td>
-              <h4>$<span class='rec-prev-var'><%= @braintree_rec.disb_diff %></span></h4>
+              <h4>$<span class='rec-prev-var'><%= @braintree_rec.disb_diff.round(2) %></span></h4>
               </td>
             </tr>
             <tr>
