@@ -45,6 +45,30 @@
           <% end %>
         </tbody>
       </table>
+      <label> Upfront Order Installments </label>
+      <table>
+        <thead>
+          <tr>
+            <th width='3%'><input id="all_trans" type="checkbox"> </th>
+            <th width='10.7%'> Order </th>
+            <th width='10.7%'> Date </th>
+            <th width='10.7%'> Plan </th>
+            <th width='10.7%'> Progress </th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @zero_upfronts.each_with_index do |sub_order,i| %>
+          <tr>
+            <td><input name="bt_trans[]" value='<%= sub_order.id if sub_order %>'type="checkbox"></td>
+            <td><a href='/orders/<%= sub_order.id %>'><%= sub_order.order_number %></a></td>
+            <td><%= sub_order.created_at.strftime('%m-%d-%y') %></td>
+            <td><%= sub_order.plan %></td>
+            <td><%= sub_order.sub.sub_orders.find_index(sub_order) + 1 %>/<%= sub_order.sub.term %></td>
+            <td class='hide bt-net-amt'>0</td>
+          </tr>
+          <% end %>
+        </tbody>
+      </table>
       <label> Braintree Transactions without Orders </label>
       <table>
         <thead>
