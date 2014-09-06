@@ -121,12 +121,23 @@ module Qb
   end
 
   def create_line_items(order)
-    items = order[:line_items].map do |k, line|
-      if item_exist?(line[:sku])
-        add_line_item(line)
-      else
-        p '-'*20 + line[:sku] + ' does not exist!' + '-'*20
-        nil
+    if order[:type] == 'Shopify'
+      items = order[:line_items].map do |k, line|
+        if item_exist?(line[:sku])
+          add_line_item(line)
+        else
+          p '-'*20 + line[:sku] + ' does not exist!' + '-'*20
+          nil
+        end
+      end
+    else
+      items = order[:line_items].map do |line|
+        if item_exist?(line[:sku])
+          add_line_item(line)
+        else
+          p '-'*20 + line[:sku] + ' does not exist!' + '-'*20
+          nil
+        end
       end
     end
     items.compact!
