@@ -29,8 +29,8 @@ class BraintreeRecsController < ApplicationController
     if params[:bt_disb] && params[:bofa_disb]
       @braintree_rec.update_transactions(params[:bt_disb],params[:bofa_disb])
     end
-    start_date = Date.parse('2014-1-15')
-    end_date = Date.parse('2014-3-15')
+    start_date = Date.parse('2014-2-15')
+    end_date = Date.parse('2014-4-05')
     @bt_orders = @braintree_rec.grouped_transactions.map { |date| date[:orders] }.flatten
     @sub_orders = SubOrder.where(created_at: start_date..end_date,braintree_rec_id: nil).select{ |so| so.amt > 0 && so.trans_id != nil}.sort_by!{ |so| so.created_at}
     @zero_upfronts = UpfrontSubOrder.where(created_at: start_date..end_date,braintree_rec_id: nil).select{ |so| so.amt == 0}.sort_by{|so| so.created_at }
