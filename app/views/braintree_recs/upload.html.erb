@@ -38,6 +38,7 @@
               </td>
             </tr>
           </table>
+          <%= submit_tag 'Upload to Quickbooks', class: 'upload-subs-to-qb button' %>
         </center>
       </div>
     </div>
@@ -59,16 +60,22 @@
         </thead>
         <tbody>
           <% @orders.each do |order| %>
-          <tr>
-            <td><%=  %></td>
-            <td><%= order.order_number %></td>
+          <tr id='<%= order.id %>'>
+            <td><input id="orders_" name="orders[]" type="checkbox" value="<%= order.id %>"></td>
+            <td class='order_number'><%= order.order_number %></td>
             <td><%= order.created_at.strftime('%m/%d/%y') %></td>
             <td><%= order.billing_name %></td>
             <td><%= order.net_amt %></td>
-            <td></td>
+            <td class= 'status'></td>
           </tr>
           <% end %>
         </tbody>
       </table>
     </div>
   </form>
+  
+  <script>
+    orderNums = []
+    $.each($('.order_number'),function(key,number){orderNums.push($(number).html())})
+  </script>
+  

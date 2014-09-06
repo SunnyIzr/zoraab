@@ -51,6 +51,12 @@ module Qb
     skus = order[:line_items].map{|i,li| li[:sku]}
     skus.select { |sku| !Qb.product_exist?(sku) }
   end
+  
+  def missing_sub_products(order)
+    missing = []
+    skus = order[:line_items].map{|li| li[:sku]}
+    skus.select { |sku| !Qb.product_exist?(sku) }
+  end
 
   def create_order(order)
     init

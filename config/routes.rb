@@ -18,6 +18,7 @@ Zoraab::Application.routes.draw do
     end
   end
   
+  post '/upload-suborder-to-qb' => 'quickbooks#upload_to_qb'
   get '/braintree-recs/trans-rec/:id' => 'braintree_recs#trans_rec', as: :trans_rec 
   get '/braintree-recs/disb-rec/:id' => 'braintree_recs#disb_rec', as: :disb_rec
   post '/braintree-recs/reconcile/:id' => 'braintree_recs#reconcile'

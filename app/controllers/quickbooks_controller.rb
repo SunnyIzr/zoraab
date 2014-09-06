@@ -48,6 +48,30 @@ class QuickbooksController < ApplicationController
       end
     end
   end
+  
+  def upload_to_qb
+    order = Order.find(params[:id])
+    qbo = order.qb
+
+    missing = Qb.missing_sub_products(qbo)
+    if Qb.order_exists(qbo[:number])
+      respond_to do |format|
+        msg = { :status => "ok", :message => 'Already Exists!' }
+        format.json  { render :json => msg }
+      end
+    elsif missing.size > 0
+      respond_to do |format|
+        msg = { :status => "ok", :message => 'Missing Products:' + missing.to_json }
+        format.json  { render :json => msg }
+      end
+    else
+      Qb.create_order(qbo)
+      respond_to do |format|
+        msg = { :status => "ok", :message => "Success!" }
+        format.json  { render :json => msg }
+      end
+    end
+  end
 
   private
     def set_qb_service

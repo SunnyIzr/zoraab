@@ -7,6 +7,7 @@ var QbController = {
     this.pullOrderBtn()
     this.uploadToQbBtn()
     this.checkAllBox()
+    this.uploadSubsToQbBtn()
     
   },
   pullOrderBtn: function(){
@@ -24,6 +25,16 @@ var QbController = {
       QbView.loadingOrders(orders)
       $.each(orders,function(k,v){
         QbModel.sendOrderToQb(QbModel.orders[v])
+      })
+    })
+  },
+  uploadSubsToQbBtn: function(){
+    $('.upload-subs-to-qb').click(function(e){
+      e.preventDefault();
+      orders = $.map($('form').serializeArray(),function(v,i){return v.value})
+      QbView.loadingOrders(orders)
+      $.each(orders,function(k,orderId){
+        QbModel.sendSubOrderToQb(orderId)
       })
     })
   },
@@ -57,6 +68,14 @@ var QbModel = {
       $('#'+order.number+' .status').html(res.message)
       }).error(function(res){
       $('#'+order.number+' .status').html('Fail')
+    })
+  },
+  sendSubOrderToQb: function(orderId){
+    $.post('/upload-suborder-to-qb',{id: orderId},function(res){
+    }).success(function(res){
+      $('#'+orderId+' .status').html(res.message)
+      }).error(function(res){
+      $('#'+orderId+' .status').html('Fail')
     })
   }
 }
