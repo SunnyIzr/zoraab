@@ -88,7 +88,7 @@ class OrdersController < ApplicationController
       puts "Getting Order #{i+1}/#{shop_orders.size}"
       p o.name
       orders << Shopify.order(o)
-      sleep(2)
+      sleep(3)
     end
     hash = {}
     orders.each do |order|
