@@ -4,7 +4,7 @@ class UpfrontSub < Sub
   end
 
   def next_due_date
-    self.sub_orders.where.not(trans_id: nil).last.created_at + 1.month if self.active?
+    self.sub_orders.where.not(trans_id: nil).sort_by{|o| o.created_at}.last.created_at + 1.month if self.active?
   end
 
   def due?
