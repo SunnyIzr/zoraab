@@ -123,7 +123,7 @@ module Shopify
   
   def billing_address(order)
     {
-        name: order.billing_address.first_name + ' ' + order.billing_address.last_name,
+        name: order.billing_address.first_name.to_s + ' ' + order.billing_address.last_name.to_s,
         address1: order.billing_address.address1,
         city: order.billing_address.city,
         state: order.billing_address.province_code,
