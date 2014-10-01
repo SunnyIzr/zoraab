@@ -135,7 +135,7 @@ module Shopify
   def shipping_address(order)
     if requires_shipping(order)
       {
-          name: order.shipping_address.first_name + ' ' + order.shipping_address.last_name,
+          name: order.shipping_address.first_name.to_s + ' ' + order.shipping_address.last_name.to_s,
           address1: order.shipping_address.address1,
           city: order.shipping_address.city,
           state: order.shipping_address.province_code,
