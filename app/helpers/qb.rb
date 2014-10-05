@@ -344,7 +344,7 @@ module Qb
     qbp.quantity_on_hand = BigDecimal.new('0.0')
     qbp.inv_start_date = Date.new(2014,1,1)
     qbp.asset_account_ref = Quickbooks::Model::BaseReference.new(145)
-    qbp.income_account_ref = Quickbooks::Model::BaseReference.new(241)
+    qbp.income_account_ref = Quickbooks::Model::BaseReference.new(159)
     qbp.expense_account_ref = Quickbooks::Model::BaseReference.new(172)
     qbp
   end
