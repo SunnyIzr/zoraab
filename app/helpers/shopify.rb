@@ -40,6 +40,12 @@ module Shopify
     products = []
     BRANDS.each do |brand|
       ven_prods = ShopifyAPI::Product.find(:all, :params => {"vendor"=>brand, :limit =>200})
+      if ven_prods.size == 200
+        ary = ven_prods.map{|e| e}
+        addl_prods = ShopifyAPI::Product.find(:all, :params => {"vendor"=>brand, :limit =>200,:page => 2})
+        ary << addl_prods
+        ven_prods = ary.flatten
+      end
       ven_prods.each do |prod|
         if published?(prod) && not_sale?(prod)
           products << { sku: handle_sku(prod) , q: q(prod), prefs: prefs(prod)}
