@@ -123,7 +123,8 @@ module Shopify
     if missing.keys.include?(item.sku)
       missing[item.sku]
     else
-      ShopifyAPI::Product.find(item.product_id).handle
+      # ShopifyAPI::Product.find(item.product_id).handle
+      item.sku
     end
   end
   
