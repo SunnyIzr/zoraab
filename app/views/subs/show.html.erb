@@ -89,6 +89,8 @@
         <tr>
           <th width="100">Order #</th>
           <th width="100">Date</th>
+          <th width="100">Trans_Id</th>
+          <th width="100">Gateway_Id</th>
           <th>Items</th>
         </tr>
       </thead>
@@ -96,7 +98,9 @@
         <% @sub.sub_orders.sort_by! { |order| order.created_at }.reverse.each do |order| %>
         <tr>
           <td><a href="/orders/<%=order.id%>"><%=order.order_number%></a></td>
-          <td><%=order.created_at.strftime('%m/%d/%y')%></td>
+          <td><%= order.created_at.strftime('%m/%d/%y')%></td>
+          <td><%= order.trans_id %></td>
+          <td><%= order.gateway_id %></td>
           <td>
             <ul class="inline-list">
               <% order.products.each do |product| %>
