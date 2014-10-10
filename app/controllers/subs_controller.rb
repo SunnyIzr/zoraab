@@ -1,4 +1,5 @@
 class SubsController < ApplicationController
+  skip_before_filter  :verify_authenticity_token, :only => :shopify_data
   def new
     @sub = Sub.new
   end
