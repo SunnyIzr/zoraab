@@ -234,5 +234,11 @@ module Shopify
   def nil_product_id?(order)
     order.line_items.map { |li| li.product_id }.include?(nil)
   end
+  
+  def create_customer(customer_info)
+    customer = ShopifyAPI::Customer.new
+    customer.attributes = customer_info
+    customer.save
+  end
 
 end

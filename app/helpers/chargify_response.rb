@@ -90,4 +90,26 @@ module ChargifyResponse
   def billing(response)
     response['credit_card'].attributes
   end
+  
+  def shopify(response)
+    address = ShopifyAPI::Address.new
+    billing = billing_address(response)
+    billing[:address1] = billing[:address]
+    billing[:province] = billing[:state]
+    billing[:default] = true
+    address.attributes = billing
+    {
+        "accepts_marketing" => true,
+                   # "email" => email(response),
+                   "email" => 'sunny@mintsocks.com',
+              "first_name" => billing(response)['first_name'].to_s,
+               "last_name" => billing(response)['last_name'].to_s,
+                   "state" => "disabled",
+          "verified_email" => true,
+                    "tags" => response['id'],
+         "default_address" => address,
+              'addresses'  => [address],
+       "send_email_invite" => true
+    }
+  end
 end

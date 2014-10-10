@@ -8,6 +8,12 @@ class Sub < ActiveRecord::Base
   def chargify
     ChargifyResponse.parse(Chargify::Subscription.find(cid).attributes)
   end
+  
+  def shopify_data
+    ChargifyResponse.shopify(Chargify::Subscription.find(cid).attributes)
+  end
+  
+  
 
   def get_prefs
     entry_id = OutstandingSignup.find_by(cid: self.cid).users_ref
