@@ -88,6 +88,12 @@ class SubsController < ApplicationController
 
     redirect_to sub_path(@sub.id)
   end
+  
+  def shopify_data
+    @sub = Sub.find_by(shopify_id: params[:shopify_id])
+    data = {sub: @sub, cid: @sub.chargify, orders: @sub.sub_orders}
+    render json: data
+  end
 
   private
   def sub_params
