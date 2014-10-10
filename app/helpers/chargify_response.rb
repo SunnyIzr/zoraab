@@ -100,16 +100,15 @@ module ChargifyResponse
     address.attributes = billing
     {
         "accepts_marketing" => true,
-                   # "email" => email(response),
-                   "email" => 'sunny@mintsocks.com',
+                   "email" => email(response),
               "first_name" => billing(response)['first_name'].to_s,
                "last_name" => billing(response)['last_name'].to_s,
                    "state" => "disabled",
           "verified_email" => true,
                     "tags" => response['id'],
          "default_address" => address,
-              'addresses'  => [address],
-       "send_email_invite" => true
+              'addresses'  => [address]
+       # "send_email_invite" => true
     }
   end
 end

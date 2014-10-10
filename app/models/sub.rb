@@ -13,6 +13,12 @@ class Sub < ActiveRecord::Base
     ChargifyResponse.shopify(Chargify::Subscription.find(cid).attributes)
   end
   
+  def create_shopify_customer
+    sid = Shopify.create_customer(shopify_data)
+    self.shopify_id = sid
+    self.save
+  end
+  
   
 
   def get_prefs

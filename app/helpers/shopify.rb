@@ -239,6 +239,7 @@ module Shopify
     customer = ShopifyAPI::Customer.new
     customer.attributes = customer_info
     customer.save
+    customer.id
   end
 
 end
