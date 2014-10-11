@@ -18,7 +18,7 @@ Zoraab::Application.routes.draw do
     end
   end
   
-  
+  match '/shopify-sub-data/:shopify_id', to: 'subs#shopify_data', via: [:options]
   get '/shopify-sub-data/:shopify_id' => 'subs#shopify_data'
   post '/upload-suborder-to-qb' => 'quickbooks#upload_to_qb'
   get '/braintree-recs/trans-rec/:id' => 'braintree_recs#trans_rec', as: :trans_rec 
