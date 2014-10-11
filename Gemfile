@@ -78,4 +78,4 @@ group :test, :development do
   gem 'factory_girl_rails'
 end
 
-gem 'rack-cors', :require => 'rack/cors'
+
