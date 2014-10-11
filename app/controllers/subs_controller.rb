@@ -94,7 +94,7 @@ class SubsController < ApplicationController
   
   def shopify_data
     @sub = Sub.find_by(shopify_id: params[:shopify_id])
-    data = {sub: @sub, cid: @sub.chargify, orders: @sub.sub_orders}
+    data = {sub: @sub, prefs: @sub.prefs, cid: @sub.chargify, orders: @sub.sub_orders}
     render json: data
   end
   
