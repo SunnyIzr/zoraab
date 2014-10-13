@@ -249,6 +249,7 @@ module Shopify
       hash = {}
       hash[:title] = blog.title
       hash[:img_link] = Nokogiri::HTML(blog.body_html).css('.blog-preview')[0].attributes['src'].value
+      hash[:main_img_link] = Nokogiri::HTML(blog.body_html).css('.blog-hero')[0].attributes['src'].value
       hash[:subtext] = Nokogiri::HTML(blog.body_html).css('.featured-subtext')[0].text unless Nokogiri::HTML(blog.body_html).css('.featured-subtext').empty?
       hash[:link] = "/pages/#{blog.handle}"
       parsed_blogs << hash
