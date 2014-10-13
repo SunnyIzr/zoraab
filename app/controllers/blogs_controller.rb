@@ -3,7 +3,7 @@ class BlogsController < ApplicationController
   before_filter :cors_preflight_check, :only => :blogs
   after_filter :cors_set_access_control_headers, :only => :blogs
   def blogs
-    render json: 'hello'
+    render json: Shopify.blogs
   end
     
   # For all responses in this controller, return the CORS access control headers.

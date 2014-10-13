@@ -241,5 +241,18 @@ module Shopify
     customer.save
     customer.id
   end
+  
+  def blogs
+    blogs = ShopifyAPI::Page.all.select{|page| page.template_suffix == 'blog-entry'}.sort_by{|page| page.created_at }
+    parsed_blogs = []
+    blogs.each do |blog|
+      hash = {}
+      hash[:title] = blog.title
+      hash[:img_link] = Nokogiri::HTML(blog.body_html).css('.blog-preview')[0].attributes['src'].value
+      hash[:link] = "/pages/#{blog.handle}"
+      parsed_blogs << hash
+    end
+    parsed_blogs
+  end
 
 end
