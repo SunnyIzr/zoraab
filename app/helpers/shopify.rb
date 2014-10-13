@@ -243,16 +243,19 @@ module Shopify
   end
   
   def blogs
-    blogs = ShopifyAPI::Page.all.select{|page| page.template_suffix == 'blog-entry'}.sort_by{|page| page.created_at }
+    blogs = ShopifyAPI::Page.all.select{|page| page.template_suffix == 'blog-entry' || page.template_suffix == 'blog-featured'}.sort_by{|page| page.created_at }.reverse
     parsed_blogs = []
     blogs.each do |blog|
       hash = {}
       hash[:title] = blog.title
       hash[:img_link] = Nokogiri::HTML(blog.body_html).css('.blog-preview')[0].attributes['src'].value
+      hash[:subtext] = Nokogiri::HTML(blog.body_html).css('.featured-subtext')[0].text unless Nokogiri::HTML(blog.body_html).css('.featured-subtext').empty?
       hash[:link] = "/pages/#{blog.handle}"
       parsed_blogs << hash
     end
-    parsed_blogs
+    featured = parsed_blogs.select{|blog| !blog[:subtext].nil?}[0]
+    parsed_blogs -= [featured]
+    {featured: featured, blogs: parsed_blogs}
   end
 
 end
