@@ -21,6 +21,9 @@ Zoraab::Application.routes.draw do
   match '/blogs', to: 'shopify_api_calls#blogs', via: [:options]
   get '/blogs' => 'shopify_api_calls#blogs'
   
+  match '/update_shopify_customer', to: 'shopify_api_calls#update_shopify_customer', via: [:options]
+  post '/update_shopify_customer' => 'shopify_api_calls#update_shopify_customer'
+  
   match '/shopify-sub-data/:shopify_id', to: 'subs#shopify_data', via: [:options]
   get '/shopify-sub-data/:shopify_id' => 'subs#shopify_data'
   post '/upload-suborder-to-qb' => 'quickbooks#upload_to_qb'
