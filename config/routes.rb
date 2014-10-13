@@ -18,8 +18,8 @@ Zoraab::Application.routes.draw do
     end
   end
   
-  match '/blogs', to: 'ShopifyApiCalls#blogs', via: [:options]
-  get '/blogs' => 'ShopifyApiCalls#blogs'
+  match '/blogs', to: 'shopify_api_calls#blogs', via: [:options]
+  get '/blogs' => 'shopify_api_calls#blogs'
   
   match '/shopify-sub-data/:shopify_id', to: 'subs#shopify_data', via: [:options]
   get '/shopify-sub-data/:shopify_id' => 'subs#shopify_data'
