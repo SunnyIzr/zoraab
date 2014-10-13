@@ -1,4 +1,4 @@
-class BlogsController < ApplicationController
+class ShopifyApiCallsController < ApplicationController
   skip_before_filter  :verify_authenticity_token, :only => :blogs
   before_filter :cors_preflight_check, :only => :blogs
   after_filter :cors_set_access_control_headers, :only => :blogs
